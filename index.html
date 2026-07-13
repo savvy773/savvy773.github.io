@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Savvy773 Portfolio</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #666;
+    --accent: #2563eb;
+    --border: #e5e5e5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0d1117; --fg: #e6edf3; --muted: #8b949e; --border: #21262d; }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Pretendard, sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.6;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 4rem 1.5rem; }
+  h1 { font-size: 2rem; margin-bottom: 0.25rem; }
+  .tagline { color: var(--muted); margin-bottom: 2.5rem; }
+  section { margin-bottom: 2.5rem; }
+  h2 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .project {
+    display: block;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+  }
+  .project:last-child { border-bottom: none; }
+  .project h3 { margin: 0 0 0.25rem; font-size: 1.05rem; }
+  .project p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+  .links a {
+    color: var(--accent);
+    text-decoration: none;
+    margin-right: 1rem;
+  }
+  .links a:hover { text-decoration: underline; }
+  footer { color: var(--muted); font-size: 0.85rem; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Savvy773</h1>
+    <p class="tagline">여기에 한 줄 소개를 적어주세요.</p>
+
+    <section>
+      <h2>Projects</h2>
+      <a class="project" href="#">
+        <h3>프로젝트 이름</h3>
+        <p>한 줄 설명 — 사용 기술, 역할, 성과.</p>
+      </a>
+    </section>
+
+    <section>
+      <h2>Links</h2>
+      <div class="links">
+        <a href="https://github.com/savvy773">GitHub</a>
+        <a href="resume.pdf">Resume (PDF)</a>
+      </div>
+    </section>
+
+    <footer>&copy; 2026 Savvy773</footer>
+  </div>
+</body>
+</html>
