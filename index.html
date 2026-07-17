@@ -6,6 +6,18 @@
 <title>Juns — Portfolio</title>
 <meta name="description" content="AI 풀스택 엔지니어 Juns의 포트폴리오. 발전소 데이터 연동 자동화 툴 개발 여정과 오픈소스 프로젝트.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-weight='800' font-size='16' fill='%230b0b10' text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E">
+<script>
+  // 저사양 기기 감지: CPU 코어 수 / 메모리 / 데이터 절약 모드 기준
+  // 첫 페인트 전에 클래스를 붙여야 블러·애니메이션이 처음부터 빠짐 (FOUC 방지)
+  (function () {
+    var cores = navigator.hardwareConcurrency || 8;
+    var mem = navigator.deviceMemory || 8;
+    var saveData = !!(navigator.connection && navigator.connection.saveData);
+    if (cores <= 2 || mem <= 2 || saveData) {
+      document.documentElement.classList.add('low-spec');
+    }
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -46,6 +58,14 @@
     background-clip: padding-box;
   }
   ::-webkit-scrollbar-corner { background: transparent; }
+
+  ::selection { background: var(--accent-soft); color: var(--text); }
+
+  a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
+    outline: 2px solid var(--accent-2);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
 
   body {
     margin: 0;
@@ -178,6 +198,14 @@
     font-family: var(--mono); font-size: .72rem; letter-spacing: .03em;
     padding: .32rem .7rem; border-radius: 999px;
     background: var(--surface); border: 1px solid var(--border); color: var(--text-2);
+    transition: color .18s ease, border-color .18s ease, background .18s ease, transform .18s ease, box-shadow .18s ease;
+  }
+  .skill-strip span:hover {
+    color: var(--accent-2);
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(139,108,247,.25);
   }
   .exp-note {
     color: var(--text-2);
@@ -214,6 +242,7 @@
     transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
   }
   .repo-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--border-hi); }
+  .repo-card:active { transform: translateY(-1px) scale(.99); }
   .repo-head { display: flex; align-items: center; gap: .5rem; margin-bottom: .5rem; }
   .repo-head svg { width: 15px; height: 15px; color: var(--text-dim); flex-shrink: 0; }
   .repo-head h3 { margin: 0; font-size: .98rem; font-weight: 700; font-family: var(--mono); flex: 1; }
@@ -222,6 +251,39 @@
     color: var(--accent-2); display: inline-flex; align-items: center; gap: .25rem;
   }
   .repo-live::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--accent-2); box-shadow: 0 0 6px var(--accent-2); }
+
+  /* repo thumb — 항상 노출되는 추상 UI 미리보기 (실제 스크린샷 없이 CSS만으로 구성) */
+  /* hover 시 펼쳐지는 방식은 카드 높이가 변해서 불편하다는 피드백으로 고정 높이로 변경 */
+  .repo-thumb {
+    height: 68px; overflow: hidden;
+    border-radius: 9px; margin-bottom: .85rem;
+    background: linear-gradient(155deg, var(--surface-2), color-mix(in srgb, var(--bg) 85%, black));
+    border: 1px solid var(--border);
+    transition: border-color .18s ease;
+  }
+  .repo-card:hover .repo-thumb { border-color: var(--border-hi); }
+  .rt-head { display: flex; align-items: center; gap: 4px; padding: 8px 10px 0; }
+  .rt-dot { width: 6px; height: 6px; border-radius: 50%; opacity: .55; }
+  .rt-dot:nth-child(1) { background: #ff5f57; }
+  .rt-dot:nth-child(2) { background: #febc2e; }
+  .rt-dot:nth-child(3) { background: #28c840; }
+  .rt-body { padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 6px; }
+  .rt-bar { height: 5px; border-radius: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); opacity: .5; }
+  .rt-chart {
+    height: 24px; border-radius: 5px;
+    background: repeating-linear-gradient(90deg,
+      var(--accent-soft) 0 8%, transparent 8% 16%,
+      var(--accent-soft) 16% 22%, transparent 22% 32%,
+      var(--accent-soft) 32% 40%, transparent 40% 52%,
+      var(--accent-soft) 52% 60%, transparent 60% 100%);
+  }
+  .rt-row { display: flex; align-items: center; gap: 7px; }
+  .rt-avatar { width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0; background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
+  .rt-row .rt-bar { flex: 1; }
+  @media (max-width: 640px) {
+    .repo-thumb { display: none; }
+  }
+
   .repo-card p { margin: 0 0 .8rem; color: var(--text-2); font-size: .87rem; }
   .repo-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
   .repo-tags span {
@@ -236,9 +298,18 @@
     content: "";
     position: absolute; top: 6px; bottom: 6px; left: 13px;
     width: 1px;
-    background: linear-gradient(var(--accent), var(--accent-2));
-    opacity: .4;
+    background: var(--border-hi);
+    opacity: .5;
   }
+  .timeline-progress {
+    position: absolute; top: 6px; left: 13px;
+    width: 1px; height: 0;
+    background: linear-gradient(var(--accent), var(--accent-2));
+    box-shadow: 0 0 8px var(--accent-2);
+    transition: height .12s linear;
+    pointer-events: none;
+  }
+  html.low-spec .timeline-progress { transition: none; box-shadow: none; }
   .tl-item {
     position: relative;
     display: flex;
@@ -251,6 +322,7 @@
     transition: background .15s ease, transform .15s ease, border-color .15s ease;
   }
   .tl-item:hover { background: var(--surface); border-color: var(--border); transform: translateX(3px); box-shadow: var(--shadow); }
+  .tl-item:active { transform: translateX(1px) scale(.995); }
   .tl-item::before {
     content: "";
     position: absolute; left: 8px; top: 1.35rem;
@@ -293,6 +365,11 @@
     font-family: var(--mono); font-size: .68rem; letter-spacing: .02em;
     padding: .22rem .6rem; border-radius: 999px;
     border: 1px dashed var(--border-hi); color: var(--text-2);
+    transition: color .18s ease, border-color .18s ease, background .18s ease;
+  }
+  .learning-tags span:hover {
+    color: var(--accent-2); border-color: var(--accent-2); border-style: solid;
+    background: var(--accent-soft);
   }
 
   footer {
@@ -371,6 +448,20 @@
   .tagline { animation-delay: .1s; }
   .skill-strip { animation-delay: .15s; }
   .exp-note { animation-delay: .2s; }
+
+  /* 저사양 기기: 블러/애니메이션 부하가 큰 효과만 걷어냄 (레이아웃은 그대로) */
+  html.low-spec .mesh::before,
+  html.low-spec .mesh::after { filter: blur(32px); }
+  html.low-spec .topbar {
+    backdrop-filter: none;
+    background: color-mix(in srgb, var(--bg) 94%, transparent);
+  }
+  html.low-spec dialog.modal-frame::backdrop {
+    backdrop-filter: none;
+    background: rgba(6,6,10,.88);
+  }
+  html.low-spec .hero-svg path { animation: none; }
+  html.low-spec #particles { display: none; }
 </style>
 </head>
 <body>
@@ -462,6 +553,13 @@
             <h3>web-ai-usage</h3>
             <span class="repo-live">LIVE</span>
           </div>
+          <div class="repo-thumb" aria-hidden="true">
+            <div class="rt-head"><span class="rt-dot"></span><span class="rt-dot"></span><span class="rt-dot"></span></div>
+            <div class="rt-body">
+              <div class="rt-bar" style="width:62%"></div>
+              <div class="rt-chart"></div>
+            </div>
+          </div>
           <p>Claude, Codex, Gemini CLI 사용량을 하나의 로컬 대시보드에서 모니터링. 클라우드 전송 없음, 텔레메트리 없음.</p>
           <div class="repo-tags"><span>TYPESCRIPT</span><span>SVELTE</span></div>
         </a>
@@ -472,6 +570,14 @@
             <h3>app-yt-subs</h3>
             <span class="repo-live">LIVE</span>
           </div>
+          <div class="repo-thumb" aria-hidden="true">
+            <div class="rt-head"><span class="rt-dot"></span><span class="rt-dot"></span><span class="rt-dot"></span></div>
+            <div class="rt-body">
+              <div class="rt-row"><span class="rt-avatar"></span><div class="rt-bar" style="width:70%"></div></div>
+              <div class="rt-row"><span class="rt-avatar"></span><div class="rt-bar" style="width:50%"></div></div>
+              <div class="rt-row"><span class="rt-avatar"></span><div class="rt-bar" style="width:60%"></div></div>
+            </div>
+          </div>
           <p>Flet과 Playwright 기반 유튜브 구독 관리 앱.</p>
           <div class="repo-tags"><span>PYTHON</span><span>FLET</span><span>PLAYWRIGHT</span></div>
         </a>
@@ -480,7 +586,8 @@
 
     <section>
       <h2>Journey · 발자취</h2>
-      <div class="timeline">
+      <div class="timeline" id="timeline">
+        <div class="timeline-progress" id="timelineProgress"></div>
         <a class="tl-item" href="journey/opc-isl-guide.html" onclick="return openModal('journey/opc-isl-guide.html','OPC-ISL Engine 사용 가이드', event)">
           <span class="tl-meta">
             <span class="tl-ver">v0.1.0</span>
@@ -574,6 +681,17 @@
     }
     function closeModal() { dialog.close(); }
 
+    // iframe 안으로 포커스가 넘어가면 ESC 키가 iframe 자체 문서에서만 처리되고
+    // 부모 dialog까지 전달되지 않아 native ESC-close가 안 먹는 문제 보완
+    // (같은 origin의 iframe에 한해서만 접근 가능 — 외부 origin은 브라우저 보안상 우회 불가)
+    iframe.addEventListener('load', () => {
+      try {
+        iframe.contentWindow.document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') closeModal();
+        });
+      } catch (_) { /* cross-origin iframe: 접근 불가, 무시 */ }
+    });
+
     // click on the backdrop (outside the dialog's own box) closes it
     dialog.addEventListener('click', (e) => { if (e.target === dialog) closeModal(); });
     // native ESC/close cleans up the iframe after the close animation
@@ -583,8 +701,37 @@
   </script>
 
   <script>
+    // ── timeline scroll progress ──
+    (function () {
+      const track = document.getElementById('timeline');
+      const fill = document.getElementById('timelineProgress');
+      if (!track || !fill) return;
+      const inset = 6; // .timeline::before의 top/bottom 6px 여백과 맞춤
+      let ticking = false;
+
+      function update() {
+        ticking = false;
+        const rect = track.getBoundingClientRect();
+        const progress = Math.min(1, Math.max(0,
+          (innerHeight - rect.top) / (innerHeight + rect.height)
+        ));
+        const total = Math.max(0, track.clientHeight - inset * 2);
+        fill.style.height = (total * progress) + 'px';
+      }
+      function onScroll() {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      }
+      addEventListener('scroll', onScroll, { passive: true });
+      addEventListener('resize', onScroll, { passive: true });
+      update();
+    })();
+  </script>
+
+  <script>
     // ── lightweight particle background ──
     (function () {
+      if (document.documentElement.classList.contains('low-spec')) return; // 저사양: 캔버스 자체를 안 돌림
+
       const canvas = document.getElementById('particles');
       const ctx = canvas.getContext('2d');
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -610,8 +757,10 @@
           r: (Math.random() * 1.4 + .6) * dpr,
         }));
       }
-      function step() {
-        if (!running) return;
+      let lastT = 0;
+      const FRAME_MS = 1000 / 30; // 30fps로 캡 — GPU 합성(compositing) 부담을 절반으로 줄임
+
+      function draw() {
         ctx.clearRect(0, 0, w, h);
         for (const p of particles) {
           p.x += p.vx; p.y += p.vy;
@@ -639,13 +788,19 @@
             }
           }
         }
+      }
+      function step(t) {
+        if (!running) return;
         raf = requestAnimationFrame(step);
+        if (t - lastT < FRAME_MS) return;
+        lastT = t;
+        draw();
       }
       function start() { if (!raf) { running = true; raf = requestAnimationFrame(step); } }
       function stop() { running = false; if (raf) cancelAnimationFrame(raf); raf = null; }
 
       resize(); init();
-      if (!reduceMotion) start(); else step();
+      if (!reduceMotion) start(); else draw(); // reduced-motion: 루프 없이 정적 프레임 한 장만
 
       let resizeT;
       addEventListener('resize', () => {
