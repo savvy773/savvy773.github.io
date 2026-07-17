@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSH 보안 & 서버 안정성 — HEIS Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=IBM+Plex+Mono:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root {
+  --accent:    #E8450A;
+  --accent-lt: rgba(232,69,10,0.08);
+  --navy:      #1E3A5F;
+  --navy-lt:   rgba(30,58,95,0.07);
+  --bg:        #F4F6F9;
+  --surface:   #FFFFFF;
+  --border:    #E2E8F0;
+  --border-lt: #EEF2F7;
+  --text:      #1C2B3A;
+  --text-2:    #4A5568;
+  --text-dim:  #8A97A6;
+  --ok:        #059669;
+  --ok-bg:     #ECFDF5;
+  --ok-border: #A7F3D0;
+  --warn-bg:   #FFF7ED;
+  --warn-text: #9A3412;
+  --warn-border:#FDBA74;
+  --blue-bg:   #EFF6FF;
+  --blue:      #2563EB;
+  --r:         8px;
+  --r-sm:      5px;
+  --shadow:    0 1px 4px rgba(0,0,0,0.06), 0 0 0 1px var(--border);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; border: 2px solid var(--bg); background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); background-clip: padding-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', 'Noto Sans KR', sans-serif;
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── PROGRESS ── */
+#pb { position: fixed; top: 0; left: 0; height: 2px; background: var(--accent); z-index: 999; width: 0%; transition: width .08s; }
+
+/* ── TOPBAR ── */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(90deg, #0A1520 0%, #0F2030 28%, #152840 55%, #0F1E2E 80%, #0A1520 100%);
+  height: 52px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 2px 24px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.3);
+}
+.tb-brand { display: flex; align-items: center; gap: 10px; }
+.tb-mark {
+  width: 20px; height: 20px; background: var(--accent); border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', sans-serif; font-size: 12px; color: #fff;
+}
+.tb-name {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  letter-spacing: .18em; color: rgba(255,255,255,0.45); text-transform: uppercase;
+}
+.tb-nav { display: flex; gap: 1px; }
+.tb-nav a {
+  font-size: 11px; font-weight: 400; color: rgba(255,255,255,0.38);
+  text-decoration: none; padding: 6px 11px; border-radius: 5px;
+  transition: color .15s, background .15s, box-shadow .15s; white-space: nowrap;
+  letter-spacing: .01em; position: relative;
+}
+.tb-nav a::after {
+  content: ''; position: absolute; bottom: 4px; left: 11px; right: 11px;
+  height: 1.5px; background: var(--accent); border-radius: 2px;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .18s cubic-bezier(.4,0,.2,1);
+}
+.tb-nav a:hover { color: rgba(255,255,255,0.9); background: rgba(255,255,255,0.06); }
+.tb-nav a:hover::after { transform: scaleX(1); }
+.tb-date { font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; color: rgba(255,255,255,0.2); letter-spacing: .06em; }
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, #1E3A5F 0%, #0F2035 100%);
+  padding: 32px 0 0; position: relative; overflow: hidden;
+}
+.hero-inner { padding: 0 48px 28px; }
+.hero::before {
+  content: ''; position: absolute; right: 60px; top: -60px;
+  width: 320px; height: 320px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,69,10,0.15) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero::after {
+  content: ''; position: absolute; left: -80px; bottom: -80px;
+  width: 260px; height: 260px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(37,99,235,0.1) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-inner { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 32px; }
+.hero-eyebrow {
+  font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: .24em;
+  color: rgba(255,180,130,0.7); text-transform: uppercase; margin-bottom: 8px;
+}
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: clamp(30px, 4vw, 44px);
+  line-height: 1; color: #fff; letter-spacing: .04em; margin-bottom: 10px;
+}
+.hero-title em { color: #FFB088; font-style: normal; }
+.hero-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.hero-tag {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .08em;
+  color: rgba(255,255,255,0.45); background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12); padding: 3px 10px; border-radius: 20px;
+}
+.hero-meta {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: rgba(255,255,255,0.08); border-radius: var(--r);
+  overflow: hidden; min-width: 200px; flex-shrink: 0;
+}
+.hero-meta-cell { background: rgba(0,0,0,0.2); padding: 10px 14px; }
+.hm-label { font-size: 9px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 3px; }
+.hm-val { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.75); }
+.hm-val.accent { color: #FFB088; }
+.hero-strip { height: 3px; background: linear-gradient(90deg, var(--accent), #FF8C42 50%, transparent); margin-top: 28px; }
+
+/* ── LAYOUT ── */
+.main { max-width: 1060px; margin: 0 auto; padding: 44px 36px 100px; }
+.hero-inner { max-width: 1060px; margin: 0 auto; }
+
+/* ── OVERVIEW CARDS ── */
+.ov-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 52px; }
+.ov-card {
+  background: var(--surface); border-radius: var(--r);
+  box-shadow: var(--shadow); padding: 18px 20px;
+  border-top: 3px solid var(--border);
+  animation: fadeUp .5s ease both;
+}
+.ov-card:nth-child(1) { border-top-color: var(--accent); animation-delay: .05s; }
+.ov-card:nth-child(2) { border-top-color: #22c55e;       animation-delay: .1s;  }
+.ov-card:nth-child(3) { border-top-color: #3b82f6;       animation-delay: .15s; }
+.ov-card:nth-child(4) { border-top-color: #a855f7;       animation-delay: .2s;  }
+.ov-label { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 6px; }
+.ov-val { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: .04em; color: var(--navy); line-height: 1; margin-bottom: 4px; }
+.ov-desc { font-size: 11.5px; color: var(--text-dim); line-height: 1.4; font-weight: 300; }
+
+/* ── SECTION ── */
+.section { margin-bottom: 52px; animation: fadeUp .7s ease both; }
+.section:nth-child(2)  { animation-delay: .1s; }
+.section:nth-child(3)  { animation-delay: .18s; }
+.section:nth-child(4)  { animation-delay: .26s; }
+.section:nth-child(5)  { animation-delay: .34s; }
+.section:nth-child(6)  { animation-delay: .42s; }
+.section:nth-child(7)  { animation-delay: .50s; }
+.section:nth-child(8)  { animation-delay: .58s; }
+
+.sec-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.sec-num {
+  font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: .1em;
+  color: var(--accent); background: var(--accent-lt);
+  border: 1px solid rgba(232,69,10,0.15); border-radius: var(--r-sm);
+  padding: 3px 9px;
+}
+.sec-title { font-size: 16px; font-weight: 700; color: var(--navy); letter-spacing: -.02em; }
+.sec-line { flex: 1; height: 1px; background: var(--border); }
+
+/* ── CARD ── */
+.card {
+  background: var(--surface); border-radius: var(--r);
+  box-shadow: var(--shadow); overflow: hidden; margin-bottom: 12px;
+}
+.card-hd {
+  display: flex; align-items: center; gap: 9px;
+  padding: 11px 18px;
+  background: var(--border-lt); border-bottom: 1px solid var(--border);
+}
+.card-icon { font-size: 14px; flex-shrink: 0; }
+.card-title { font-size: 12.5px; font-weight: 600; color: var(--navy); }
+.card-sub { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--text-dim); margin-left: auto; }
+.card-body { padding: 18px 20px; }
+
+/* ── GRID 2 ── */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* ── TABLE ── */
+.tbl-wrap { overflow-x: auto; margin-top: 4px; }
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; table-layout: fixed; }
+table.auto { table-layout: auto; }
+col.w1 { width: 30%; } col.w2 { width: 12%; } col.w3 { width: 30%; } col.w4 { width: 28%; }
+col.w-flag { width: 34%; } col.w-role { width: 66%; }
+col.w-env  { width: 18%; } col.w-ktype { width: 24%; } col.w-kw { width: 40%; } col.w-pri { width: 18%; }
+col.w-sit  { width: 24%; } col.w-act  { width: 40%; }
+thead tr { background: var(--border-lt); }
+th {
+  text-align: left; font-size: 10px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--text-dim);
+  padding: 8px 14px; border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+td {
+  padding: 9px 14px; border-bottom: 1px solid var(--border-lt);
+  vertical-align: top; line-height: 1.5; word-break: break-word;
+  color: var(--text-2);
+}
+tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: #F8FAFC; }
+
+/* ── TAGS / BADGES ── */
+.tag {
+  display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: .04em;
+  padding: 2px 8px; border-radius: 20px; white-space: nowrap;
+}
+.tag-ok   { background: var(--ok-bg);   color: var(--ok);        border: 1px solid var(--ok-border); }
+.tag-warn { background: var(--warn-bg); color: var(--warn-text); border: 1px solid var(--warn-border); }
+.tag-navy { background: var(--navy-lt); color: var(--navy);      border: 1px solid rgba(30,58,95,0.15); }
+.tag-gray { background: var(--bg);      color: var(--text-dim);  border: 1px solid var(--border); }
+
+/* ── CODE BLOCK ── */
+.code-wrap {
+  background: #223045; border: 1px solid rgba(255,255,255,0.09);
+  border-radius: var(--r); overflow: hidden;
+}
+.code-bar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 16px; background: rgba(0,0,0,0.18);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.code-dot { width: 10px; height: 10px; border-radius: 50%; }
+.code-dot.r { background: #FF5F56; } .code-dot.y { background: #FFBD2E; } .code-dot.g { background: #27C93F; }
+.code-lang { font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; color: rgba(255,255,255,0.3); margin-left: auto; letter-spacing: .1em; }
+.code-body { padding: 16px 20px; overflow-x: auto; }
+.code-body pre {
+  font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+  line-height: 1.75; color: #CBD5E1; margin: 0; white-space: pre;
+}
+.cc  { color: #5E7A9A; }           /* comment */
+.ck  { color: #7DD3FC; }           /* key     — sky blue */
+.cv  { color: #86EFAC; }           /* value   — green */
+.cw  { color: #FCA972; }           /* flag    — orange */
+.cn  { color: #C4B5FD; }           /* number  — violet */
+
+/* ── TUNNEL DIAGRAM ── */
+.tunnel {
+  display: flex; align-items: stretch;
+  background: #1E2F43; border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--r); padding: 28px 24px; overflow-x: auto; gap: 0;
+}
+.tn {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 8px; flex: 0 0 auto; width: 130px;
+}
+.tn-box {
+  width: 110px; padding: 10px 14px; border-radius: var(--r-sm);
+  text-align: center; border: 1.5px solid;
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px; line-height: 1.4;
+  font-weight: 500;
+}
+.tn-box.local   { color: #FCA972; border-color: rgba(252,169,114,0.45); background: rgba(232,69,10,0.12); }
+.tn-box.bastion { color: #7DD3FC; border-color: rgba(125,211,252,0.4);  background: rgba(29,107,213,0.1); }
+.tn-box.target  { color: #86EFAC; border-color: rgba(134,239,172,0.4);  background: rgba(26,127,75,0.1);  }
+.tn-sub { font-size: 10px; opacity: .55; margin-top: 2px; font-weight: 400; }
+.tn-label {
+  font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+  color: rgba(255,255,255,0.3); letter-spacing: .1em; text-transform: uppercase;
+}
+.ta {
+  flex: 1; min-width: 36px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 5px;
+  padding-bottom: 22px;
+}
+.ta-line {
+  width: 100%; height: 1.5px; background: rgba(255,255,255,0.15); position: relative;
+}
+.ta-line::after {
+  content: '▶'; position: absolute; right: -7px; top: -8px;
+  font-size: 11px; color: rgba(255,255,255,0.3);
+}
+.ta-label {
+  font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+  color: rgba(255,255,255,0.3); text-align: center; line-height: 1.4; white-space: nowrap;
+}
+
+/* ── CALLOUT ── */
+.callout {
+  display: flex; gap: 12px; padding: 12px 16px; border-radius: var(--r-sm);
+  border-left: 3px solid; margin-top: 14px;
+}
+.callout.info { background: var(--blue-bg); border-color: var(--blue); }
+.callout.warn { background: var(--warn-bg); border-color: var(--accent); }
+.callout.ok   { background: var(--ok-bg);   border-color: var(--ok); }
+.callout-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.callout-text { font-size: 12px; color: var(--text-2); line-height: 1.6; }
+.callout-text strong { font-weight: 600; color: var(--text); }
+
+/* ── TIMELINE ── */
+.tl { display: flex; flex-direction: column; }
+.tl-row { display: flex; gap: 16px; position: relative; }
+.tl-row:not(:last-child)::before {
+  content: ''; position: absolute; left: 14px; top: 30px;
+  width: 1px; height: calc(100% - 10px); background: var(--border);
+}
+.tl-dot {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; margin-top: 3px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; border: 1.5px solid; background: var(--surface);
+}
+.tl-dot.o { border-color: var(--accent); background: var(--accent-lt); }
+.tl-dot.b { border-color: var(--blue);   background: var(--blue-bg); }
+.tl-dot.g { border-color: var(--ok);     background: var(--ok-bg); }
+.tl-body { padding: 4px 0 24px; flex: 1; }
+.tl-title { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 3px; }
+.tl-desc  { font-size: 12px; color: var(--text-2); line-height: 1.6; font-weight: 300; }
+
+/* ── FEATURE PILL GRID ── */
+.pill-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px; padding: 6px 14px; font-size: 12px; color: var(--text-2);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.pill-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.pd-g { background: #22c55e; } .pd-b { background: var(--blue); } .pd-d { background: var(--text-dim); }
+
+/* ── STEP CARDS ── */
+.step-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.step-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 16px 18px;
+  display: flex; gap: 14px; align-items: flex-start;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.step-n {
+  width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', sans-serif; font-size: 14px; color: #fff;
+}
+.step-n.a { background: var(--accent); }
+.step-n.n { background: var(--navy); }
+.step-title { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 3px; }
+.step-desc  { font-size: 11.5px; color: var(--text-dim); line-height: 1.5; font-weight: 300; }
+
+/* ── MONO INLINE ── */
+code {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+  background: var(--bg); border: 1px solid var(--border);
+  padding: 1px 5px; border-radius: 3px; color: var(--navy);
+  word-break: break-word;
+}
+
+/* ── ANIM ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+<div id="pb"></div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div style="max-width:1060px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:100%;">
+    <div class="tb-brand">
+      <div style="position:relative;flex-shrink:0;">
+        <div style="width:26px;height:26px;background:linear-gradient(135deg,#E8450A 0%,#C73508 100%);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:14px;color:#fff;letter-spacing:.02em;box-shadow:0 2px 8px rgba(232,69,10,0.4),inset 0 1px 0 rgba(255,255,255,0.25);">H</div>
+        <div style="position:absolute;bottom:-2px;right:-2px;width:6px;height:6px;background:#E8450A;border-radius:50%;border:1.5px solid #0A1520;opacity:.8;"></div>
+      </div>
+      <div style="width:1px;height:22px;background:rgba(255,255,255,0.1);margin:0 4px;flex-shrink:0;"></div>
+      <div style="display:flex;flex-direction:column;gap:5px;padding:2px 0;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.2em;color:rgba(255,255,255,0.88);line-height:1;">HEIS TOOL</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.18em;color:rgba(255,255,255,0.28);text-transform:uppercase;line-height:1;">Infrastructure</div>
+      </div>
+    </div>
+    <nav class="tb-nav">
+      <a href="#tunnel">터널 구조</a>
+      <a href="#config">SSH Config</a>
+      <a href="#stability">안정성</a>
+      <a href="#security">보안</a>
+      <a href="#process">프로세스</a>
+      <a href="#key">키 관리</a>
+      <a href="#compression">압축 파이프라인</a>
+      <a href="#checklist">점검</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+      <div style="width:1px;height:18px;background:rgba(255,255,255,0.1);"></div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,0.18);letter-spacing:.08em;">2026-04-27</div>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">HEIS Tool · Infrastructure</div>
+      <div class="hero-title">SSH 보안 &amp; <em>서버 안정성</em></div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:12px;font-weight:300;line-height:1.6;max-width:520px;">
+        다수 사용자가 동시에 툴을 사용하더라도 각 세션이 완전히 독립 격리되며,<br>
+        서버 부하를 유발하지 않도록 설계된 연결 안정성 조치를 문서화합니다.
+      </div>
+      <div class="hero-tags">
+        <span class="hero-tag">OpenSSH</span>
+        <span class="hero-tag">ProxyJump</span>
+        <span class="hero-tag">Python subprocess</span>
+        <span class="hero-tag">AWS VPC</span>
+        <span class="hero-tag">세션 완전 격리</span>
+      </div>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-cell">
+        <div class="hm-label">최종 업데이트</div>
+        <div class="hm-val accent">2026-04-27</div>
+      </div>
+      <div class="hero-meta-cell">
+        <div class="hm-label">환경</div>
+        <div class="hm-val">DEV · PRD · PRD2</div>
+      </div>
+      <div class="hero-meta-cell">
+        <div class="hm-label">접속 경로</div>
+        <div class="hm-val accent">3-hop ProxyJump</div>
+      </div>
+      <div class="hero-meta-cell">
+        <div class="hm-label">스택</div>
+        <div class="hm-val">OpenSSH · AWS VPC</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-strip"></div>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- SUMMARY CALLOUT -->
+  <div style="background:#EBF3FF;border:1px solid #BFDBFE;border-left:4px solid #2563EB;border-radius:var(--r);padding:16px 20px;margin-bottom:28px;animation:fadeUp .4s ease both;">
+    <div style="font-size:13px;font-weight:600;color:#1E3A5F;margin-bottom:5px;">설계 원칙 — 다중 사용자 동시 사용 시에도 서버에 영향 없음</div>
+    <div style="font-size:12.5px;color:#374151;line-height:1.7;font-weight:300;">
+      각 사용자 세션은 독립된 임시 SSH config와 고유 프로세스로 완전 격리됩니다.
+      KeepAlive · 터널 자동 갱신 · 지수 백오프 재시도로 불필요한 재연결 시도를 최소화하여
+      <strong>서버에 누적 부하가 발생하지 않도록</strong> 설계되어 있습니다.
+    </div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="ov-grid">
+    <div class="ov-card">
+      <div class="ov-label">세션 격리</div>
+      <div class="ov-val">완전 독립</div>
+      <div class="ov-desc">사용자마다 고유 config — 동시 접속 충돌 없음</div>
+    </div>
+    <div class="ov-card">
+      <div class="ov-label">Keepalive</div>
+      <div class="ov-val">15s</div>
+      <div class="ov-desc">방화벽 타임아웃 방지 — 끊김 없는 장시간 작업</div>
+    </div>
+    <div class="ov-card">
+      <div class="ov-label">터널 갱신</div>
+      <div class="ov-val">5분 자동</div>
+      <div class="ov-desc">장애 감지 즉시 복구 — 사용자 개입 불필요</div>
+    </div>
+    <div class="ov-card">
+      <div class="ov-label">자동 재시도</div>
+      <div class="ov-val">2× 백오프</div>
+      <div class="ov-desc">서버 과부하 없이 2s → 4s 지수 간격으로 재연결</div>
+    </div>
+  </div>
+
+  <!-- 01. 터널 구조 -->
+  <section class="section" id="tunnel">
+    <div class="sec-head">
+      <div class="sec-num">01</div>
+      <div class="sec-title">ProxyJump 3-hop 터널 구조</div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-icon">🔗</span>
+        <span class="card-title">접속 경로 — 로컬 → InfluxDB</span>
+      </div>
+      <div class="card-body">
+        <div class="tunnel">
+          <div class="tn">
+            <div class="tn-box local">로컬 PC<div class="tn-sub">Windows</div></div>
+            <div class="tn-label">Origin</div>
+          </div>
+          <div class="ta">
+            <div class="ta-line"></div>
+            <div class="ta-label">PEM 인증<br>공인 IP</div>
+          </div>
+          <div class="tn">
+            <div class="tn-box bastion">pub_bastion<div class="tn-sub">공인 IP</div></div>
+            <div class="tn-label">Hop 1</div>
+          </div>
+          <div class="ta">
+            <div class="ta-line"></div>
+            <div class="ta-label">ProxyJump<br>VPC 내부</div>
+          </div>
+          <div class="tn">
+            <div class="tn-box bastion">internal<div class="tn-sub">VPC 사설 IP</div></div>
+            <div class="tn-label">Hop 2</div>
+          </div>
+          <div class="ta">
+            <div class="ta-line"></div>
+            <div class="ta-label">ProxyJump<br>VPC 내부</div>
+          </div>
+          <div class="tn">
+            <div class="tn-box target">target<div class="tn-sub">InfluxDB</div></div>
+            <div class="tn-label">Hop 3</div>
+          </div>
+        </div>
+        <div class="callout info">
+          <span class="callout-icon">ℹ️</span>
+          <div class="callout-text">
+            <strong>StrictHostKeyChecking no 이유:</strong> 대상 서버가 AWS VPC 내부 사설 IP로 공개 인증서가 없음.
+            MITM 위험은 VPC 보안그룹 + 3-hop ProxyJump 구조로 대체 완화. <code>UserKnownHostsFile=NUL</code>로 known_hosts 오염 차단.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02. SSH Config -->
+  <section class="section" id="config">
+    <div class="sec-head">
+      <div class="sec-num">02</div>
+      <div class="sec-title">SSH Config 전역 설정값</div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-icon">⚙️</span>
+        <span class="card-title">Host * 블록 — 모든 연결에 적용</span>
+        <span class="card-sub">사용자별 독립 임시 파일 · 앱 종료 시 자동 삭제</span>
+      </div>
+      <div class="card-body">
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div>
+            <div class="code-lang">SSH CONFIG</div>
+          </div>
+          <div class="code-body"><pre><span class="cc"># ── 연결 안정성 ────────────────────────────────────────────</span>
+<span class="ck">ServerAliveInterval</span>   <span class="cn">15</span>       <span class="cc"># 15s keepalive → AWS 방화벽 idle 타임아웃 방지</span>
+<span class="ck">ServerAliveCountMax</span>   <span class="cn">2</span>        <span class="cc"># 2회 무응답 시 연결 종료 (좀비 방지)</span>
+<span class="ck">TCPKeepAlive</span>          <span class="cv">yes</span>      <span class="cc"># OS TCP 레이어 keepalive (보조)</span>
+<span class="ck">ConnectTimeout</span>        <span class="cn">10</span>       <span class="cc"># 연결 시도 타임아웃</span>
+<span class="ck">ConnectionAttempts</span>    <span class="cn">1</span>        <span class="cc"># 재시도는 Python 레이어에서 제어</span>
+<span class="ck">Compression</span>           <span class="cv">yes</span>      <span class="cc"># SSH 레벨 압축 — WAN 대역폭 절감</span>
+
+<span class="cc"># ── 보안 ───────────────────────────────────────────────────</span>
+<span class="ck">BatchMode</span>             <span class="cv">yes</span>      <span class="cc"># 패스워드 프롬프트 차단</span>
+<span class="ck">StrictHostKeyChecking</span> <span class="cv">no</span>       <span class="cc"># VPC 사설 IP 대상 (ProxyJump로 MITM 완화)</span>
+<span class="ck">UserKnownHostsFile</span>    <span class="cv">NUL</span>      <span class="cc"># known_hosts 오염 방지</span>
+<span class="ck">IdentitiesOnly</span>        <span class="cv">yes</span>      <span class="cc"># 지정 PEM 키만 사용, ssh-agent 개입 차단</span>
+<span class="ck">LogLevel</span>              <span class="cv">ERROR</span>    <span class="cc"># DEBUG 시 민감 정보 노출 방지</span>
+<span class="ck">CheckHostIP</span>           <span class="cv">no</span>       <span class="cc"># VPC 내부 — IP 역방향 DNS 체크 불필요</span>
+<span class="ck">ControlMaster</span>         <span class="cv">no</span>       <span class="cc"># 멀티플렉싱 비활성 (동시 작업 소켓 충돌 방지)</span>
+
+<span class="cc"># ── 명령 실행 플래그 ────────────────────────────────────────</span>
+<span class="cw">-n</span>                              <span class="cc"># stdin → /dev/null (비대화형 백그라운드)</span>
+<span class="cw">-o ClearAllForwardings=yes</span>      <span class="cc"># 불필요한 포트포워딩 차단</span></pre></div>
+        </div>
+
+        <div class="tbl-wrap" style="margin-top:18px">
+          <table>
+            <colgroup><col class="w1"><col class="w2"><col class="w3"><col class="w4"></colgroup>
+            <thead><tr><th>옵션</th><th>값</th><th>목적</th><th>없을 때 증상</th></tr></thead>
+            <tbody>
+              <tr><td><code>ServerAliveInterval</code></td><td><span class="tag tag-ok">15s</span></td><td>AWS 방화벽 idle 세션 차단 방지</td><td>장시간 작업 중 연결 끊김</td></tr>
+              <tr><td><code>ServerAliveCountMax</code></td><td><span class="tag tag-ok">2</span></td><td>좀비 프로세스 조기 종료</td><td>SSH 프로세스 무한 대기</td></tr>
+              <tr><td><code>BatchMode</code></td><td><span class="tag tag-ok">yes</span></td><td>패스워드 프롬프트 원천 차단</td><td>GUI 앱이 프롬프트에 걸려 멈춤</td></tr>
+              <tr><td><code>ConnectTimeout</code></td><td><span class="tag tag-ok">10s</span></td><td>빠른 실패 감지</td><td>연결 시도가 수십 초간 점유</td></tr>
+              <tr><td><code>Compression</code></td><td><span class="tag tag-navy">yes</span></td><td>WAN 환경 전송 속도 향상</td><td>대용량 LP 파일 업로드 속도 저하</td></tr>
+              <tr><td><code>ControlMaster</code></td><td><span class="tag tag-gray">no</span></td><td>소켓 충돌 방지</td><td>동시 SSH 작업 시 세션 충돌</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03. 안정성 -->
+  <section class="section" id="stability">
+    <div class="sec-head">
+      <div class="sec-num">03</div>
+      <div class="sec-title">서버 연결 안정성 조치</div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="card">
+      <div class="card-body" style="padding-top:20px">
+        <div class="tl">
+          <div class="tl-row">
+            <div class="tl-dot o">🔄</div>
+            <div class="tl-body">
+              <div class="tl-title">터널 자동 갱신 — 5분 주기</div>
+              <div class="tl-desc">연결 실패 시 즉시, 또는 마지막 갱신으로부터 300초 경과 시 SSH config를 재생성하고 터널을 재수립.</div>
+            </div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-dot o">↩️</div>
+            <div class="tl-body">
+              <div class="tl-title">지수 백오프 자동 재시도</div>
+              <div class="tl-desc">
+                일시적 오류 감지 시 최대 2회 재시도. 대기 시간: 2s → 4s.<br>
+                감지 키워드: <code>connection timed out</code> · <code>broken pipe</code> · <code>reset by peer</code> · <code>no route to host</code>
+              </div>
+            </div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-dot b">🧩</div>
+            <div class="tl-body">
+              <div class="tl-title">프로세스 추적 & 강제 종료</div>
+              <div class="tl-desc">실행 중인 모든 SSH/SCP 프로세스를 Set으로 추적. 작업 취소·앱 종료 시 순차 정리하며, 인터프리터 비정상 종료 시에도 종료 훅을 통해 보장.</div>
+            </div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-dot g">🧹</div>
+            <div class="tl-body">
+              <div class="tl-title">임시 config 파일 자동 정리</div>
+              <div class="tl-desc">앱 시작 시 1시간 이상 된 임시 config 파일 자동 삭제. config 교체 시 이전 파일도 즉시 삭제 (atomic swap).</div>
+            </div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-dot g">📡</div>
+            <div class="tl-body">
+              <div class="tl-title">OFFLINE 감지 & RECONNECTING 상태 표시</div>
+              <div class="tl-desc">연결 실패 시 사이드바에 즉시 <code>OFFLINE</code> 표시. 재시도 중에는 <code>RECONNECTING</code>으로 전환 — 사용자가 서버 상태를 실시간 인지.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04. 보안 -->
+  <section class="section" id="security">
+    <div class="sec-head">
+      <div class="sec-num">04</div>
+      <div class="sec-title">보안 조치</div>
+      <div class="sec-line"></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-hd">
+          <span class="card-icon">🔑</span>
+          <span class="card-title">PEM 키 파일 권한 자동 교정</span>
+        </div>
+        <div class="card-body">
+          <div class="tbl-wrap">
+            <table class="auto">
+              <colgroup><col style="width:30%"><col style="width:70%"></colgroup>
+              <thead><tr><th>플랫폼</th><th>적용 조치</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><span class="tag tag-navy">Windows</span></td>
+                  <td><code>icacls /inheritance:r /grant:r USER:R</code><br><span style="font-size:11px;color:var(--text-dim)">상속 제거 + 소유자 읽기 전용</span></td>
+                </tr>
+                <tr>
+                  <td><span class="tag tag-gray">Linux/macOS</span></td>
+                  <td><code>chmod 400</code><br><span style="font-size:11px;color:var(--text-dim)">소유자 읽기 전용</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-text">OpenSSH는 PEM 파일 권한이 너무 넓으면 연결을 거부. 수동 복사한 키는 권한 확인 필요.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd">
+          <span class="card-icon">🛡️</span>
+          <span class="card-title">비대화형 실행 보안 플래그</span>
+        </div>
+        <div class="card-body">
+          <div class="tbl-wrap">
+            <table class="auto">
+              <colgroup><col class="w-flag"><col class="w-role"></colgroup>
+              <thead><tr><th>플래그</th><th>역할</th></tr></thead>
+              <tbody>
+                <tr><td><code>BatchMode=yes</code></td><td>패스워드·OTP 프롬프트 원천 차단</td></tr>
+                <tr><td><code>IdentitiesOnly=yes</code></td><td>ssh-agent 키 개입 차단, 지정 PEM만 사용</td></tr>
+                <tr><td><code>LogLevel=ERROR</code></td><td>DEBUG 로그의 민감 정보 노출 방지</td></tr>
+                <tr><td><code>-n</code> 플래그</td><td>stdin → /dev/null, 입력 하이재킹 차단</td></tr>
+                <tr><td><code>ClearAllForwardings</code></td><td>불필요한 포트포워딩 차단</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:12px">
+      <div class="card-hd">
+        <span class="card-icon">🔏</span>
+        <span class="card-title">config 파일 보안</span>
+      </div>
+      <div class="card-body">
+        <div class="tbl-wrap">
+          <table>
+            <colgroup><col style="width:18%"><col style="width:82%"></colgroup>
+            <thead><tr><th>조치</th><th>내용</th></tr></thead>
+            <tbody>
+              <tr><td><span class="tag tag-ok">임시 파일</span></td><td>시스템 임시 디렉토리에만 기록 — 소스 디렉토리에 config가 남지 않음</td></tr>
+              <tr><td><span class="tag tag-ok">유니크 ID</span></td><td>사용자·세션마다 고유 ID 자동 부여 — 다중 사용자 동시 접속 시 config 충돌 없음</td></tr>
+              <tr><td><span class="tag tag-ok">Unix 권한</span></td><td><code>chmod 0600</code> — Linux/macOS에서 소유자만 읽기/쓰기</td></tr>
+              <tr><td><span class="tag tag-ok">Atomic Swap</span></td><td>새 config 생성 성공 후에만 경로 교체, 이전 파일 즉시 삭제</td></tr>
+              <tr><td><span class="tag tag-ok">NUL 디바이스</span></td><td>절대 경로 사용 — 현재 디렉토리에 <code>nul</code> 파일 생성 방지 (Windows)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05. 프로세스 -->
+  <section class="section" id="process">
+    <div class="sec-head">
+      <div class="sec-num">05</div>
+      <div class="sec-title">프로세스 생명주기 관리 — 세션 완전 격리</div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <div class="card-hd">
+          <span class="card-icon">⚡</span>
+          <span class="card-title">SSH/SCP 바이너리 우선순위</span>
+          <span class="card-sub">크로스플랫폼 자동 탐지</span>
+        </div>
+        <div class="card-body">
+          <div class="code-wrap">
+            <div class="code-bar">
+              <div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div>
+              <div class="code-lang">PRIORITY</div>
+            </div>
+            <div class="code-body"><pre><span class="cn">1.</span> <span class="cv">C:/Windows/System32/OpenSSH/ssh.exe</span>  <span class="cc"># 내장 OpenSSH</span>
+<span class="cn">2.</span> <span class="cv">PATH 탐색 (shutil.which)</span>              <span class="cc"># Git Bash 등</span>
+<span class="cn">3.</span> <span class="cv">"ssh" 폴백</span></pre></div>
+          </div>
+          <div class="pill-grid" style="margin-top:12px">
+            <div class="pill"><div class="pill-dot pd-g"></div>Windows System32 OpenSSH 우선</div>
+            <div class="pill"><div class="pill-dot pd-b"></div>Linux/macOS PATH 탐색</div>
+            <div class="pill"><div class="pill-dot pd-d"></div>cp949 인코딩 오류 방지 — 바이너리 모드 stdout</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd">
+          <span class="card-icon">🧩</span>
+          <span class="card-title">Subprocess 추적 & 정리</span>
+          <span class="card-sub">threading.Lock · atexit</span>
+        </div>
+        <div class="card-body">
+          <div class="tbl-wrap">
+            <table class="auto">
+              <thead><tr><th>상황</th><th>동작</th></tr></thead>
+              <tbody>
+                <tr><td>작업 중 취소</td><td>terminate → wait(2s) → kill 순으로 정리</td></tr>
+                <tr><td>앱 정상 종료</td><td>종료 훅 등록 — 닫힐 때 자동 정리 보장</td></tr>
+                <tr><td>비정상 종료</td><td>인터프리터 종료 직전에도 훅 실행 보장</td></tr>
+                <tr><td>스트리밍 업로드</td><td>stdin으로 데이터 주입 — 메모리 효율 전송</td></tr>
+                <tr><td>콘솔 창 숨김</td><td>Windows cmd 팝업 방지 subprocess 플래그</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06. 키 관리 -->
+  <section class="section" id="key">
+    <div class="sec-head">
+      <div class="sec-num">06</div>
+      <div class="sec-title">PEM 키 관리 규칙</div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-icon">📂</span>
+        <span class="card-title">키 파일 네이밍 규칙 — 환경별 자동 탐지</span>
+        <span class="card-sub">~/Documents/_tunnel/pem/</span>
+      </div>
+      <div class="card-body">
+        <div class="tbl-wrap">
+          <table>
+            <colgroup><col class="w-env"><col class="w-ktype"><col class="w-kw"><col class="w-pri"></colgroup>
+            <thead><tr><th>환경</th><th>키 종류</th><th>파일명 키워드 (우선순위 순)</th><th>폴백</th></tr></thead>
+            <tbody>
+              <tr>
+                <td rowspan="3"><span class="tag tag-warn">PRD / PRD2</span></td>
+                <td>pub_bastion</td>
+                <td><code>SIT_DEV + Bastion</code> → <code>Bastion</code></td>
+                <td>첫 번째 파일</td>
+              </tr>
+              <tr>
+                <td>internal</td>
+                <td><code>SIT_PRD + Bastion</code> → <code>prd</code></td>
+                <td>pub_bastion 키</td>
+              </tr>
+              <tr>
+                <td>target</td>
+                <td><code>SIT_PRD + DBSUB</code> → <code>DBSUB + Virginia</code> → <code>influx</code></td>
+                <td>internal 키</td>
+              </tr>
+              <tr>
+                <td rowspan="2"><span class="tag tag-ok">DEV</span></td>
+                <td>internal</td>
+                <td><code>SIT_DEV + Bastion</code> → <code>dev</code></td>
+                <td>pub_bastion 키</td>
+              </tr>
+              <tr>
+                <td>target</td>
+                <td><code>SIT_DEV + DBSUB</code> → <code>DBSUB + Virginia</code> → <code>influx</code></td>
+                <td>internal 키</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout ok">
+          <span class="callout-icon">✅</span>
+          <div class="callout-text">
+            <strong>허용 확장자:</strong> <code>.pem</code>, <code>.key</code> 만 인식. 파일명에 환경(PRD/DEV)과 역할(Bastion/DBSUB) 키워드를 반드시 포함할 것.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07. 압축 파이프라인 -->
+  <section class="section" id="compression">
+    <div class="sec-head">
+      <div class="sec-num">07</div>
+      <div class="sec-title">데이터 전송 최적화 — 압축 파이프라인</div>
+      <div class="sec-line"></div>
+    </div>
+
+    <!-- 요약 callout -->
+    <div class="callout info" style="margin-bottom:18px;margin-top:0">
+      <span class="callout-icon">📦</span>
+      <div class="callout-text">
+        <strong>LP 파일 전송 시 gzip 압축을 적용하여 네트워크 사용량을 60~80% 절감합니다.</strong>
+        업로드·다운로드 모두 파이프라인 방식으로 처리해 서버에 임시 파일이 남지 않으며,
+        Auto-Throttle이 서버 부하를 실시간 감시하여 <strong>다중 사용자 동시 작업 시에도 서버가 과부하되지 않습니다.</strong>
+      </div>
+    </div>
+
+    <!-- 파이프라인 다이어그램 2개 -->
+    <div class="grid2" style="margin-bottom:12px">
+      <!-- 업로드 -->
+      <div class="card">
+        <div class="card-hd">
+          <span class="card-icon">⬆️</span>
+          <span class="card-title">LP 업로드 파이프라인</span>
+          <span class="card-sub">로컬 → InfluxDB</span>
+        </div>
+        <div class="card-body" style="padding:14px 16px">
+          <div class="tunnel" style="padding:20px 16px;flex-direction:column;gap:0;background:#182433">
+            <!-- 단일 -->
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">단일 파일 스트리밍</div>
+            <div style="display:flex;align-items:center;gap:0;overflow-x:auto">
+              <div class="tn" style="width:100px">
+                <div class="tn-box local" style="width:90px;font-size:10px">LP 파일<div class="tn-sub">로컬</div></div>
+              </div>
+              <div class="ta" style="min-width:28px;padding-bottom:0">
+                <div class="ta-line"></div>
+                <div class="ta-label" style="font-size:8px">gzip</div>
+              </div>
+              <div class="tn" style="width:100px">
+                <div class="tn-box bastion" style="width:90px;font-size:10px">SSH stdin<div class="tn-sub">스트림</div></div>
+              </div>
+              <div class="ta" style="min-width:28px;padding-bottom:0">
+                <div class="ta-line"></div>
+                <div class="ta-label" style="font-size:8px">gunzip</div>
+              </div>
+              <div class="tn" style="width:100px">
+                <div class="tn-box target" style="width:90px;font-size:10px">InfluxDB<div class="tn-sub">직접 적재</div></div>
+              </div>
+            </div>
+            <div style="height:1px;background:rgba(255,255,255,0.07);margin:12px 0"></div>
+            <!-- 배치 -->
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">배치 파일 청킹</div>
+            <div style="display:flex;align-items:center;gap:0;overflow-x:auto">
+              <div class="tn" style="width:100px">
+                <div class="tn-box local" style="width:90px;font-size:10px">LP ×N<div class="tn-sub">500MB 청크</div></div>
+              </div>
+              <div class="ta" style="min-width:28px;padding-bottom:0">
+                <div class="ta-line"></div>
+                <div class="ta-label" style="font-size:8px">tar.gz</div>
+              </div>
+              <div class="tn" style="width:100px">
+                <div class="tn-box bastion" style="width:90px;font-size:10px">SCP 전송<div class="tn-sub">배치 격리</div></div>
+              </div>
+              <div class="ta" style="min-width:28px;padding-bottom:0">
+                <div class="ta-line"></div>
+                <div class="ta-label" style="font-size:8px">tar -xz</div>
+              </div>
+              <div class="tn" style="width:100px">
+                <div class="tn-box target" style="width:90px;font-size:10px">InfluxDB<div class="tn-sub">순차 적재</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 추출 -->
+      <div class="card">
+        <div class="card-hd">
+          <span class="card-icon">⬇️</span>
+          <span class="card-title">데이터 추출 파이프라인</span>
+          <span class="card-sub">InfluxDB → 로컬</span>
+        </div>
+        <div class="card-body" style="padding:14px 16px">
+          <div class="tunnel" style="padding:20px 16px;flex-direction:column;gap:0;background:#182433">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">실시간 스트리밍 압축</div>
+            <div style="display:flex;align-items:center;gap:0;overflow-x:auto">
+              <div class="tn" style="width:100px">
+                <div class="tn-box target" style="width:90px;font-size:10px">InfluxDB<div class="tn-sub">쿼리 실행</div></div>
+              </div>
+              <div class="ta" style="min-width:28px;padding-bottom:0">
+                <div class="ta-line"></div>
+                <div class="ta-label" style="font-size:8px">gzip -1</div>
+              </div>
+              <div class="tn" style="width:100px">
+                <div class="tn-box bastion" style="width:90px;font-size:10px">SSH Popen<div class="tn-sub">스트림 수신</div></div>
+              </div>
+              <div class="ta" style="min-width:28px;padding-bottom:0">
+                <div class="ta-line"></div>
+                <div class="ta-label" style="font-size:8px">GzipFile</div>
+              </div>
+              <div class="tn" style="width:100px">
+                <div class="tn-box local" style="width:90px;font-size:10px">로컬 CSV<div class="tn-sub">즉시 저장</div></div>
+              </div>
+            </div>
+            <div class="callout info" style="margin-top:12px;padding:10px 14px">
+              <span class="callout-icon" style="font-size:12px">💡</span>
+              <div class="callout-text" style="font-size:11px">서버에 임시 파일 없음 — 쿼리 결과가 gzip -1 (속도 우선) 으로 즉시 압축되어 스트리밍 전달</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Auto-Throttle + 압축 옵션 -->
+    <div class="grid2">
+      <div class="card">
+        <div class="card-hd">
+          <span class="card-icon">🛑</span>
+          <span class="card-title">Auto-Throttle — 서버 부하 감시</span>
+          <span class="card-sub">배치 전송 전 자동 확인</span>
+        </div>
+        <div class="card-body">
+          <div class="tbl-wrap">
+            <table class="auto">
+              <thead><tr><th>지표</th><th>허용 임계값</th><th>적용 작업</th><th>초과 시 동작</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>CPU Load avg</td>
+                  <td><span class="tag tag-ok">&lt; 4.0</span></td>
+                  <td><span class="tag tag-navy">업로드 + 추출</span></td>
+                  <td rowspan="5" style="vertical-align:middle;color:var(--text-2)">15s 대기 후 재확인<br><span style="font-size:11px;color:var(--text-dim)">조건 충족까지 반복</span></td>
+                </tr>
+                <tr>
+                  <td>가용 메모리</td>
+                  <td><span class="tag tag-ok">&gt; 500 MB</span></td>
+                  <td><span class="tag tag-navy">업로드 + 추출</span></td>
+                </tr>
+                <tr>
+                  <td>Influx 메모리</td>
+                  <td><span class="tag tag-ok">&lt; 30 %</span></td>
+                  <td><span class="tag tag-gray">업로드만</span></td>
+                </tr>
+                <tr>
+                  <td>Influx 메모리</td>
+                  <td><span class="tag tag-ok">&lt; 60 %</span></td>
+                  <td><span class="tag tag-gray">추출만</span></td>
+                </tr>
+                <tr>
+                  <td>Disk I/O Wait</td>
+                  <td><span class="tag tag-warn">&lt; 15 %</span></td>
+                  <td><span class="tag tag-gray">추출만</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:7px;padding:0 2px;">
+            * Disk I/O Wait: <code>iostat -c 1 2</code> 로 측정 (추출 전용)
+          </div>
+          <div class="callout ok" style="margin-top:10px">
+            <span class="callout-icon">✅</span>
+            <div class="callout-text">여러 명이 동시에 업로드·추출해도 서버 과부하 없음 — 각 작업이 서버 상태를 실시간 확인하고 자동 양보</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd">
+          <span class="card-icon">⚙️</span>
+          <span class="card-title">압축 적용 옵션 요약</span>
+        </div>
+        <div class="card-body">
+          <div class="tbl-wrap">
+            <table class="auto">
+              <thead><tr><th>구분</th><th>방식</th><th>서버 명령</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>LP 업로드<br><span style="font-size:10px;color:var(--text-dim)">단일</span></td>
+                  <td>gzip 스트리밍</td>
+                  <td><code>gunzip -c | influx -import</code></td>
+                </tr>
+                <tr>
+                  <td>LP 업로드<br><span style="font-size:10px;color:var(--text-dim)">배치</span></td>
+                  <td>tar.gz 청킹</td>
+                  <td><code>tar -xzf | influx -import</code></td>
+                </tr>
+                <tr>
+                  <td>데이터 추출</td>
+                  <td>gzip -1 스트림</td>
+                  <td><code>influx -execute | gzip -1</code></td>
+                </tr>
+                <tr>
+                  <td>SSH 레이어</td>
+                  <td>Compression yes</td>
+                  <td><code>SSH Config 전역 적용</code></td>
+                </tr>
+                <tr>
+                  <td>CPU 양보</td>
+                  <td>nice -n 15</td>
+                  <td>서버 측 모든 명령에 적용</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRD 노드 선택 + 프로세스 격리 -->
+    <div class="grid2" style="margin-top:12px">
+      <div class="card">
+        <div class="card-hd">
+          <span class="card-icon">⚖️</span>
+          <span class="card-title">PRD 스마트 노드 선택</span>
+          <span class="card-sub">Node 140 vs 170</span>
+        </div>
+        <div class="card-body">
+          <div class="tunnel" style="padding:16px;background:#182433;flex-direction:column;gap:6px">
+            <div style="display:flex;align-items:center;gap:0;overflow-x:auto">
+              <div class="tn" style="width:90px">
+                <div class="tn-box local" style="width:80px;font-size:10px">작업 시작<div class="tn-sub">PRD 환경</div></div>
+              </div>
+              <div class="ta" style="min-width:32px;padding-bottom:0">
+                <div class="ta-line"></div>
+                <div class="ta-label" style="font-size:8px">CPU load<br>측정</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div class="tn-box bastion" style="width:100px;font-size:10px">Node 140<div class="tn-sub">load 측정</div></div>
+                <div class="tn-box bastion" style="width:100px;font-size:10px">Node 170<div class="tn-sub">load 측정</div></div>
+              </div>
+              <div class="ta" style="min-width:32px;padding-bottom:0">
+                <div class="ta-line"></div>
+                <div class="ta-label" style="font-size:8px">낮은 쪽<br>선택</div>
+              </div>
+              <div class="tn" style="width:90px">
+                <div class="tn-box target" style="width:80px;font-size:10px">최적 노드<div class="tn-sub">자동 배정</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="callout info" style="margin-top:10px">
+            <span class="callout-icon">💡</span>
+            <div class="callout-text">작업 시작 전 두 노드의 CPU loadavg를 비교해 부하가 낮은 노드로 자동 라우팅 — 특정 노드 쏠림 방지</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd">
+          <span class="card-icon">🔒</span>
+          <span class="card-title">서버 측 프로세스 격리</span>
+          <span class="card-sub">다중 사용자 안전</span>
+        </div>
+        <div class="card-body">
+          <div class="tbl-wrap">
+            <table class="auto">
+              <thead><tr><th>조치</th><th>내용</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><code>nice -n 15</code></td>
+                  <td>서버 측 모든 명령(gunzip, influx, tar, gzip, sed)에 낮은 우선순위 적용 — 기타 서비스 CPU 점유에 영향 없음</td>
+                </tr>
+                <tr>
+                  <td><code>pkill -u $(whoami)</code></td>
+                  <td>작업 취소 시 <strong>본인 소유 프로세스만</strong> 종료 — 다른 사용자 influx/gzip 프로세스 절대 건드리지 않음</td>
+                </tr>
+                <tr>
+                  <td>세션별 독립 경로</td>
+                  <td>사용자마다 고유 임시 디렉토리 사용 — 배치 파일 충돌 없음</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout ok" style="margin-top:10px">
+            <span class="callout-icon">✅</span>
+            <div class="callout-text"><strong>N명이 동시 작업해도 서로 간섭 없음</strong> — 각 세션은 자신의 프로세스만 관리, 서버 공유 자원 충돌 원천 차단</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08. 체크리스트 -->
+  <section class="section" id="checklist">
+    <div class="sec-head">
+      <div class="sec-num">08</div>
+      <div class="sec-title">연결 장애 점검 순서</div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="step-n a">1</div>
+        <div>
+          <div class="step-title">PEM 파일 존재 확인</div>
+          <div class="step-desc">지정 폴더에 .pem / .key 파일이 있는지 확인 후 앱 재시작</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-n a">2</div>
+        <div>
+          <div class="step-title">PEM 파일 권한 확인</div>
+          <div class="step-desc">권한이 너무 넓으면 OpenSSH 거부 — 앱 로그에서 자동 교정 여부 확인</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-n a">3</div>
+        <div>
+          <div class="step-title">OpenSSH 설치 확인</div>
+          <div class="step-desc">Windows 설정 → 선택적 기능 → OpenSSH 클라이언트 설치</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-n a">4</div>
+        <div>
+          <div class="step-title">네트워크 / VPN 상태 확인</div>
+          <div class="step-desc">pub_bastion 공인 IP가 사내 방화벽에서 열려 있는지 확인</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-n n">5</div>
+        <div>
+          <div class="step-title">5분 이상 OFFLINE 지속 시</div>
+          <div class="step-desc">앱 재시작 — 터널 즉시 강제 갱신 트리거</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-n n">6</div>
+        <div>
+          <div class="step-title">Verbose 로그로 원인 추적</div>
+          <div class="step-desc">SSH verbose 모드 활성화 — 상세 연결 로그로 정확한 실패 지점 확인</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer style="background:#0F1923;border-top:1px solid rgba(255,255,255,0.06);padding:14px 0;">
+  <div style="max-width:1060px;margin:0 auto;padding:0 48px;display:flex;align-items:center;justify-content:space-between;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="width:20px;height:20px;background:var(--accent);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:12px;color:#fff;letter-spacing:.02em;">H</div>
+      <div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.12em;color:rgba(255,255,255,0.3);text-transform:uppercase;">HEIS TOOL · SSH Security & Stability</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,0.2);letter-spacing:.06em;">2026-04-27</div>
+      <div style="font-size:10px;font-weight:500;color:rgba(255,255,255,0.4);">Juns</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const pb = document.getElementById('pb');
+  document.addEventListener('scroll', function(){
+    const s = document.documentElement;
+    pb.style.width = (s.scrollTop / (s.scrollHeight - s.clientHeight) * 100) + '%';
+  }, {passive:true});
+})();
+</script>
+</body>
+</html>

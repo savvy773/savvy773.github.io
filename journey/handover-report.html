@@ -1,0 +1,1855 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>업무 인수인계 보고서 — Juns</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@300;400;500;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --orange:      #E8450A;
+  --orange-light:#FDF0E8;
+  --orange-mid:  rgba(232,69,10,0.1);
+  --navy:        #2A3845;
+  --navy-mid:    #38505F;
+  --bg:          #FAF7F4;
+  --bg-2:        #F2EDE8;
+  --bg-3:        #E8E0D8;
+  --text:        #1A1210;
+  --text-2:      #3D3028;
+  --text-dim:    #8C7D72;
+  --border:      #DDD5CC;
+  --done-bg:     #EDFAF3;
+  --done-text:   #166534;
+  --done-border: #A7F3D0;
+  --pend-bg:     #FEF3EA;
+  --pend-text:   #9A3412;
+  --pend-border: #FDBA74;
+  --radius:      4px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; border: 2px solid var(--bg); background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: var(--orange); background-clip: padding-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── SCROLL BAR ── */
+#progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: var(--orange);
+  z-index: 999;
+  transition: width 0.08s;
+  width: 0%;
+}
+
+/* ── TOP NAV BAR ── */
+.topbar {
+  position: sticky;
+  top: 0;
+  background: #111111;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  height: 38px;
+  z-index: 100;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-mark {
+  width: 18px; height: 18px;
+  background: var(--orange);
+  border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  color: #fff;
+  letter-spacing: 0;
+  flex-shrink: 0;
+}
+
+.brand-text {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: rgba(255,255,255,0.55);
+  text-transform: uppercase;
+}
+
+.topbar-divider {
+  width: 1px; height: 14px;
+  background: rgba(255,255,255,0.15);
+  flex-shrink: 0;
+}
+
+.topbar-right {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.28);
+}
+
+.topbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-link {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.4);
+  text-decoration: none;
+  padding: 4px 9px;
+  border-radius: 3px;
+  transition: color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.07);
+}
+
+.nav-kpi {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  padding: 3px 10px;
+  border-radius: 3px;
+  transition: opacity 0.15s, transform 0.15s;
+  white-space: nowrap;
+}
+
+.nav-kpi:hover { opacity: 0.8; transform: translateY(-1px); }
+
+.nav-kpi strong {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 400;
+}
+
+.nav-done {
+  background: rgba(76,175,122,0.15);
+  color: #6EE7A0;
+  border: 1px solid rgba(76,175,122,0.25);
+}
+
+.nav-pend {
+  background: rgba(232,69,10,0.18);
+  color: #FFAA80;
+  border: 1px solid rgba(232,69,10,0.3);
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--navy);
+  padding: 20px 48px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  right: -40px; top: -40px;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,69,10,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-top {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 28px;
+  align-items: center;
+  margin-bottom: 16px;
+  animation: up 0.6s ease both;
+}
+
+.hero-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  color: rgba(255,200,160,0.8);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.05;
+  color: #FFFFFF;
+  letter-spacing: 0.05em;
+}
+
+.hero-title span { color: #FFB088; }
+
+.hero-sub-tag {
+  display: inline-block;
+  margin-top: 6px;
+  margin-bottom: 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 2px 9px;
+  border-radius: 2px;
+}
+
+.hero-desc { display: none; }
+
+/* Info grid in hero */
+.hero-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius);
+  overflow: hidden;
+  min-width: 210px;
+}
+
+.hero-info-cell {
+  background: rgba(255,255,255,0.05);
+  padding: 8px 12px;
+}
+
+.hi-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.35);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.hi-value {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.8);
+}
+
+.hi-value.orange { color: #FFB088; }
+
+/* KPI row */
+.hero-kpi {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(255,255,255,0.07);
+  margin-bottom: 0;
+  animation: up 0.6s ease 0.1s both;
+}
+
+.kpi-cell {
+  background: rgba(0,0,0,0.15);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.kpi-n {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 30px;
+  line-height: 1;
+  color: #FFFFFF;
+}
+
+.kpi-n.orange { color: var(--orange); }
+
+
+.kpi-l {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.35);
+  text-transform: uppercase;
+  display: block;
+}
+
+.kpi-bar-wrap {
+  margin-top: 4px;
+  height: 3px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  width: 60px;
+  overflow: hidden;
+}
+
+.kpi-bar { height: 100%; border-radius: 2px; }
+.kpi-bar.orange { background: var(--orange); width: 79%; }
+.kpi-bar.white  { background: rgba(255,255,255,0.6); width: 21%; }
+.kpi-bar.dim    { background: rgba(255,255,255,0.25); width: 100%; }
+
+.kpi-link {
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s;
+  position: relative;
+}
+
+.kpi-link:hover { background: rgba(255,255,255,0.06); }
+
+.kpi-arrow {
+  position: absolute;
+  right: 14px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.2);
+  transition: color 0.15s, transform 0.15s;
+}
+
+.kpi-link:hover .kpi-arrow {
+  color: rgba(255,255,255,0.6);
+  transform: translateY(2px);
+}
+
+/* orange bottom strip */
+.hero-strip {
+  height: 4px;
+  background: linear-gradient(90deg, var(--orange) 0%, #FF8C42 100%);
+}
+
+/* ── BODY LAYOUT ── */
+.main { max-width: 1000px; margin: 0 auto; padding: 56px 40px 100px; }
+
+/* ── SECTION ── */
+.section { margin-bottom: 52px; animation: up 0.9s ease both; }
+.section:nth-child(1) { animation-delay: 0.15s; }
+.section:nth-child(2) { animation-delay: 0.28s; }
+.section:nth-child(3) { animation-delay: 0.40s; }
+.section:nth-child(4) { animation-delay: 0.52s; }
+.section:nth-child(5) { animation-delay: 0.64s; }
+.section:nth-child(6) { animation-delay: 0.76s; }
+
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.sec-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  line-height: 1;
+  color: var(--orange);
+  background: rgba(232,69,10,0.1);
+  border: 1px solid rgba(232,69,10,0.2);
+  border-radius: 3px;
+  padding: 3px 9px;
+  letter-spacing: 0.06em;
+}
+
+.sec-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+}
+
+.sec-rule { flex: 1; height: 1px; background: var(--border); }
+
+/* ── BADGE ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  padding: 3px 10px 3px 8px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+.badge::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.done { background: var(--done-bg); color: var(--done-text); border: 1px solid var(--done-border); }
+.pend { background: var(--pend-bg); color: var(--pend-text); border: 1px solid var(--pend-border); }
+
+/* ── TASK TABLE ── */
+.task-table { width: 100%; border-collapse: collapse; }
+
+.task-table thead th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 8px 16px;
+  text-align: left;
+  border-bottom: 2px solid var(--border);
+  background: var(--bg-3);
+}
+
+.task-table thead th:first-child { width: 48px; }
+.task-table thead th:last-child  { width: 110px; text-align: right; }
+
+.task-row {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+  position: relative;
+}
+
+.task-row:last-child { border-bottom: none; }
+
+.task-row:hover { background: var(--bg-2); }
+
+/* 완료 행 좌측 accent */
+.task-row:has(.done) {
+  border-left: 3px solid var(--done-border);
+}
+
+.task-row:has(.pend) {
+  border-left: 3px solid var(--pend-border);
+}
+
+.task-row td {
+  padding: 14px 16px;
+  vertical-align: middle;
+}
+
+.task-idx {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  font-weight: 300;
+}
+
+.task-name {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.task-note {
+  font-size: 11.5px;
+  color: var(--text-dim);
+  font-weight: 300;
+  margin-top: 3px;
+}
+
+.task-status { text-align: right; }
+
+.task-row:hover .task-name { color: var(--navy); }
+
+/* ── PENDING CARD ── */
+.pend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+.pend-card {
+  background: var(--pend-bg);
+  border: 1px solid var(--pend-border);
+  border-left: 3px solid var(--orange);
+  padding: 20px 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.pend-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255,78,0,0.08);
+}
+
+.pend-icon {
+  width: 40px; height: 40px;
+  background: rgba(255,78,0,0.1);
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 20px;
+}
+
+.pend-card-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 3px;
+}
+
+.pend-card-note {
+  font-size: 11px;
+  color: var(--pend-text);
+}
+
+/* ── NOTICE BOX ── */
+.notice {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 52px;
+  animation: up 0.5s ease 0.55s both;
+}
+
+.notice-icon {
+  width: 36px; height: 36px;
+  background: var(--orange);
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.notice-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.notice-text {
+  font-size: 13px;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.85;
+  font-weight: 300;
+}
+
+/* ── COLLEAGUE ── */
+.colleague-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 52px;
+  animation: up 0.5s ease 0.6s both;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.colleague-banner {
+  background: var(--navy);
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.c-avatar {
+  width: 40px; height: 40px;
+  background: var(--orange);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.c-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.c-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.1em;
+  margin-top: 2px;
+}
+
+.colleague-body { padding: 0 8px 8px; }
+
+/* ── FOOTER ── */
+.footer {
+  border-top: 1px solid var(--border);
+  padding-top: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: up 0.5s ease 0.65s both;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer-left { display: flex; align-items: center; gap: 20px; }
+
+.footer-mark {
+  width: 36px; height: 36px;
+  background: var(--navy);
+  clip-path: polygon(0 0, 100% 0, 100% 60%, 50% 100%, 0 60%);
+}
+
+.footer-who {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.footer-date {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  margin-top: 2px;
+}
+
+.footer-stamp {
+  border: 2px solid var(--orange);
+  padding: 10px 24px;
+  position: relative;
+}
+
+.footer-stamp::before, .footer-stamp::after {
+  content: '';
+  position: absolute;
+  width: 7px; height: 7px;
+}
+
+.footer-stamp::before {
+  top: -3px; right: -3px;
+  border-top: 2px solid var(--navy);
+  border-right: 2px solid var(--navy);
+}
+
+.footer-stamp::after {
+  bottom: -3px; left: -3px;
+  border-bottom: 2px solid var(--navy);
+  border-left: 2px solid var(--navy);
+}
+
+.stamp-main {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.1em;
+  color: var(--orange);
+  display: block;
+}
+
+.stamp-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+  display: block;
+  text-align: center;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ── DASHBOARD ── */
+.dashboard {
+  display: grid;
+  grid-template-columns: 200px 1fr auto;
+  gap: 24px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--orange);
+  border-radius: var(--radius);
+  padding: 28px;
+  margin-bottom: 48px;
+  animation: up 0.5s ease 0.05s both;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.dash-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+}
+
+/* Donut */
+.dash-donut-wrap { display: flex; flex-direction: column; align-items: center; }
+
+.donut-container { position: relative; width: 120px; height: 120px; margin-bottom: 12px; }
+
+.donut-svg { width: 120px; height: 120px; transform: rotate(-90deg); }
+
+.donut-bg {
+  fill: none;
+  stroke: var(--bg-3);
+  stroke-width: 10;
+}
+
+.donut-fill {
+  fill: none;
+  stroke: var(--orange);
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-dasharray: 0 301;
+  transition: stroke-dasharray 1.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+.donut-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.donut-pct {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 30px;
+  color: var(--navy);
+  line-height: 1;
+}
+
+.donut-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+}
+
+.donut-legend {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.leg-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.done-dot { background: var(--orange); }
+.pend-dot { background: var(--border); }
+
+.leg-text {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  color: var(--text-dim);
+  margin-right: 6px;
+}
+
+/* Category Bars */
+.dash-bars { display: flex; flex-direction: column; justify-content: center; }
+.cat-bars { display: flex; flex-direction: column; gap: 11px; }
+
+.cat-row {
+  display: grid;
+  grid-template-columns: 72px 1fr 52px;
+  align-items: center;
+  gap: 10px;
+}
+
+.cat-name {
+  font-size: 11.5px;
+  color: var(--text-2);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.bar-track {
+  height: 6px;
+  background: var(--bg-3);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: var(--orange);
+  border-radius: 3px;
+  width: 0%;
+  transition: width 1s cubic-bezier(0.4,0,0.2,1);
+}
+
+.pend-fill { background: var(--border); }
+
+.cat-stat {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.done-text { color: var(--done-text); }
+.pend-text { color: var(--pend-text); }
+
+/* Mini Cards */
+.dash-cards { display: flex; flex-direction: column; justify-content: center; }
+.mini-cards { display: flex; flex-direction: column; gap: 10px; }
+
+.mini-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  border: 1px solid;
+  min-width: 130px;
+}
+
+.mc-done { background: var(--done-bg); border-color: var(--done-border); }
+.mc-pend { background: var(--pend-bg); border-color: var(--pend-border); }
+.mc-blue { background: #EFF6FF; border-color: #BFDBFE; }
+
+.mc-icon {
+  font-size: 16px;
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.mc-done .mc-icon { background: rgba(22,101,52,0.12); color: var(--done-text); }
+.mc-pend .mc-icon { background: rgba(154,52,18,0.12); color: var(--pend-text); }
+.mc-blue .mc-icon { background: #DBEAFE; color: #1D4ED8; }
+
+.mc-n {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--navy);
+}
+
+.mc-l {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+/* ── HIGHLIGHT BOX ── */
+.highlight-box {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: linear-gradient(135deg, #FDF0E8 0%, #FAF7F4 100%);
+  border: 1px solid #F0C9A8;
+  border-left: 4px solid var(--orange);
+  padding: 20px 24px;
+  border-radius: var(--radius);
+}
+
+.hl-left { flex: 1; }
+
+.hl-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.hl-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px;
+  letter-spacing: 0.06em;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+.hl-desc {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.75;
+}
+
+.hl-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.hl-n {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px;
+  color: var(--orange);
+  line-height: 1;
+  display: block;
+}
+
+.hl-l {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  display: block;
+}
+
+/* ── ACHIEVEMENT SECTION ── */
+.achieve-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 52px;
+  animation: up 0.9s ease 0.88s both;
+}
+
+.achieve-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 20px;
+  border-radius: var(--radius);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.achieve-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+  border-color: rgba(232,69,10,0.25);
+}
+
+.achieve-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--orange);
+}
+
+.achieve-icon {
+  font-size: 22px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.achieve-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+.achieve-desc {
+  font-size: 11.5px;
+  color: var(--text-dim);
+  line-height: 1.75;
+}
+
+/* ── PROCESS TIMELINE ── */
+.timeline {
+  position: relative;
+  padding-left: 28px;
+  margin-bottom: 52px;
+  animation: up 0.9s ease 0.96s both;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 7px; top: 8px; bottom: 8px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--orange), var(--border));
+}
+
+.tl-item {
+  position: relative;
+  padding-bottom: 24px;
+}
+
+.tl-item:last-child { padding-bottom: 0; }
+
+.tl-dot {
+  position: absolute;
+  left: -25px; top: 5px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--orange);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.tl-dot-inner {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--orange);
+}
+
+.tl-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.tl-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 3px;
+}
+
+.tl-desc {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+
+/* ── SW CARDS ── */
+.sw-section { margin-bottom: 52px; }
+
+.sw-banner {
+  background: linear-gradient(90deg, var(--orange) 0%, #C43800 100%);
+  padding: 10px 18px;
+  border-radius: var(--radius) var(--radius) 0 0;
+  margin-bottom: 0;
+}
+
+.sw-banner-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: rgba(255,255,255,0.85);
+  text-transform: uppercase;
+}
+
+.sw-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  overflow: hidden;
+}
+
+.sw-card {
+  padding: 24px 22px;
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+  transition: background 0.2s;
+}
+
+.sw-card:last-child { border-right: none; }
+.sw-card:hover { background: var(--bg-2); }
+
+.sw-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.sw-icon {
+  width: 44px; height: 44px;
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.sw-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+}
+
+.sw-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: 0.06em;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+
+.sw-desc {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.8;
+  font-weight: 300;
+  margin-bottom: 8px;
+  min-height: 58px;
+}
+
+.sw-assignee {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--navy);
+  font-weight: 500;
+  margin-bottom: 10px;
+  padding: 4px 8px;
+  background: var(--bg-2);
+  border-radius: 2px;
+  display: inline-block;
+}
+
+/* ── PRINT ── */
+@media print {
+  .topbar, #progress-bar { display: none; }
+  .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .section, .notice, .colleague-card, .footer { animation: none !important; }
+  body { font-size: 12px; }
+}
+
+/* ── ANIMATION ── */
+@keyframes up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideRight {
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(1);   opacity: 0.6; }
+  70%  { transform: scale(1.8); opacity: 0; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(8px) scale(0.85); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* 테이블 행 순차 등장 */
+.task-row {
+  animation: slideRight 0.5s ease both;
+}
+.task-row:nth-child(1) { animation-delay: 0.05s; }
+.task-row:nth-child(2) { animation-delay: 0.10s; }
+.task-row:nth-child(3) { animation-delay: 0.15s; }
+.task-row:nth-child(4) { animation-delay: 0.20s; }
+.task-row:nth-child(5) { animation-delay: 0.25s; }
+.task-row:nth-child(6) { animation-delay: 0.30s; }
+
+/* 타임라인 dot 펄스 링 */
+.tl-dot::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid var(--orange);
+  animation: pulse-ring 2.4s ease-out infinite;
+  opacity: 0;
+}
+.tl-item:nth-child(1) .tl-dot::before { animation-delay: 0s; }
+.tl-item:nth-child(2) .tl-dot::before { animation-delay: 0.4s; }
+.tl-item:nth-child(3) .tl-dot::before { animation-delay: 0.8s; }
+.tl-item:nth-child(4) .tl-dot::before { animation-delay: 1.2s; }
+.tl-item:nth-child(5) .tl-dot::before { animation-delay: 1.6s; }
+
+/* KPI 숫자 등장 */
+.kpi-n {
+  animation: countUp 0.7s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.hero-kpi a:nth-child(1) .kpi-n { animation-delay: 0.3s; }
+.hero-kpi a:nth-child(2) .kpi-n { animation-delay: 0.45s; }
+.hero-kpi a:nth-child(3) .kpi-n { animation-delay: 0.6s; }
+
+/* badge dot 미세 pulse */
+.badge::before {
+  animation: pulse-ring 2.8s ease-out infinite;
+}
+.done::before { border-color: var(--done-text); }
+.pend::before { border-color: var(--pend-text); }
+
+/* nav-kpi 숫자 bounce-in */
+.nav-kpi strong {
+  display: inline-block;
+  animation: countUp 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.8s both;
+}
+
+/* achieve card 순차 등장 */
+.achieve-card {
+  animation: up 0.7s ease both;
+}
+.achieve-grid .achieve-card:nth-child(1) { animation-delay: 0.1s; }
+.achieve-grid .achieve-card:nth-child(2) { animation-delay: 0.22s; }
+.achieve-grid .achieve-card:nth-child(3) { animation-delay: 0.34s; }
+
+/* SW card 순차 등장 */
+.sw-card {
+  animation: up 0.7s ease both;
+}
+.sw-cards .sw-card:nth-child(1) { animation-delay: 0.1s; }
+.sw-cards .sw-card:nth-child(2) { animation-delay: 0.22s; }
+.sw-cards .sw-card:nth-child(3) { animation-delay: 0.34s; }
+
+/* hero-strip 좌→우 reveal */
+.hero-strip {
+  animation: shimmer 1.8s ease 0.5s both;
+  background-size: 800px 4px;
+  background-image: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255,255,255,0.3) 40%,
+    transparent 60%,
+    var(--orange) 100%
+  );
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- TOP BAR -->
+<nav class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-mark">H</div>
+    <span class="brand-text">Hanwha Energy</span>
+    <div class="topbar-divider"></div>
+    <span class="brand-text" style="color:rgba(255,255,255,0.35);letter-spacing:0.12em">HEIS · UEP</span>
+  </div>
+  <div class="topbar-nav">
+    <a class="nav-link" href="#sec-monitoring">모니터링</a>
+    <a class="nav-link" href="#sec-main">메인 업무</a>
+    <a class="nav-link" href="#sec-monthly">월별/분기</a>
+    <a class="nav-link" href="#sec-sw">핵심 SW</a>
+    <a class="nav-link" href="#sec-achieve">성과</a>
+    <div class="topbar-divider"></div>
+    <a class="nav-kpi nav-done" href="#sec-monitoring">완료 인계 <strong>11</strong></a>
+    <a class="nav-kpi nav-pend" href="#sec-pending">진행중 <strong>2</strong></a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-eyebrow">HEIS UEP &nbsp;·&nbsp; Work Handover Report &nbsp;/&nbsp; 2026.04.24</div>
+      <h1 class="hero-title">Juns &nbsp;<span>업무 인수인계</span></h1>
+      <p class="hero-sub-tag">HEIS UEP 발전소 연동 담당</p>
+      <p class="hero-desc">
+        퇴사 전 최종 업무 현황 및 인수인계 보고서
+      </p>
+    </div>
+    <div class="hero-info-grid">
+      <div class="hero-info-cell">
+        <div class="hi-label">소속</div>
+        <div class="hi-value">GEP한국개발팀</div>
+      </div>
+      <div class="hero-info-cell">
+        <div class="hi-label">담당</div>
+        <div class="hi-value">HEIS · UEP</div>
+      </div>
+      <div class="hero-info-cell">
+        <div class="hi-label">작성일</div>
+        <div class="hi-value">2026.04.24</div>
+      </div>
+      <div class="hero-info-cell">
+        <div class="hi-label">완료율</div>
+        <div class="hi-value orange">90% 완료</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-kpi">
+    <a class="kpi-cell kpi-link" href="#sec-monitoring">
+      <span class="kpi-n">14</span>
+      <div class="kpi-meta">
+        <span class="kpi-l">총 업무 항목</span>
+        <div class="kpi-bar-wrap"><div class="kpi-bar dim"></div></div>
+      </div>
+      <span class="kpi-arrow">↓</span>
+    </a>
+    <a class="kpi-cell kpi-link" href="#sec-monitoring">
+      <span class="kpi-n orange">11</span>
+      <div class="kpi-meta">
+        <span class="kpi-l">완료 인계</span>
+        <div class="kpi-bar-wrap"><div class="kpi-bar orange"></div></div>
+      </div>
+      <span class="kpi-arrow">↓</span>
+    </a>
+    <a class="kpi-cell kpi-link" href="#sec-pending">
+      <span class="kpi-n">2</span>
+      <div class="kpi-meta">
+        <span class="kpi-l">진행중 · 이관</span>
+        <div class="kpi-bar-wrap"><div class="kpi-bar white"></div></div>
+      </div>
+      <span class="kpi-arrow">↓</span>
+    </a>
+  </div>
+</section>
+<div class="hero-strip"></div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- VISUAL DASHBOARD -->
+  <div class="dashboard">
+    <!-- Donut Chart -->
+    <div class="dash-donut-wrap">
+      <div class="dash-label">전체 완료율</div>
+      <div class="donut-container">
+        <svg class="donut-svg" viewBox="0 0 120 120">
+          <circle class="donut-bg" cx="60" cy="60" r="48" />
+          <circle class="donut-fill" cx="60" cy="60" r="48"
+            stroke-dasharray="271 30"
+            stroke-dashoffset="0" />
+        </svg>
+        <div class="donut-center">
+          <span class="donut-pct">90%</span>
+          <span class="donut-sub">완료</span>
+        </div>
+      </div>
+      <div class="donut-legend">
+        <span class="leg-dot done-dot"></span><span class="leg-text">완료 11건</span>
+        <span class="leg-dot pend-dot"></span><span class="leg-text">이관 3건</span>
+      </div>
+    </div>
+
+    <!-- Category Progress -->
+    <div class="dash-bars">
+      <div class="dash-label">카테고리별 현황</div>
+      <div class="cat-bars">
+        <div class="cat-row">
+          <span class="cat-name">모니터링</span>
+          <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+          <span class="cat-stat done-text">2/2</span>
+        </div>
+        <div class="cat-row">
+          <span class="cat-name">메인 업무</span>
+          <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+          <span class="cat-stat done-text">5/5</span>
+        </div>
+        <div class="cat-row">
+          <span class="cat-name">월별/분기</span>
+          <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+          <span class="cat-stat done-text">4/4</span>
+        </div>
+        <div class="cat-row">
+          <span class="cat-name">기타/교육</span>
+          <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+          <span class="cat-stat done-text">2/2</span>
+        </div>
+        <div class="cat-row">
+          <span class="cat-name">Pending</span>
+          <div class="bar-track"><div class="bar-fill pend-fill" style="width:0%"></div></div>
+          <span class="cat-stat pend-text">0/2 이관</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="dash-cards">
+      <div class="dash-label">처리 요약</div>
+      <div class="mini-cards">
+        <div class="mini-card mc-done">
+          <span class="mc-icon">✓</span>
+          <span class="mc-n">11</span>
+          <span class="mc-l">완료 처리</span>
+        </div>
+        <div class="mini-card mc-pend">
+          <span class="mc-icon">→</span>
+          <span class="mc-n">2</span>
+          <span class="mc-l">이관 필요</span>
+        </div>
+        <div class="mini-card mc-blue">
+          <span class="mc-icon">⤷</span>
+          <span class="mc-n">1</span>
+          <span class="mc-l">병행 인계</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 01. 모니터링 -->
+  <div id="sec-monitoring" class="section">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2 class="sec-title">출근 후 모니터링 업무</h2>
+      <div class="sec-rule"></div>
+      <span class="badge done">완료 인계</span>
+    </div>
+    <table class="task-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>업무명</th>
+          <th>비고</th>
+          <th>상태</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="task-row">
+          <td class="task-idx">01</td>
+          <td>
+            <div class="task-name">HEIS 2.0 UEP 모니터링</div>
+            <div class="task-note">동료 A 프로 병행 수행 중 → 단독 수행 가능</div>
+          </td>
+          <td class="task-note">일별 확인</td>
+          <td class="task-status"><span class="badge done">완료</span></td>
+        </tr>
+        <tr class="task-row">
+          <td class="task-idx">02</td>
+          <td>
+            <div class="task-name">HEIS NCS · TCS Report 모니터링</div>
+            <div class="task-note">TCS Report 자동화 툴 개발 완료 · 인계: 동료 B 프로 · 동료 C 프로</div>
+          </td>
+          <td class="task-note">정기 취합</td>
+          <td class="task-status"><span class="badge done">완료</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 02. 메인 업무 -->
+  <div id="sec-main" class="section">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2 class="sec-title">메인 업무</h2>
+      <div class="sec-rule"></div>
+      <span class="badge done">완료 인계</span>
+    </div>
+
+    <!-- HEIS Integration Tool 하이라이트 박스 -->
+    <div class="highlight-box">
+      <div class="hl-left">
+        <div class="hl-tag">자체 개발 · 인계 완료</div>
+        <div class="hl-title">HEIS Integration Tool</div>
+        <div class="hl-desc">TAG 작업 · SQL DB 등록 · QC 검증 · Backfill · PVsyst 업로드 등<br>메인 업무 대부분을 통합 자동화한 툴을 직접 개발하고 인수인계 완료</div>
+      </div>
+      <div class="hl-right">
+        <div class="hl-stat">
+          <span class="hl-n">5</span>
+          <span class="hl-l">업무 통합</span>
+        </div>
+        <span class="badge done" style="margin-top:12px">개발 · 인계 완료</span>
+      </div>
+    </div>
+
+    <table class="task-table" style="margin-top:12px">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>업무명</th>
+          <th>처리 방식</th>
+          <th>상태</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="task-row">
+          <td class="task-idx">03</td>
+          <td>
+            <div class="task-name">HEIS TAG 작업</div>
+            <div class="task-note">발전소 연동 설비기준 정보 및 알람 raw 작업</div>
+          </td>
+          <td class="task-note">Integration Tool</td>
+          <td class="task-status"><span class="badge done">완료</span></td>
+        </tr>
+        <tr class="task-row">
+          <td class="task-idx">04</td>
+          <td>
+            <div class="task-name">HEIS TAG SQL DB 등록</div>
+            <div class="task-note">DEV 반영 및 수정</div>
+          </td>
+          <td class="task-note">Integration Tool</td>
+          <td class="task-status"><span class="badge done">완료</span></td>
+        </tr>
+        <tr class="task-row">
+          <td class="task-idx">05</td>
+          <td>
+            <div class="task-name">HEIS QC 작업</div>
+            <div class="task-note">SCADA 비교 검증</div>
+          </td>
+          <td class="task-note">Integration Tool</td>
+          <td class="task-status"><span class="badge done">완료</span></td>
+        </tr>
+        <tr class="task-row">
+          <td class="task-idx">06</td>
+          <td>
+            <div class="task-name">HEIS Backfill 작업</div>
+            <div class="task-note">누락 데이터 import</div>
+          </td>
+          <td class="task-note">Integration Tool</td>
+          <td class="task-status"><span class="badge done">완료</span></td>
+        </tr>
+        <tr class="task-row">
+          <td class="task-idx">07</td>
+          <td>
+            <div class="task-name">HEIS PVsyst 업로드 검증</div>
+            <div class="task-note">검증 완료 및 절차 문서화</div>
+          </td>
+          <td class="task-note">Integration Tool</td>
+          <td class="task-status"><span class="badge done">완료</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 03. 월별/분기 -->
+  <div id="sec-monthly" class="section">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <h2 class="sec-title">월별 · 분기 공통 업무</h2>
+      <div class="sec-rule"></div>
+      <span class="badge done">완료 인계</span>
+    </div>
+    <table class="task-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>업무명</th>
+          <th>주기</th>
+          <th>상태</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="task-row">
+          <td class="task-idx">08</td>
+          <td>
+            <div class="task-name">ERP — HEIS AWS · Insight 외주 운영비 취합</div>
+            <div class="task-note">전월분 처리 완료</div>
+          </td>
+          <td class="task-note">월 전월분</td>
+          <td class="task-status"><span class="badge done">완료</span></td>
+        </tr>
+        <tr class="task-row">
+          <td class="task-idx">09</td>
+          <td>
+            <div class="task-name">ERP — HEIS 1.0 HONE 비용</div>
+            <div class="task-note">당월분 · 마지막 주 처리 완료</div>
+          </td>
+          <td class="task-note">월 마지막주</td>
+          <td class="task-status"><span class="badge done">완료</span></td>
+        </tr>
+        <tr class="task-row">
+          <td class="task-idx">10</td>
+          <td>
+            <div class="task-name">ERP — 비즈톡</div>
+            <div class="task-note">전월분 · 매월 10일 이전 처리 완료</div>
+          </td>
+          <td class="task-note">월 10일 전</td>
+          <td class="task-status"><span class="badge done">완료</span></td>
+        </tr>
+        <tr class="task-row">
+          <td class="task-idx">11</td>
+          <td>
+            <div class="task-name">소프트웨어 취합</div>
+            <div class="task-note">분기 취합 완료</div>
+          </td>
+          <td class="task-note">분기</td>
+          <td class="task-status"><span class="badge done">완료</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 04. 기타 -->
+
+  <div class="section">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <h2 class="sec-title">기타 · 교육</h2>
+      <div class="sec-rule"></div>
+      <span class="badge done">완료</span>
+    </div>
+    <table class="task-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>업무명</th>
+          <th>비고</th>
+          <th>상태</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="task-row">
+          <td class="task-idx">12</td>
+          <td>
+            <div class="task-name">문서 번역 — ISL TAG 영문명</div>
+            <div class="task-note">번역 작업 완료</div>
+          </td>
+          <td class="task-note">번역</td>
+          <td class="task-status"><span class="badge done">완료</span></td>
+        </tr>
+        <tr class="task-row">
+          <td class="task-idx">13</td>
+          <td>
+            <div class="task-name">메뉴얼 및 기타 작업</div>
+            <div class="task-note">관련 문서 정리 완료</div>
+          </td>
+          <td class="task-note">문서화</td>
+          <td class="task-status"><span class="badge done">완료</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 05. PENDING → SW 이관 진행중 -->
+  <div id="sec-pending" class="section">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <h2 class="sec-title">SW 이관 현황</h2>
+      <div class="sec-rule"></div>
+      <span class="badge done">이관 완료</span>
+    </div>
+    <div class="pend-grid">
+      <div class="pend-card">
+        <div class="pend-icon">🔌</div>
+        <div>
+          <div class="pend-card-title">OPC TOOL</div>
+          <div class="pend-card-note">이관 담당: <strong>동료 D 프로</strong><br>→ 이관 진행 중</div>
+        </div>
+      </div>
+      <div class="pend-card">
+        <div class="pend-icon">📊</div>
+        <div>
+          <div class="pend-card-title">TCS TOOL</div>
+          <div class="pend-card-note">이관 담당: <strong>동료 B 프로</strong><br>→ 이관 진행 중</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06. 핵심 SW 인수인계 -->
+  <div id="sec-sw" class="section sw-section">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <h2 class="sec-title">핵심 SW 인수인계</h2>
+      <div class="sec-rule"></div>
+      <span class="badge pend">인계 완료</span>
+    </div>
+
+    <div class="sw-banner">
+      <span class="sw-banner-label">핵심 소프트웨어 3종 — 담당자 이관 완료</span>
+    </div>
+
+    <div class="sw-cards">
+      <div class="sw-card">
+        <div class="sw-card-top">
+          <div class="sw-icon" style="background:#E8450A11; color:var(--orange);">H</div>
+          <span class="sw-tag">SW · 01</span>
+        </div>
+        <div class="sw-name">HEIS TOOL</div>
+        <div class="sw-desc">HEIS 연동 핵심 툴<br>TAG 관리 · DB 등록 · QC 검증<br>PVsyst 업로드 전반</div>
+        <div class="sw-assignee">→ 동료 E 프로 · 동료 F 프로</div>
+        <div class="sw-status"><span class="badge done">이관 완료</span></div>
+      </div>
+
+      <div class="sw-card">
+        <div class="sw-card-top">
+          <div class="sw-icon" style="background:#1C2B3A18; color:var(--navy);">T</div>
+          <span class="sw-tag">SW · 02</span>
+        </div>
+        <div class="sw-name">TCS TOOL</div>
+        <div class="sw-desc">TCS Report 자동화 툴<br>해외 발전소 사이트 모니터링<br>NCS · TCS 데이터 수집 자동화</div>
+        <div class="sw-assignee">→ 동료 B 프로</div>
+        <div class="sw-status"><span class="badge done">이관 완료</span></div>
+      </div>
+
+      <div class="sw-card">
+        <div class="sw-card-top">
+          <div class="sw-icon" style="background:#16653420; color:#15803D;">O</div>
+          <span class="sw-tag">SW · 03</span>
+        </div>
+        <div class="sw-name">OPC TOOL</div>
+        <div class="sw-desc">OPC 프로토콜 연동 툴<br>SCADA 데이터 비교 · 검증<br>발전소 설비기준 정보 연동</div>
+        <div class="sw-assignee">→ 동료 D 프로</div>
+        <div class="sw-status"><span class="badge done">이관 완료</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 07. 주요 성과 -->
+  <div id="sec-achieve" class="section">
+    <div class="sec-head">
+      <span class="sec-num">07</span>
+      <h2 class="sec-title">주요 성과</h2>
+      <div class="sec-rule"></div>
+    </div>
+  </div>
+  <div class="achieve-grid">
+    <div class="achieve-card">
+      <span class="achieve-icon">⚙️</span>
+      <div class="achieve-title">HEIS Integration Tool 개발</div>
+      <div class="achieve-desc">TAG 작업·DB 등록·QC 검증·Backfill·PVsyst 등 메인 업무 전체를 통합 자동화하는 툴을 직접 설계·개발</div>
+    </div>
+    <div class="achieve-card">
+      <span class="achieve-icon">📊</span>
+      <div class="achieve-title">TCS Report 자동화</div>
+      <div class="achieve-desc">해외 발전소 사이트 TCS Report 수동 취합 프로세스를 자동화 툴로 전환하여 운영 효율 대폭 향상</div>
+    </div>
+    <div class="achieve-card">
+      <span class="achieve-icon">🔌</span>
+      <div class="achieve-title">발전소 연동 체계 구축</div>
+      <div class="achieve-desc">HEIS–SCADA 연동 QC 검증 프로세스 확립, OPC·TCP 프로토콜 기반 데이터 파이프라인 안정화</div>
+    </div>
+  </div>
+
+  <!-- 08. 인수인계 과정 -->
+  <div class="section">
+    <div class="sec-head">
+      <span class="sec-num">08</span>
+      <h2 class="sec-title">인수인계 과정</h2>
+      <div class="sec-rule"></div>
+    </div>
+  </div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+      <div class="tl-label">Step 01</div>
+      <div class="tl-title">업무 목록 정리 및 현황 파악</div>
+      <div class="tl-desc">전체 담당 업무 리스트업 · 완료/이관 항목 분류 · 인계 우선순위 설정</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+      <div class="tl-label">Step 02</div>
+      <div class="tl-title">HEIS Integration Tool 인계</div>
+      <div class="tl-desc">툴 사용법 교육 · 소스 코드 전달 · 운영 매뉴얼 작성 및 공유</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+      <div class="tl-label">Step 03</div>
+      <div class="tl-title">SW 3종 (HEIS · TCP · OPC Tool) 인계</div>
+      <div class="tl-desc">각 툴별 운영 절차서 및 설치 가이드 전달 · 담당자 병행 운영 확인</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+      <div class="tl-label">Step 04</div>
+      <div class="tl-title">모니터링 및 ERP 정기 업무 인계</div>
+      <div class="tl-desc">동료 A 프로 병행 수행 후 단독 전환 확인</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+      <div class="tl-label">Step 05 · 완료</div>
+      <div class="tl-title">최종 인수인계 보고서 제출</div>
+      <div class="tl-desc">전체 업무 완료율 85% · 잔여 이관 항목 (VPP · 이미지 학습) 별도 파일 전달</div>
+    </div>
+  </div>
+
+  <!-- 병행 수행 업무 -->
+  <div class="colleague-card">
+    <div class="colleague-banner">
+      <div class="c-avatar">A</div>
+      <div>
+        <div class="c-name">병행 수행 업무 인계</div>
+        <div class="c-sub">동료와 병행 수행하던 모니터링 업무 및 HEIS Integration Tool 사용법 교육을 완료하고 단독 운영 체계로 전환</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-left">
+      <div class="footer-mark"></div>
+      <div>
+        <div class="footer-who">Juns</div>
+        <div class="footer-date">HEIS · AWS · UEP &nbsp;|&nbsp; 2026.04.24</div>
+      </div>
+    </div>
+    <div class="footer-stamp">
+      <span class="stamp-main">ALL TASKS REPORTED</span>
+      <span class="stamp-sub">업무 인수인계 완료</span>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  // Scroll progress
+  const bar = document.getElementById('progress-bar');
+  document.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    bar.style.width = Math.min(pct, 100) + '%';
+  });
+
+  // Animate donut & bars on load
+  window.addEventListener('load', () => {
+    // Donut
+    setTimeout(() => {
+      const fill = document.querySelector('.donut-fill');
+      if (fill) fill.style.strokeDasharray = '271 30';
+    }, 400);
+
+    // Progress bars via IntersectionObserver
+    const fills = document.querySelectorAll('.bar-fill:not(.pend-fill)');
+    fills.forEach(el => { el.dataset.target = el.style.width; el.style.width = '0%'; });
+
+    const barObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          setTimeout(() => { e.target.style.width = e.target.dataset.target; }, 200);
+          barObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    fills.forEach(el => barObs.observe(el));
+
+    // Count-up for KPI numbers
+    function countUp(el, target, duration) {
+      let start = 0, step = duration / target;
+      let t = setInterval(() => {
+        start++;
+        el.textContent = start;
+        if (start >= target) clearInterval(t);
+      }, step);
+    }
+
+    setTimeout(() => {
+      const kpis = [
+        { el: document.querySelector('.hero-kpi a:nth-child(1) .kpi-n'), val: 14 },
+        { el: document.querySelector('.hero-kpi a:nth-child(2) .kpi-n'), val: 11 },
+        { el: document.querySelector('.hero-kpi a:nth-child(3) .kpi-n'), val: 2  },
+      ];
+      kpis.forEach(({ el, val }) => { if (el) { el.textContent = '0'; countUp(el, val, 600); } });
+    }, 500);
+  });
+</script>
+</body>
+</html>

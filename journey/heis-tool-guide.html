@@ -1,0 +1,4260 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HEIS Tool — 통합 사용 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   TOKENS
+══════════════════════════════════════════ */
+:root {
+  --white:    #ffffff;
+  --bg:       #f7f5f3;
+  --bg2:      #ede9e5;
+  --surface:  #ffffff;
+  --border:   #e5dfd9;
+  --border2:  #d4ccc4;
+
+  /* ── Hanwha Brand ── */
+  --hw:       #f05a28;   /* Hanwha Orange */
+  --hw-d:     #c94418;   /* Dark Orange */
+  --hw-l:     #fff2ed;   /* Light Orange tint */
+  --hw-2:     #1b2a4a;   /* Hanwha Navy */
+  --hw-2l:    #e8edf5;   /* Light Navy tint */
+
+  /* aliases kept for compatibility */
+  --indigo:   #f05a28;
+  --indigo-d: #c94418;
+  --indigo-l: #fff2ed;
+  --blue:     #3b9eff;
+  --blue-l:   #e8f4ff;
+  --sky:      #06b6d4;
+  --sky-l:    #e0f8fc;
+  --coral:    #f05a28;
+  --coral-l:  #fff2ed;
+  --amber:    #f59e0b;
+  --amber-l:  #fffbeb;
+  --green:    #10b981;
+  --green-l:  #ecfdf5;
+  --red:      #ef4444;
+  --red-l:    #fef2f2;
+  --purple:   #8b5cf6;
+  --purple-l: #f5f3ff;
+
+  --text:     #1b1b1b;
+  --text-2:   #4a4440;
+  --text-3:   #928880;
+  --text-4:   #c4b8b0;
+
+  --font-d:   'Bebas Neue', sans-serif;
+  --font-b:   'Noto Sans KR', sans-serif;
+  --font-m:   'JetBrains Mono', monospace;
+
+  --r:        12px;
+  --r2:       8px;
+  --shadow:   0 2px 14px rgba(240,90,40,0.07), 0 1px 4px rgba(0,0,0,0.05);
+  --shadow-h: 0 8px 32px rgba(240,90,40,0.18), 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Support data-theme="dark" attribute (injected by viewer) */
+:root[data-theme="dark"] {
+  --white:    #1e293b;
+  --bg:       #0f172a;
+  --bg2:      #1e293b;
+  --surface:  #1e293b;
+  --border:   rgba(148,163,184,.12);
+  --border2:  rgba(148,163,184,.20);
+
+  /* light tints → dark equivalents */
+  --hw-l:     rgba(240,90,40,.12);
+  --hw-2l:    rgba(27,42,74,.50);
+  --indigo-l: rgba(240,90,40,.12);
+  --blue-l:   rgba(59,158,255,.10);
+  --sky-l:    rgba(6,182,212,.10);
+  --coral-l:  rgba(240,90,40,.12);
+  --amber-l:  rgba(245,158,11,.10);
+  --green-l:  rgba(16,185,129,.10);
+  --red-l:    rgba(239,68,68,.10);
+  --purple-l: rgba(139,92,246,.10);
+
+  --text:     #f1f5f9;
+  --text-2:   #cbd5e1;
+  --text-3:   #94a3b8;
+  --text-4:   #64748b;
+
+  --shadow:   0 2px 14px rgba(0,0,0,.30), 0 1px 4px rgba(0,0,0,.20);
+  --shadow-h: 0 8px 32px rgba(0,0,0,.40), 0 2px 8px rgba(0,0,0,.25);
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--border2) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 999px; border: 2px solid var(--bg); background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(var(--hw), var(--blue)); background-clip: padding-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-b);
+  font-size: 14px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ══════════════════════════════════════════
+   HEADER  — compact one-line bar
+══════════════════════════════════════════ */
+header {
+  background: linear-gradient(120deg, #0f1a30 0%, #1b2a4a 55%, #c94418 100%);
+  padding: 12px 40px 11px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* diagonal slash accent */
+header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(108deg, transparent 60%, rgba(240,90,40,0.25) 60%, rgba(240,90,40,0.08) 75%, transparent 75%),
+    radial-gradient(ellipse at 15% 90%, rgba(255,255,255,0.03) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* animated ring — smaller, stays decorative */
+header::after {
+  content: '';
+  position: absolute;
+  right: -60px; top: -60px;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  border: 1px solid rgba(240,90,40,0.18);
+  animation: ring-spin 18s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes ring-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.header-inner {
+  position: relative;
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+.header-title {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.header-left h1 {
+  font-family: var(--font-d);
+  font-size: 26px;
+  font-weight: 400;
+  color: #fff;
+  letter-spacing: 0.06em;
+  line-height: 1.0;
+  margin: 0;
+  border-bottom: none !important;   /* prevent injected-css underline */
+  padding-bottom: 0 !important;
+  animation: slide-up 0.5s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+.header-left h1 span {
+  color: var(--hw);
+  text-shadow: 0 0 30px rgba(240,90,40,0.5);
+}
+
+.header-sub {
+  color: rgba(255,255,255,0.42);
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.ver-badge-hero {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(240,90,40,0.2);
+  border: 1px solid rgba(240,90,40,0.5);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-family: var(--font-m);
+  font-size: 12px;
+  backdrop-filter: blur(8px);
+  animation: slide-up 0.8s 0.2s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+/* "ver" prefix label inside the badge */
+.ver-badge-hero .ver-prefix {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  padding-right: 4px;
+  border-right: 1px solid rgba(255,255,255,0.25);
+  margin-right: 2px;
+}
+
+.ver-badge-hero::before {
+  content: '';
+  width: 8px; height: 8px;
+  background: #4ade80;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #4ade80;
+  animation: blink 2s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%,100% { opacity:1; } 50% { opacity:0.3; }
+}
+
+/* Hanwha wordmark chip */
+.hw-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-d);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.38);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.hw-chip::before {
+  content: '';
+  display: block;
+  width: 14px; height: 1.5px;
+  background: var(--hw);
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════
+   NAV TABS
+══════════════════════════════════════════ */
+.nav-wrap {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+}
+
+.nav-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  padding: 0 8px;
+  overflow-x: auto;
+}
+
+.nav-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 9px 0;
+  width: 90px;
+  flex-shrink: 0;
+  font-family: var(--font-b);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-3);
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  position: relative;
+  letter-spacing: 0.01em;
+}
+
+.nav-tab:hover {
+  color: var(--text-2);
+  background: rgba(0,0,0,0.03);
+}
+
+.nav-tab.active {
+  color: var(--hw);
+  border-bottom-color: var(--hw);
+  font-weight: 700;
+}
+
+.nav-tab .tab-icon {
+  font-size: 19px;
+  line-height: 1;
+}
+
+/* 설정 탭 — 동일 너비, 구분선만 */
+.nav-tab.setup-tab {
+  border-left: 1px solid var(--border);
+  width: 90px;
+}
+
+/* changelog tab */
+.nav-tab.changelog-tab { font-size: 11px; }
+
+.nav-tab.changelog-tab.active,
+.nav-tab.active {
+  color: var(--hw);
+  border-bottom-color: var(--hw);
+}
+
+/* ══════════════════════════════════════════
+   MAIN
+══════════════════════════════════════════ */
+.main {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 36px 24px 80px;
+}
+
+.tab-panel { display: none; }
+.tab-panel.active {
+  display: block;
+  animation: fadein 0.3s ease;
+}
+
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══════════════════════════════════════════
+   SECTION TITLE
+══════════════════════════════════════════ */
+.section-title {
+  font-family: var(--font-d);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+.section-desc {
+  color: var(--text-2);
+  font-size: 14px;
+  margin-bottom: 28px;
+}
+
+/* ══════════════════════════════════════════
+   WORKFLOW STEPPER
+══════════════════════════════════════════ */
+.workflow {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.wf-step {
+  flex: 1;
+  min-width: 90px;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r2);
+  padding: 12px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34,1.56,0.64,1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* shimmer line at top on hover */
+.wf-step::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; right: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--hw), transparent);
+  transition: left 0.35s ease, right 0.35s ease;
+}
+.wf-step:hover::after, .wf-step.active::after {
+  left: 0; right: 0;
+}
+
+.wf-step:hover, .wf-step.active {
+  border-color: var(--hw);
+  background: var(--hw-l);
+  box-shadow: 0 8px 28px rgba(240,90,40,0.22), 0 2px 8px rgba(240,90,40,0.1);
+  transform: translateY(-5px) scale(1.02);
+}
+
+.wf-step.active .wf-num {
+  background: var(--hw);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(240,90,40,0.5);
+}
+
+.wf-step.active .wf-name {
+  color: var(--hw);
+  font-weight: 800;
+}
+
+/* mini variant for S6 / utility steps */
+.wf-step.wf-mini {
+  flex: 0 0 auto;
+  min-width: 68px;
+  padding: 9px 8px;
+}
+.wf-step.wf-mini .wf-num { width: 22px; height: 22px; font-size: 9px; }
+.wf-step.wf-mini .wf-icon { font-size: 11px; }
+.wf-step.wf-mini .wf-name { font-size: 10px; }
+
+.wf-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px; height: 26px;
+  background: var(--bg2);
+  color: var(--text-3);
+  border-radius: 50%;
+  font-family: var(--font-m);
+  font-size: 10px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  transition: all 0.2s ease;
+}
+
+.wf-icon { font-size: 14px; margin-bottom: 3px; }
+.wf-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-2);
+  letter-spacing: 0.02em;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+
+.wf-arrow {
+  display: flex;
+  align-items: center;
+  color: var(--text-4);
+  font-size: 14px;
+  padding: 0 1px;
+  align-self: center;
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+
+/* Step detail panel */
+.step-detail {
+  display: none;
+  background: var(--hw-l);
+  border: 1.5px solid rgba(240,90,40,0.2);
+  border-left: 4px solid var(--hw);
+  border-radius: var(--r);
+  padding: 20px 24px;
+  margin-bottom: 28px;
+  animation: fadein 0.2s ease;
+}
+
+.step-detail.active { display: block; }
+
+.step-detail-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.step-detail-head .step-icon { font-size: 24px; }
+
+.step-detail-head h3 {
+  font-family: var(--font-d);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--hw);
+}
+
+.step-detail p {
+  color: var(--text-2);
+  font-size: 13.5px;
+  line-height: 1.75;
+}
+
+/* ══════════════════════════════════════════
+   FEATURE CARDS
+══════════════════════════════════════════ */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: 20px;
+  transition: all 0.22s ease;
+  cursor: default;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-h);
+  border-color: var(--hw);
+  border-left: 3px solid var(--hw);
+}
+
+.card:active {
+  transform: translateY(-2px) scale(0.98);
+  transition: all 0.08s ease;
+}
+
+.card.card-clicked {
+  animation: card-pulse 0.4s cubic-bezier(0.36,0.07,0.19,0.97);
+}
+
+@keyframes card-pulse {
+  0%   { transform: translateY(-5px) scale(1.02); box-shadow: 0 0 0 0 rgba(240,90,40,0.5); }
+  30%  { transform: translateY(-7px) scale(1.04); box-shadow: 0 0 0 10px rgba(240,90,40,0.1); }
+  70%  { transform: translateY(-4px) scale(1.01); box-shadow: 0 0 0 18px rgba(240,90,40,0.0); }
+  100% { transform: translateY(-5px) scale(1.02); box-shadow: var(--shadow-h); }
+}
+
+.card-icon {
+  font-size: 28px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.card-title {
+  font-family: var(--font-d);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.card-desc {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.65;
+}
+
+.card-tag {
+  display: inline-block;
+  font-family: var(--font-m);
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 100px;
+  margin-top: 10px;
+  letter-spacing: 0.06em;
+}
+
+.tag-blue   { background: var(--blue-l);   color: #1d6fa4; }
+.tag-green  { background: var(--green-l);  color: #065f46; }
+.tag-amber  { background: var(--amber-l);  color: #92400e; }
+.tag-red    { background: var(--red-l);    color: #991b1b; }
+.tag-purple { background: var(--purple-l); color: #5b21b6; }
+.tag-sky    { background: var(--sky-l);    color: #0e7490; }
+.tag-indigo { background: var(--hw-l); color: var(--hw-d); }
+.tag-coral  { background: var(--coral-l);  color: #9a3412; }
+
+/* ══════════════════════════════════════════
+   CALLOUT
+══════════════════════════════════════════ */
+.callout {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px 20px;
+  border-radius: var(--r2);
+  margin-bottom: 20px;
+  border-left: 4px solid;
+}
+
+.callout-warn {
+  background: var(--amber-l);
+  border-color: var(--amber);
+}
+
+.callout-info {
+  background: var(--blue-l);
+  border-color: var(--blue);
+}
+
+.callout-tip {
+  background: var(--green-l);
+  border-color: var(--green);
+}
+
+.callout-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+
+.callout-body strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+
+.callout-body p, .callout-body ul {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.65;
+}
+
+.callout-body ul { padding-left: 16px; }
+.callout-body li { margin-bottom: 2px; }
+
+/* ══════════════════════════════════════════
+   NODE ROUTING VIZ
+══════════════════════════════════════════ */
+.node-routing {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: 24px;
+  margin-bottom: 28px;
+}
+
+.node-routing h4 {
+  font-family: var(--font-d);
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+
+.routing-flow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.routing-box {
+  padding: 10px 16px;
+  border-radius: var(--r2);
+  font-size: 12.5px;
+  font-weight: 700;
+  text-align: center;
+  min-width: 100px;
+}
+
+.rbox-start  { background: var(--indigo-l); color: var(--indigo); border: 1.5px solid rgba(69,86,239,0.3); }
+.rbox-check  { background: var(--amber-l);  color: #92400e;       border: 1.5px solid rgba(245,158,11,0.3); }
+.rbox-140    { background: var(--green-l);  color: #065f46;       border: 1.5px solid rgba(16,185,129,0.3); }
+.rbox-170    { background: var(--sky-l);    color: #0e7490;       border: 1.5px solid rgba(6,182,212,0.3); }
+
+.routing-sub { font-size: 10px; font-weight: 400; margin-top: 2px; color: var(--text-3); }
+
+.routing-arrow {
+  color: var(--text-4);
+  font-size: 18px;
+  font-weight: 300;
+}
+
+/* ══════════════════════════════════════════
+   MONITOR MINI-VIZ
+══════════════════════════════════════════ */
+/* ── Monitor: vertical bar (restored + enhanced) ─────────────────── */
+.monitor-viz {
+  background: linear-gradient(135deg, #13151f 0%, #1a1d2e 100%);
+  border-radius: var(--r);
+  padding: 24px 28px;
+  margin-bottom: 28px;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.07);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.28);
+}
+
+.monitor-viz h4 {
+  font-family: var(--font-d);
+  font-weight: 700;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 10px;
+}
+
+.monitor-envs {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.monitor-env {
+  flex: 1;
+  min-width: 130px;
+}
+
+.env-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  font-family: var(--font-m);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.env-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.env-graph {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 64px;
+  background: rgba(255,255,255,0.03);
+  padding: 6px 6px 0;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Threshold dashed line at ~78% from bottom (Load 5 / max ~6.5) */
+.env-graph::before {
+  content: '';
+  position: absolute;
+  left: 6px; right: 6px;
+  bottom: calc(78% - 1px);
+  height: 1px;
+  background: repeating-linear-gradient(90deg,
+    rgba(255,100,100,0.5) 0, rgba(255,100,100,0.5) 4px,
+    transparent 4px, transparent 8px);
+  pointer-events: none;
+}
+
+.env-bar {
+  flex: 1;
+  border-radius: 3px 3px 0 0;
+  min-height: 4px;
+  animation: bar-pulse 2.8s ease-in-out infinite alternate;
+  transition: height 0.4s ease;
+}
+
+@keyframes bar-pulse {
+  0%   { opacity: 0.65; filter: brightness(0.9); }
+  100% { opacity: 1;    filter: brightness(1.15); }
+}
+
+.env-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  gap: 6px;
+}
+
+.env-meta .load-val {
+  font-family: var(--font-m);
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.85);
+}
+
+.env-status {
+  font-size: 9px;
+  font-family: var(--font-d);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 2px 7px;
+  border-radius: 100px;
+}
+.env-status.ok   { background:rgba(74,222,128,0.15); color:#4ade80; border:1px solid rgba(74,222,128,0.28); }
+.env-status.warn { background:rgba(251,191,36,0.15);  color:#fbbf24; border:1px solid rgba(251,191,36,0.32); }
+.env-status.high { background:rgba(255,107,122,0.15); color:#ff6b7a; border:1px solid rgba(255,107,122,0.32); }
+
+.monitor-legend {
+  display: flex;
+  gap: 18px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.38);
+}
+
+.legend-line {
+  width: 18px; height: 3px;
+  border-radius: 2px;
+}
+
+/* ══════════════════════════════════════════
+   OVERVIEW TAB
+══════════════════════════════════════════ */
+.ov-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 8px;
+}
+@media (max-width: 700px) { .ov-grid { grid-template-columns: 1fr; } }
+
+.ov-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  display: flex;
+  flex-direction: column;
+}
+.ov-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-h);
+}
+.ov-card:active { transform: translateY(-2px) scale(0.98); transition: all 0.08s ease; }
+.ov-card.card-clicked { animation: card-pulse 0.4s cubic-bezier(0.36,0.07,0.19,0.97); }
+.ov-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  color: #fff;
+}
+.ov-header-backfill { background: linear-gradient(135deg, var(--hw-2) 0%, var(--hw-d) 100%); }
+.ov-header-tag      { background: linear-gradient(135deg, #1b2a4a 0%, #3b5998 100%); }
+.ov-header-qc       { background: linear-gradient(135deg, #312e81 0%, var(--purple) 100%); }
+.ov-big-icon { font-size: 28px; flex-shrink: 0; }
+.ov-card-title { font-family: var(--font-d); font-size: 16px; letter-spacing: 0.04em; }
+.ov-card-subtitle { font-size: 11px; opacity: 0.7; margin-top: 2px; }
+.ov-card-body { padding: 14px 18px; flex: 1; }
+.ov-card-body p { font-size: 12.5px; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+.ov-feat-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+.ov-feat-list li { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-2); }
+.ov-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.dot-orange { background: var(--hw); }
+.dot-navy   { background: #3b5998; }
+.dot-purple { background: var(--purple); }
+.ov-card-footer {
+  padding: 8px 18px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-3);
+  border-top: 1px solid var(--border);
+  background: var(--bg2);
+  transition: color 0.2s;
+}
+.ov-card:hover .ov-card-footer { color: var(--hw); }
+
+/* 전체 데이터 흐름 */
+.ov-flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: 20px 24px;
+}
+.ov-flow-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 90px;
+}
+.ov-flow-icon { font-size: 28px; }
+.ov-flow-label { font-size: 12px; font-weight: 700; color: var(--text); text-align: center; }
+.ov-flow-sub { font-size: 10px; color: var(--text-3); text-align: center; }
+.node-scada .ov-flow-icon  { filter: drop-shadow(0 0 6px rgba(240,90,40,0.4)); }
+.node-influx .ov-flow-icon { filter: drop-shadow(0 0 6px rgba(59,158,255,0.4)); }
+.node-report .ov-flow-icon { filter: drop-shadow(0 0 6px rgba(139,92,246,0.4)); }
+.ov-flow-arrow {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 60px;
+}
+.ov-flow-line {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--border2) 0%, var(--hw) 100%);
+  border-radius: 1px;
+  position: relative;
+}
+.ov-flow-line::after {
+  content: '▶';
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10px;
+  color: var(--hw);
+}
+.ov-flow-arrowlabel { font-size: 10px; color: var(--text-3); white-space: nowrap; }
+
+/* ── Architecture Flow ── */
+.arch-env-label {
+  font-family: var(--font-m);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 3px 10px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+.arch-label-dev { background: rgba(59,158,255,0.12); color: var(--blue); border: 1px solid rgba(59,158,255,0.25); }
+.arch-label-prd { background: rgba(240,90,40,0.10); color: var(--hw); border: 1px solid rgba(240,90,40,0.25); }
+
+.arch-flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: 14px 16px;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+}
+.arch-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+  min-width: 64px;
+}
+.arch-icon { font-size: 22px; }
+.arch-name { font-size: 11px; font-weight: 700; color: var(--text); text-align: center; line-height: 1.3; }
+.arch-sub  { font-size: 9.5px; color: var(--text-3); text-align: center; }
+
+/* node color accents */
+.arch-scada   .arch-icon { filter: drop-shadow(0 0 5px rgba(240,90,40,0.5)); }
+.arch-isl     .arch-name { color: var(--blue); }
+.arch-parser  .arch-name { color: var(--sky); }
+.arch-kafka   .arch-name { color: var(--amber); }
+.arch-telegraf .arch-name { color: var(--green); }
+.arch-influx  .arch-name { color: var(--blue); }
+.arch-uep     .arch-name { color: var(--purple); }
+.arch-front   .arch-name { color: var(--hw); }
+
+.arch-arr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  flex: 1;
+  min-width: 32px;
+}
+.arch-line {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--border2), var(--hw));
+  border-radius: 1px;
+  position: relative;
+}
+.arch-line::after {
+  content: '▶';
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 9px;
+  color: var(--hw);
+}
+.arch-albl { font-size: 9px; color: var(--text-3); white-space: nowrap; }
+
+/* HEIS Tool 개입 위치 배너 */
+.arch-heis-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: var(--bg2);
+  border: 1px dashed var(--border2);
+  border-radius: var(--r2);
+}
+.arch-heis-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.arch-heis-item {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.item-orange { background: var(--hw-l); color: var(--hw-d); }
+.item-blue   { background: var(--blue-l); color: var(--blue); }
+.item-purple { background: var(--purple-l); color: var(--purple); }
+
+/* ══════════════════════════════════════════
+   QC PIPELINE (Compare 상세 흐름)
+══════════════════════════════════════════ */
+.qc-pipeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 28px;
+}
+.qcp-step {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: 18px 20px;
+  transition: all 0.2s ease;
+}
+.qcp-step:hover { box-shadow: var(--shadow-h); border-color: var(--hw); }
+.qcp-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.qcp-body { flex: 1; }
+.qcp-num {
+  font-family: var(--font-m);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+  margin-bottom: 3px;
+}
+.qcp-title {
+  font-family: var(--font-d);
+  font-size: 15px;
+  letter-spacing: 0.03em;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.qcp-desc { font-size: 13px; color: var(--text-2); line-height: 1.65; margin-bottom: 10px; }
+.qcp-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.qcp-chip {
+  font-family: var(--font-m);
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+.chip-orange { background: var(--hw-l); color: var(--hw-d); }
+.chip-blue   { background: var(--blue-l); color: var(--blue); }
+
+.qcp-arrow {
+  text-align: center;
+  font-size: 22px;
+  color: var(--text-4);
+  padding: 4px 0;
+  line-height: 1;
+}
+
+/* LP 파일 출처 그리드 */
+.qcp-lp-source-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+@media (max-width: 600px) { .qcp-lp-source-grid { grid-template-columns: 1fr; } }
+
+.lp-source-card {
+  border-radius: var(--r2);
+  border: 1.5px solid var(--border2);
+  overflow: hidden;
+}
+.lp-source-scada { border-top: 3px solid var(--hw); }
+.lp-source-influx { border-top: 3px solid var(--blue); }
+
+.lp-source-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--bg2);
+}
+.lp-source-tag {
+  font-family: var(--font-m);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+.tag-scada  { background: var(--hw-l); color: var(--hw-d); }
+.tag-influx { background: var(--blue-l); color: var(--blue); }
+.lp-source-tool {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-3);
+  font-family: var(--font-m);
+}
+.lp-source-steps {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.lp-source-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.55;
+  padding: 4px 0;
+}
+.lp-step-num {
+  font-family: var(--font-m);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-3);
+  flex-shrink: 0;
+  width: 18px;
+  text-align: center;
+}
+.lp-step-result { background: var(--green-l); border-radius: 6px; padding: 5px 6px; }
+.lp-step-result .lp-step-num { color: var(--green); }
+.lp-source-arrow {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-4);
+  padding: 0 0 0 26px;
+  line-height: 1;
+}
+
+/* LP 파싱 예시 박스 */
+.qcp-lp-box {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: var(--r2);
+  padding: 10px 14px;
+  margin-top: 8px;
+}
+.qcp-lp-label { font-size: 10px; color: var(--text-3); margin-bottom: 4px; }
+.qcp-lp {
+  font-family: var(--font-m);
+  font-size: 11px;
+  color: var(--sky);
+  word-break: break-all;
+  display: block;
+  margin-bottom: 8px;
+}
+.qcp-lp-parts { display: flex; gap: 8px; flex-wrap: wrap; }
+.lp-part {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+.lp-measurement { background: var(--hw-l); color: var(--hw-d); }
+.lp-tags        { background: var(--blue-l); color: var(--blue); }
+.lp-value       { background: var(--green-l); color: var(--green); }
+.lp-ts          { background: var(--purple-l); color: var(--purple); }
+
+/* 스케일 표 */
+.qcp-scale-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin-top: 8px;
+}
+.qcp-scale-table th {
+  background: var(--bg2);
+  padding: 5px 10px;
+  text-align: left;
+  color: var(--text-2);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border2);
+}
+.qcp-scale-table td {
+  padding: 4px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-2);
+  font-family: var(--font-m);
+  font-size: 11px;
+}
+
+/* 타임스탬프 매칭 시각화 */
+.qcp-match-viz { margin-top: 10px; }
+.qcp-match-row { display: flex; align-items: center; gap: 0; }
+.qcp-match-side { flex: 1; }
+.qcp-match-label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.06em; color: var(--text-3);
+  margin-bottom: 6px;
+}
+.qcp-match-pts { display: flex; flex-direction: column; gap: 4px; }
+.match-pt {
+  font-family: var(--font-m);
+  font-size: 11px;
+  background: var(--bg2);
+  padding: 3px 8px;
+  border-radius: 4px;
+  color: var(--text-2);
+  display: inline-block;
+}
+.qcp-match-lines {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 32px;
+  flex-shrink: 0;
+}
+.match-line {
+  height: 22px;
+  width: 1px;
+  background: var(--border2);
+  position: relative;
+}
+.match-line::before, .match-line::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 6px; height: 1px;
+  background: var(--border2);
+}
+.match-line::before { left: -6px; }
+.match-line::after  { left: 1px; }
+.match-approx { color: var(--amber); font-size: 13px; font-weight: 700; width: auto; height: auto; background: none; }
+
+/* 오차 판정 공식 */
+.qcp-formula-box {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: var(--r2);
+  padding: 12px 16px;
+  margin-top: 8px;
+}
+.qcp-formula {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.formula-part {
+  background: var(--white);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-family: var(--font-m);
+  font-size: 12px;
+  color: var(--text-2);
+}
+.formula-op { font-size: 16px; color: var(--text-3); font-weight: 700; }
+.qcp-verdict-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.verdict {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+.verdict.pass { background: var(--green-l); color: var(--green); }
+.verdict.fail { background: var(--red-l); color: var(--red); }
+.verdict.na   { background: var(--bg2); color: var(--text-3); border: 1px solid var(--border2); }
+
+/* CSV 미리보기 */
+.qcp-csv-preview {
+  font-family: var(--font-m);
+  font-size: 11px;
+  border: 1px solid var(--border2);
+  border-radius: var(--r2);
+  overflow: hidden;
+  margin-top: 8px;
+}
+.csv-header-row, .csv-data-row {
+  display: grid;
+  grid-template-columns: 1.6fr 1.6fr 0.8fr 0.8fr 0.7fr 0.5fr;
+  gap: 0;
+}
+.csv-header-row {
+  background: var(--hw-2);
+  color: rgba(255,255,255,0.85);
+  font-weight: 700;
+}
+.csv-header-row span, .csv-data-row span {
+  padding: 5px 8px;
+  border-right: 1px solid rgba(0,0,0,0.06);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.csv-data-row { background: var(--white); color: var(--text-2); }
+.csv-data-row.fail-row { background: var(--red-l); }
+.cell-pass { color: var(--green); font-weight: 700; }
+.cell-fail { color: var(--red); font-weight: 700; }
+
+/* HTML 보고서 미리보기 */
+.qcp-report-viz {
+  border: 1px solid var(--border2);
+  border-radius: var(--r2);
+  overflow: hidden;
+  margin-top: 10px;
+}
+.report-header-bar {
+  background: linear-gradient(90deg, var(--hw-2) 0%, #2a3f6a 100%);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.report-title-mock { color: #fff; font-weight: 700; font-size: 12px; flex: 1; }
+.report-badge-pass { background: var(--green); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 12px; }
+.report-badge-fail { background: var(--red); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 12px; }
+.report-chart-mock {
+  background: var(--bg2);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.chart-bar-group { display: flex; gap: 12px; align-items: flex-end; }
+.chart-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.chart-bar { width: 32px; border-radius: 4px 4px 0 0; }
+.scada-bar  { background: var(--hw); }
+.influx-bar { background: var(--blue); }
+.chart-bar-lbl { font-size: 10px; color: var(--text-3); }
+.chart-label { font-size: 10px; color: var(--text-3); }
+.report-table-mock { background: var(--white); }
+.rtm-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 0.8fr;
+  font-size: 11px;
+  font-family: var(--font-m);
+}
+.rtm-row span { padding: 5px 10px; border-bottom: 1px solid var(--border); }
+.rtm-head { background: var(--bg2); font-weight: 700; color: var(--text-2); }
+.rtm-row.fail-row { background: var(--red-l); }
+
+.qcp-code {
+  font-family: var(--font-m);
+  font-size: 11.5px;
+  background: var(--bg2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--sky);
+}
+
+/* ══════════════════════════════════════════
+   QC FLOW
+══════════════════════════════════════════ */
+.qc-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.qc-row {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.qc-card {
+  flex: 1;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: 18px 20px;
+  transition: all 0.22s ease;
+}
+
+.qc-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-h);
+  border-color: var(--hw);
+  border-left: 3px solid var(--hw);
+}
+.qc-card:active { transform: translateY(-1px) scale(0.98); transition: all 0.08s ease; }
+.qc-card.card-clicked { animation: card-pulse 0.4s cubic-bezier(0.36,0.07,0.19,0.97); }
+
+.qc-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.qc-num {
+  width: 24px; height: 24px;
+  background: var(--sky-l);
+  color: var(--sky);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-m);
+  font-size: 11px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.qc-card-head strong {
+  font-family: var(--font-d);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.qc-card p { font-size: 12.5px; color: var(--text-2); line-height: 1.6; }
+
+/* ══════════════════════════════════════════
+   TAG STEPS
+══════════════════════════════════════════ */
+.tag-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.tag-step-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: 18px 20px;
+  transition: all 0.22s ease;
+}
+
+.tag-step-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-h);
+  border-color: var(--hw);
+  border-left: 3px solid var(--hw);
+}
+.tag-step-card:active { transform: translateY(-1px) scale(0.98); transition: all 0.08s ease; }
+.tag-step-card.card-clicked { animation: card-pulse 0.4s cubic-bezier(0.36,0.07,0.19,0.97); }
+
+.step-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-m);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--hw-d);
+  background: var(--hw-l);
+  border: 1px solid rgba(240,90,40,0.25);
+  padding: 3px 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.tag-step-card h4 {
+  font-family: var(--font-d);
+  font-size: 13.5px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.tag-step-card p { font-size: 12.5px; color: var(--text-2); line-height: 1.6; }
+
+/* ══════════════════════════════════════════
+   CHANGELOG TIMELINE
+══════════════════════════════════════════ */
+.timeline {
+  position: relative;
+  padding-left: 32px;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 8px; top: 8px; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--border) 0%, var(--hw) 100%);
+}
+
+.tl-item {
+  position: relative;
+  margin-bottom: 28px;
+}
+
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: -28px; top: 8px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  border: 2.5px solid var(--border2);
+  background: var(--white);
+  transition: all 0.2s;
+}
+
+.tl-item.current::before {
+  border-color: var(--hw);
+  background: var(--hw);
+  box-shadow: 0 0 0 4px var(--hw-l);
+  animation: pulse-ring 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(240,90,40,0.4); }
+  70%  { box-shadow: 0 0 0 10px rgba(240,90,40,0); }
+  100% { box-shadow: 0 0 0 0 rgba(240,90,40,0); }
+}
+
+.tl-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.tl-ver {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  font-family: var(--font-m);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+/* "ver" label part */
+.tl-ver .ver-label {
+  font-size: 10px;
+  font-family: var(--font-b);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  padding: 2px 6px;
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  line-height: 1.4;
+  vertical-align: middle;
+  margin-right: 2px;
+}
+
+.tl-item.current .tl-ver .ver-label {
+  border-color: rgba(240,90,40,0.35);
+  color: rgba(240,90,40,0.8);
+}
+
+.tl-item.current .tl-ver {
+  color: var(--hw);
+}
+
+.tl-date {
+  font-family: var(--font-m);
+  font-size: 11px;
+  color: var(--text-3);
+  background: var(--bg2);
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+
+.tl-badge-cur {
+  font-family: var(--font-m);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--white);
+  background: var(--hw);
+  padding: 3px 10px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+/* ── Changelog 카드: 단일 컬럼, 아이콘 좌측 고정 ── */
+.tl-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* 카드 — CSS grid: [icon | title / desc] */
+.tl-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 12px;
+  row-gap: 1px;
+  transition: box-shadow 0.15s, transform 0.12s, border-color 0.15s;
+}
+
+.tl-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.09);
+  transform: translateX(3px);
+  border-color: var(--hw);
+}
+
+.tl-card code {
+  font-family: var(--font-m);
+  font-size: 11px;
+  background: var(--bg2);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+/* 아이콘 배지 — 양 행 span, 수직 중앙 */
+.tl-card-icon {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: rgba(240,90,40,0.08);
+  font-size: 15px;
+}
+
+/* 제목 */
+.tl-card-title {
+  grid-column: 2;
+  grid-row: 1;
+  font-weight: 700;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+/* 설명 */
+.tl-card-desc {
+  grid-column: 2;
+  grid-row: 2;
+  font-size: 12px;
+  color: var(--text-3);
+  line-height: 1.5;
+}
+
+/* ── simple 항목 (old versions) ── */
+.tl-item-simple {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border2);
+  border-radius: 6px;
+  padding: 12px 16px;
+}
+
+.tl-item-simple p {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.65;
+}
+
+.tl-item-simple p + p { margin-top: 3px; }
+
+.tl-item-simple p::before {
+  content: '· ';
+  color: var(--text-4);
+}
+
+/* ══════════════════════════════════════════
+   SCALE TABLE
+══════════════════════════════════════════ */
+.scale-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background: var(--white);
+  border-radius: var(--r);
+  overflow: hidden;
+  border: 1.5px solid var(--border);
+}
+
+.scale-table th {
+  background: var(--bg2);
+  padding: 10px 16px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-bottom: 1.5px solid var(--border);
+}
+
+.scale-table td {
+  padding: 10px 16px;
+  font-size: 13px;
+  color: var(--text-2);
+  border-bottom: 1px solid var(--border);
+}
+
+.scale-table tr:last-child td { border-bottom: none; }
+
+.scale-table td:first-child {
+  font-family: var(--font-m);
+  font-weight: 500;
+  color: var(--indigo);
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media (max-width: 600px) {
+  header { padding: 10px 16px 9px; }
+  .header-left h1 { font-size: 20px; }
+  .ver-badge-hero { display: none; } /* 모바일에서 버전 뱃지 숨김 */
+  .main { padding: 24px 14px 60px; }
+  .cards { grid-template-columns: 1fr; }
+  .workflow { gap: 6px; }
+  .wf-step { min-width: 72px; }
+  .wf-arrow { display: none; }
+}
+/* ══════════════════════════════════════════
+   SETUP TAB — Dynamic Components
+══════════════════════════════════════════ */
+
+/* Stepper */
+.setup-stepper { display:flex; flex-direction:column; gap:0; margin:24px 0; }
+.setup-step { display:flex; gap:0; cursor:pointer; }
+.step-left { display:flex; flex-direction:column; align-items:center; width:44px; flex-shrink:0; }
+.step-num {
+  width:36px; height:36px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:800; font-size:14px;
+  background:var(--bg3); color:var(--text-3);
+  border:2px solid var(--border);
+  transition:all 0.25s; flex-shrink:0;
+  box-shadow: 0 0 0 0 rgba(230,140,70,0);
+}
+.step-line { flex:1; width:2px; background:var(--border); margin:4px 0; min-height:12px; transition:background 0.25s; }
+.step-body { padding:6px 0 20px 14px; flex:1; min-width:0; }
+.step-header { display:flex; align-items:center; gap:10px; padding:4px 0; }
+.step-icon-badge { font-size:18px; line-height:1; }
+.step-title { font-size:13.5px; font-weight:600; color:var(--text-2); transition:color 0.2s; }
+.step-badge { font-size:10px; padding:2px 7px; border-radius:10px; background:var(--bg3); color:var(--text-3); border:1px solid var(--border); }
+.step-content { display:none; margin-top:10px; }
+
+/* Active step */
+.setup-step.active .step-num {
+  background:var(--hw); color:#fff; border-color:var(--hw);
+  box-shadow: 0 0 0 5px rgba(230,140,70,0.18);
+  animation: step-pop 0.3s ease;
+}
+.setup-step.active .step-line { background:var(--hw); }
+.setup-step.active .step-title { color:var(--hw); }
+.setup-step.active .step-content { display:block; animation: fadeSlideIn 0.25s ease; }
+.setup-step.done .step-num { background:#98c379; color:#fff; border-color:#98c379; }
+.setup-step.done .step-line { background:#98c379; }
+
+@keyframes step-pop {
+  0%   { transform:scale(0.8); }
+  60%  { transform:scale(1.12); }
+  100% { transform:scale(1); }
+}
+@keyframes fadeSlideIn {
+  from { opacity:0; transform:translateY(-8px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* SSH Tunnel diagram */
+.tunnel-diagram { display:flex; align-items:center; gap:0; margin:16px 0; overflow-x:auto; padding:4px 2px 8px; }
+.tunnel-node {
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+  min-width:100px; padding:10px 8px;
+  background:var(--bg3); border-radius:10px; border:2px solid var(--border);
+  transition:all 0.2s;
+}
+.tunnel-node:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,0.12); }
+.tunnel-node.node-local  { border-color:var(--text-3); }
+.tunnel-node.node-pub    { border-color:var(--hw); }
+.tunnel-node.node-app    { border-color:#61afef; }
+.tunnel-node.node-eks    { border-color:#c678dd; }
+.tunnel-node.node-db     { border-color:#98c379; }
+.tunnel-node .n-icon     { font-size:22px; }
+.tunnel-node .n-label    { font-size:11px; font-weight:700; color:var(--text); }
+.tunnel-node .n-key      { font-size:10px; color:var(--dim); font-family:var(--font-m); }
+.tunnel-node .n-ip       { font-size:10px; color:var(--dim); }
+.tunnel-node .n-hop      { font-size:18px; font-weight:800; }
+.node-pub  .n-hop { color:var(--hw); }
+.node-app  .n-hop { color:#61afef; }
+.node-db   .n-hop { color:#98c379; }
+.tunnel-arrow { flex-shrink:0; position:relative; width:52px; display:flex; align-items:center; justify-content:center; }
+.tunnel-arrow::before {
+  content:''; display:block; height:2px; width:100%;
+  background: linear-gradient(90deg, var(--border) 0%, var(--hw) 100%);
+}
+.tunnel-arrow::after { content:'▶'; position:absolute; right:2px; font-size:10px; color:var(--hw); }
+.tunnel-dot {
+  position:absolute; width:7px; height:7px; border-radius:50%;
+  background:var(--hw); top:50%; transform:translateY(-50%);
+  animation: tunnel-flow 1.8s linear infinite;
+  opacity:0;
+}
+.tunnel-arrow:nth-of-type(2) .tunnel-dot { animation-delay:0.6s; }
+.tunnel-arrow:nth-of-type(4) .tunnel-dot { animation-delay:1.2s; }
+@keyframes tunnel-flow {
+  0%   { left:0;    opacity:0; }
+  10%  {            opacity:1; }
+  90%  {            opacity:1; }
+  100% { left:100%; opacity:0; }
+}
+
+/* PEM key grid */
+.pem-env-tabs { display:flex; gap:6px; margin-bottom:14px; }
+.pem-env-btn {
+  padding:6px 18px; border-radius:20px; border:1.5px solid var(--border);
+  font-size:12px; font-weight:600; cursor:pointer; background:none;
+  color:var(--text-3); transition:all 0.18s;
+}
+.pem-env-btn.active { background:var(--hw); color:#fff; border-color:var(--hw); }
+.pem-key-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.pem-key-card {
+  border-radius:10px; padding:16px; border:2px solid var(--border);
+  background:var(--bg3); transition:all 0.2s; cursor:default;
+  position:relative; overflow:hidden;
+}
+.pem-key-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+}
+.pem-key-card.hop1::before { background:var(--hw); }
+.pem-key-card.hop2::before { background:#61afef; }
+.pem-key-card.hop3::before { background:#c678dd; }
+.pem-key-card.hop4::before { background:#98c379; }
+.pem-key-card:hover { transform:translateY(-3px); box-shadow:0 6px 20px rgba(0,0,0,0.12); }
+.pem-hop-badge {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:28px; height:28px; border-radius:50%; font-size:14px;
+  font-weight:800; margin-bottom:8px;
+}
+.hop1 .pem-hop-badge { background:rgba(230,140,70,0.15); color:var(--hw); }
+.hop2 .pem-hop-badge { background:rgba(97,175,239,0.15); color:#61afef; }
+.hop3 .pem-hop-badge { background:rgba(198,120,221,0.15); color:#c678dd; }
+.hop4 .pem-hop-badge { background:rgba(152,195,121,0.15); color:#98c379; }
+.pem-key-name { font-family:var(--font-m); font-size:11px; color:var(--text-2); margin-bottom:6px; word-break:break-all; }
+.pem-key-role { font-size:12px; font-weight:600; color:var(--text); margin-bottom:4px; }
+.pem-key-sub  { font-size:11px; color:var(--dim); }
+.pem-key-user { display:inline-block; margin-top:6px; padding:2px 8px; border-radius:4px; background:var(--bg0); font-family:var(--font-m); font-size:11px; color:var(--text-3); }
+
+/* Checklist */
+@keyframes check-pop  { 0%{transform:scale(1)} 40%{transform:scale(1.35)} 70%{transform:scale(0.9)} 100%{transform:scale(1)} }
+@keyframes check-in   { from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:none} }
+@keyframes shimmer    { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+.setup-checklist { display:flex; flex-direction:column; gap:6px; margin:10px 0; }
+.check-item {
+  display:flex; align-items:center; gap:14px; padding:13px 16px;
+  border-radius:10px; background:var(--bg3); border:1.5px solid var(--border);
+  cursor:pointer; transition:all 0.2s cubic-bezier(0.34,1.4,0.64,1);
+  user-select:none; position:relative; overflow:hidden;
+}
+.check-item::before {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+  background:var(--border); border-radius:10px 0 0 10px; transition:background 0.2s;
+}
+.check-item:hover { border-color:var(--hw); background:rgba(230,140,70,0.05); transform:translateX(4px); }
+.check-item:hover::before { background:var(--hw); }
+.check-item.checked { border-color:#98c379; background:rgba(152,195,121,0.07); transform:none; }
+.check-item.checked::before { background:#98c379; }
+.check-circle {
+  width:30px; height:30px; flex-shrink:0; border-radius:50%;
+  border:2px solid var(--border); background:var(--bg2);
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.25s cubic-bezier(0.34,1.4,0.64,1); position:relative;
+}
+.check-num  { font-size:12px; font-weight:800; color:var(--text-3); transition:all 0.15s; position:absolute; }
+.check-mark { font-size:15px; opacity:0; transform:scale(0); transition:all 0.22s cubic-bezier(0.34,1.4,0.64,1); position:absolute; }
+.check-item.checked .check-circle {
+  background:#98c379; border-color:#98c379;
+  box-shadow:0 0 0 5px rgba(152,195,121,0.18);
+  animation:check-pop 0.32s ease;
+}
+.check-item.checked .check-num  { opacity:0; transform:scale(0); }
+.check-item.checked .check-mark { opacity:1; transform:scale(1); }
+.check-text { flex:1; font-size:13px; color:var(--text-2); line-height:1.5; transition:color 0.2s; }
+.check-item.checked .check-text { color:var(--dim); text-decoration:line-through; }
+.check-sub  { font-size:11px; color:var(--dim); display:block; margin-top:2px; font-style:italic; }
+.check-tag  { font-size:10px; padding:2px 8px; border-radius:10px; margin-left:6px;
+              font-weight:700; white-space:nowrap; vertical-align:middle; }
+.tag-req  { background:rgba(230,140,70,0.15);  color:var(--hw);  border:1px solid rgba(230,140,70,0.3); }
+.tag-auto { background:rgba(152,195,121,0.15); color:#98c379;    border:1px solid rgba(152,195,121,0.3); }
+.tag-opt  { background:rgba(152,195,121,0.15); color:#98c379;    border:1px solid rgba(152,195,121,0.3); }
+.checklist-done-banner {
+  display:none; text-align:center; padding:14px 16px; margin-top:8px;
+  background:linear-gradient(135deg,rgba(152,195,121,0.12),rgba(152,195,121,0.04));
+  border:1.5px solid rgba(152,195,121,0.4); border-radius:10px;
+  font-size:14px; font-weight:700; color:#98c379;
+  animation:check-in 0.4s ease;
+}
+.checklist-done-banner.show { display:block; }
+
+/* Progress bar */
+.setup-progress { margin:16px 0 8px; }
+.progress-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.progress-title  { font-size:12px; font-weight:700; color:var(--text-2); }
+.progress-count  {
+  font-size:12px; font-weight:800; color:var(--hw);
+  background:rgba(230,140,70,0.1); padding:2px 12px;
+  border-radius:20px; border:1px solid rgba(230,140,70,0.25); transition:all 0.3s;
+}
+.progress-count.done { color:#98c379; background:rgba(152,195,121,0.12); border-color:rgba(152,195,121,0.3); }
+.progress-track {
+  height:10px; border-radius:5px; background:var(--border); overflow:hidden;
+  box-shadow:inset 0 1px 3px rgba(0,0,0,0.15);
+}
+.progress-fill {
+  height:100%; border-radius:5px; width:0%;
+  background:linear-gradient(90deg, var(--hw) 0%, #e8a04a 50%, #98c379 100%);
+  background-size:200% 100%;
+  transition:width 0.5s cubic-bezier(0.34,1.2,0.64,1);
+}
+.progress-fill::after {
+  content:''; display:block; height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent);
+  background-size:200% 100%; animation:shimmer 2s infinite linear;
+}
+
+/* Copy button */
+.code-block-wrap { position:relative; }
+.copy-btn {
+  position:absolute; top:8px; right:8px; padding:3px 10px;
+  border-radius:4px; border:1px solid var(--border); background:var(--bg3);
+  font-size:11px; cursor:pointer; color:var(--text-3); transition:all 0.15s;
+}
+.copy-btn:hover { background:var(--hw); color:#fff; border-color:var(--hw); }
+.copy-btn.copied { background:#98c379; color:#fff; border-color:#98c379; }
+</style>
+<script>
+/* ════════════════════════════════════════════════════════════════
+   HEIS Guide — Interactive JS
+   ✏️ changelog 섹션은 파일 맨 아래에 위치합니다 (이력 관리 용이)
+   변경 이력 추가는 파일 맨 아래 changelog 섹션에 append 하세요.
+════════════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', function () {
+
+/* ── Tab switching ── */
+const tabs   = document.querySelectorAll('.nav-tab');
+const panels = document.querySelectorAll('.tab-panel');
+
+function switchTab(id) {
+  tabs.forEach(t   => t.classList.toggle('active', t.dataset.tab === id));
+  panels.forEach(p => p.classList.toggle('active', p.id === 'tab-' + id));
+}
+tabs.forEach(tab => tab.addEventListener('click', () => switchTab(tab.dataset.tab)));
+
+/* ── Backfill step detail ── */
+const stepDetails = [
+  { icon: '✂️', title: 'Trim — CSV 전처리', desc: '대용량 원본 CSV에서 원하는 날짜 범위만 잘라내고 UTC ↔ KST 시간대를 보정합니다. 수백만 행 파일도 필요한 구간만 빠르게 추출합니다.' },
+  { icon: '🔄', title: 'Convert — 형식 변환', desc: 'CSV를 InfluxDB 전용 Line Protocol(.lp) 형식으로 변환합니다. 엑셀 매핑 파일을 기반으로 컬럼명 변경·스케일링을 자동 처리하며, 태그 경로가 달라도 이름만 같으면 자동 매칭(Fuzzy Matching)됩니다.' },
+  { icon: '📥', title: 'Extract — 서버 → 로컬', desc: 'PRD 서버에서 필요한 데이터를 필터링하여 내 PC로 가져옵니다. CPU Load와 I/O wait를 실시간 감지하여 서버에 부담이 가지 않도록 속도를 자동 조절합니다. 1분·1시간 단위 집계 추출도 지원합니다.' },
+  { icon: '🚚', title: 'Load — 로컬 → 서버', desc: '로컬에 있는 .lp 파일을 타겟 서버에 업로드하고 InfluxDB에 적재합니다. 다수의 파일을 한 번에 묶어 전송 효율을 극대화합니다.' },
+  { icon: '✅', title: 'Data Status — 수량 검증', desc: '적재 전/후의 데이터 수량이 정확히 일치하는지 실시간으로 비교합니다. 차이가 발생하면 즉시 확인할 수 있습니다.' },
+  { icon: '⏱️', title: 'Unix Time — 시간 변환', desc: '날짜(YYYY-MM-DD HH:MM:SS)와 시스템용 타임스탬프(밀리초)를 즉시 상호 변환합니다. 쿼리 작성 시 활용하세요.' }
+];
+
+function selectStep(group, idx) {
+  const container = document.getElementById('wf-' + group);
+  if (!container) return;
+  container.querySelectorAll('.wf-step').forEach((s, i) => s.classList.toggle('active', i === idx));
+  const detail = document.getElementById('wf-detail-' + group);
+  if (detail && stepDetails[idx]) {
+    const d = stepDetails[idx];
+    detail.classList.add('active');
+    detail.innerHTML = `<div class="step-detail-head"><span class="step-icon">${d.icon}</span><h3>${d.title}</h3></div><p>${d.desc}</p>`;
+  }
+}
+document.querySelectorAll('#wf-backfill .wf-step').forEach((el, i) => el.addEventListener('click', () => selectStep('backfill', i)));
+
+/* ── Tag Generator step detail ── */
+const tagStepDetails = [
+  { icon: '🏗️', title: 'S2 — 설비 기준 정보 생성', desc: 'ISL 파일의 설비 시트에서 부모/자식 설비 계층을 추출하고, HEIS tag 시트 기반으로 그룹 코드·한글명·영문명·단선도 여부를 자동 생성합니다.' },
+  { icon: '🏷️', title: 'S3-1 — 설비 태그 정보 수집', desc: 'ISL의 SCADA TAG·파라미터·단위·데이터 타입을 수집하여 HEIS 「3. 설비 태그 정보」 시트를 구성합니다. Fuzzy Matching으로 태그 경로가 달라도 이름 기반 자동 매칭됩니다.' },
+  { icon: '⚖️', title: 'S3-2 — 단위 및 스케일 변환', desc: 'kW 단위 태그에 스케일 번호 20(×1,000)을 자동 부여하고, 음수 보정 태그는 스케일 39(÷−1,000)를 적용합니다. 변환된 셀은 노란색으로 강조 표시됩니다.' },
+  { icon: '🚨', title: 'S4-1 — 알람 정보 수집', desc: 'ISL alarm 시트에서 알람 태그를 수집하고, PARAMETER 컬럼 값으로 아날로그(A)/디지털(D)을 자동 판별하여 알람 파라미터 행을 생성합니다.' },
+  { icon: '➕', title: 'S4-2 — 알람 확장', desc: '사이트별 설비 수·파라미터 구성(site_configs.py)을 기반으로 ALRM1, ALRM2 … 알람 파라미터를 대량 자동 생성합니다. Edit Config 버튼으로 즉시 커스터마이징 가능합니다.' },
+  { icon: '🎯', title: 'S5 — 알람 대상 정보 생성', desc: '알람명 키워드 분석으로 ALVL01(정보)·ALVL02(주의)·ALVL03(경보)·ALVL04(위험)를 자동 분류하여 「5. 알람 설비 대상 정보」 시트를 생성합니다.' },
+  { icon: '🚀', title: 'S6 — SQL 실행', desc: '생성된 HEIS 파일을 바탕으로 설비·태그·알람 등록 SQL을 생성하고 원격 DB에 직접 실행합니다. 실행 전 미리보기로 검토 가능합니다.' }
+];
+
+function selectTagStep(idx) {
+  const container = document.getElementById('wf-tag');
+  if (!container) return;
+  container.querySelectorAll('.wf-step').forEach((s, i) => s.classList.toggle('active', i === idx));
+  let detail = document.getElementById('wf-detail-tag');
+  if (!detail) {
+    detail = document.createElement('div');
+    detail.id = 'wf-detail-tag';
+    detail.className = 'step-detail';
+    container.insertAdjacentElement('afterend', detail);
+  }
+  if (tagStepDetails[idx]) {
+    const d = tagStepDetails[idx];
+    detail.classList.add('active');
+    detail.innerHTML = `<div class="step-detail-head"><span class="step-icon">${d.icon}</span><h3>${d.title}</h3></div><p>${d.desc}</p>`;
+  }
+}
+document.querySelectorAll('#wf-tag .wf-step').forEach((el, i) => el.addEventListener('click', () => selectTagStep(i)));
+
+/* ── Intersection reveal ── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.card, .tl-card, .tl-item, .tag-step-card, .qc-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(16px)';
+  el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+  observer.observe(el);
+});
+
+/* ── Card click ripple ── */
+document.querySelectorAll('.card, .ov-card, .qc-card, .tl-card, .tag-step-card').forEach(el => {
+  el.style.cursor = 'pointer';
+  el.addEventListener('click', function() {
+    this.classList.remove('card-clicked');
+    void this.offsetWidth;
+    this.classList.add('card-clicked');
+    this.addEventListener('animationend', () => this.classList.remove('card-clicked'), { once: true });
+  });
+});
+
+
+/* ── Setup: Stepper ── */
+document.querySelectorAll('.setup-step').forEach(step => {
+  const hdr = step.querySelector('.step-header');
+  if (!hdr) return;
+  hdr.addEventListener('click', () => {
+    const isActive = step.classList.contains('active');
+    document.querySelectorAll('.setup-step').forEach(s => s.classList.remove('active'));
+    if (!isActive) step.classList.add('active');
+  });
+});
+
+/* ── Setup: PEM env toggle ── */
+window.switchPemEnv = function(env, btn) {
+  document.querySelectorAll('.pem-env-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  ['DEV','PRD'].forEach(e => {
+    const el = document.getElementById('pem-' + e);
+    if (el) el.style.display = (e === env) ? 'grid' : 'none';
+  });
+};
+
+/* ── Setup: Checklist ── */
+const LS_KEY = 'heis_checklist_v1';
+
+function _saveChecklist() {
+  const items = document.querySelectorAll('.check-item');
+  const state = Array.from(items).map(i => i.classList.contains('checked'));
+  try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+function _loadChecklist() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+    document.querySelectorAll('.check-item').forEach((el, i) => {
+      if (saved[i]) el.classList.add('checked');
+    });
+  } catch(e) {}
+}
+
+function _updateProgress() {
+  const items  = document.querySelectorAll('.check-item');
+  const done   = document.querySelectorAll('.check-item.checked').length;
+  const total  = items.length;
+  const pct    = total ? Math.round(done / total * 100) : 0;
+  const fill   = document.getElementById('progress-fill');
+  const lbl    = document.getElementById('progress-pct');
+  const banner = document.getElementById('checklist-done');
+  if (fill) fill.style.width = pct + '%';
+  if (lbl)  {
+    lbl.textContent = done + ' / ' + total;
+    lbl.className   = 'progress-count' + (done === total && total > 0 ? ' done' : '');
+  }
+  if (banner) banner.className = 'checklist-done-banner' + (done === total && total > 0 ? ' show' : '');
+}
+
+window.toggleCheck = function(el) {
+  el.classList.toggle('checked');
+  _updateProgress();
+  _saveChecklist();
+};
+
+window.resetChecklist = function() {
+  document.querySelectorAll('.check-item').forEach(i => i.classList.remove('checked'));
+  _updateProgress();
+  _saveChecklist();
+};
+
+_loadChecklist();
+_updateProgress();
+
+/* ── Setup: Copy code ── */
+window.copyCode = function(id, btn) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ 복사됨';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1800);
+  }).catch(() => {
+    /* fallback for non-HTTPS */
+    const ta = document.createElement('textarea');
+    ta.value = el.textContent.trim();
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = '✓ 복사됨';
+    setTimeout(() => { btn.textContent = '복사'; }, 1800);
+  });
+};
+
+}); /* DOMContentLoaded end */
+</script>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header>
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="hw-chip">HANWHA ENERGY</div>
+      <div class="header-title">
+        <h1>HEIS <span>Tool</span></h1>
+        <p class="header-sub">GEP Operations · HEIS TAG, InfluxDB 데이터 관리</p>
+      </div>
+    </div>
+    <div class="ver-badge-hero">
+      <span class="ver-prefix">ver</span>1.5.2 &nbsp;·&nbsp; 2026-04-10
+    </div>
+  </div>
+</header>
+
+<!-- ══ NAV ══ -->
+<div class="nav-wrap">
+  <div class="nav-inner">
+    <button class="nav-tab changelog-tab active" data-tab="changelog">
+      <span class="tab-icon">📋</span>
+      History
+    </button>
+    <button class="nav-tab" data-tab="overview">
+      <span class="tab-icon">🏠</span>
+      개요
+    </button>
+    <button class="nav-tab" data-tab="tag">
+      <span class="tab-icon">🏷️</span>
+      Tag
+    </button>
+    <button class="nav-tab" data-tab="qc">
+      <span class="tab-icon">🔍</span>
+      QC
+    </button>
+    <button class="nav-tab" data-tab="backfill">
+      <span class="tab-icon">☁️</span>
+      Backfill
+    </button>
+    <button class="nav-tab" data-tab="monitor">
+      <span class="tab-icon">🖥️</span>
+      모니터
+    </button>
+    <button class="nav-tab" data-tab="setup">
+      <span class="tab-icon">⚙️</span>
+      설정
+    </button>
+  </div>
+</div>
+
+<!-- ══ MAIN ══ -->
+<div class="main">
+
+<!-- ════════════════════════════════════
+     TAB 0: OVERVIEW (홈)
+════════════════════════════════════ -->
+<div class="tab-panel" id="tab-overview">
+  <p class="section-title">🏠 HEIS Tool — 통합 데이터 관리 플랫폼</p>
+  <p class="section-desc">HEIS Tool은 태양광 발전소 데이터를 <strong>수집·변환·검증</strong>하는 3개의 핵심 도구와 실시간 서버 모니터로 구성된 통합 플랫폼입니다.</p>
+
+  <!-- 3 tool cards -->
+  <div class="ov-grid">
+    <div class="ov-card" onclick="switchTab('backfill')">
+      <div class="ov-card-header ov-header-backfill">
+        <span class="ov-big-icon">☁️</span>
+        <div>
+          <div class="ov-card-title">Backfill Tool</div>
+          <div class="ov-card-subtitle">데이터 이관 · 추출 · 적재</div>
+        </div>
+      </div>
+      <div class="ov-card-body">
+        <p>서버(InfluxDB) 데이터를 추출하거나 로컬 파일을 서버에 적재하는 전체 파이프라인을 제공합니다.</p>
+        <ul class="ov-feat-list">
+          <li><span class="ov-dot dot-orange"></span>CSV 전처리 및 기간 필터링 (Trim)</li>
+          <li><span class="ov-dot dot-orange"></span>Line Protocol 형식 변환 + Fuzzy 매칭 (Convert)</li>
+          <li><span class="ov-dot dot-orange"></span>서버 부하 자동 감지 · 속도 조절 (Extract)</li>
+          <li><span class="ov-dot dot-orange"></span>대용량 파일 일괄 적재 (Load)</li>
+        </ul>
+      </div>
+      <div class="ov-card-footer">탭을 클릭해 자세히 보기 →</div>
+    </div>
+
+    <div class="ov-card" onclick="switchTab('tag')">
+      <div class="ov-card-header ov-header-tag">
+        <span class="ov-big-icon">🏷️</span>
+        <div>
+          <div class="ov-card-title">Tag Generator</div>
+          <div class="ov-card-subtitle">태그 자동 생성 · DB 반영</div>
+        </div>
+      </div>
+      <div class="ov-card-body">
+        <p>ISL(설비 사양서)을 분석하여 HEIS 태그·알람 정보를 자동 생성하고 DB에 반영하는 전문 도구입니다.</p>
+        <ul class="ov-feat-list">
+          <li><span class="ov-dot dot-navy"></span>설비 기준 정보 자동 추출 (Step 2)</li>
+          <li><span class="ov-dot dot-navy"></span>파라미터·단위·스케일 자동 매핑 (Step 3)</li>
+          <li><span class="ov-dot dot-navy"></span>알람 등급 자동 분류 (Step 4~5)</li>
+          <li><span class="ov-dot dot-navy"></span>SQL 자동 생성 & 원격 DB 전송 (Step 6)</li>
+        </ul>
+      </div>
+      <div class="ov-card-footer">탭을 클릭해 자세히 보기 →</div>
+    </div>
+
+    <div class="ov-card" onclick="switchTab('qc')">
+      <div class="ov-card-header ov-header-qc">
+        <span class="ov-big-icon">🔍</span>
+        <div>
+          <div class="ov-card-title">QC Tool</div>
+          <div class="ov-card-subtitle">데이터 검증 · 시각화 리포트</div>
+        </div>
+      </div>
+      <div class="ov-card-body">
+        <p>현장 데이터(SCADA)와 서버 데이터(InfluxDB)를 정밀 비교하여 오차를 시각화 리포트로 제공합니다.</p>
+        <ul class="ov-feat-list">
+          <li><span class="ov-dot dot-purple"></span>K8s 로그 분석 · 누락 태그 감지</li>
+          <li><span class="ov-dot dot-purple"></span>캐시 즉시 갱신 (Cache Refresh)</li>
+          <li><span class="ov-dot dot-purple"></span>SCADA ↔ InfluxDB 오차 비교 (QC Compare)</li>
+          <li><span class="ov-dot dot-purple"></span>HTML 시각화 보고서 자동 생성</li>
+        </ul>
+      </div>
+      <div class="ov-card-footer">탭을 클릭해 자세히 보기 →</div>
+    </div>
+  </div>
+
+  <!-- 전체 데이터 흐름 다이어그램 -->
+  <p style="font-family:var(--font-d);font-size:16px;letter-spacing:0.04em;margin:32px 0 4px;color:var(--text);">🔄 시스템 데이터 흐름 (Data Flow)</p>
+  <p style="font-size:12px;color:var(--text-3);margin-bottom:16px;">현장에서 발생한 데이터가 최종 화면(HEIS 2.0)까지 전달되는 전체 경로입니다.</p>
+
+  <!-- DEV 경로 -->
+  <div class="arch-env-label arch-label-dev">DEV 환경</div>
+  <div class="arch-flow">
+    <div class="arch-node arch-scada"><div class="arch-icon">🏭</div><div class="arch-name">SCADA</div><div class="arch-sub">현장 설비</div></div>
+    <div class="arch-arr"><div class="arch-line"></div><div class="arch-albl">OPC UA</div></div>
+    <div class="arch-node arch-isl"><div class="arch-icon">🔌</div><div class="arch-name">ISL OPC UA<br>Agent</div><div class="arch-sub">프로토콜 변환</div></div>
+    <div class="arch-arr"><div class="arch-line"></div></div>
+    <div class="arch-node arch-isl"><div class="arch-icon">🖥️</div><div class="arch-name">ISL Server</div><div class="arch-sub">데이터 수집</div></div>
+    <div class="arch-arr"><div class="arch-line"></div></div>
+    <div class="arch-node arch-parser"><div class="arch-icon">⚙️</div><div class="arch-name">Parser</div><div class="arch-sub">K8s Pod</div></div>
+    <div class="arch-arr"><div class="arch-line"></div></div>
+    <div class="arch-node arch-kafka"><div class="arch-icon">📨</div><div class="arch-name">Kafka</div><div class="arch-sub">메시지 버스</div></div>
+    <div class="arch-arr"><div class="arch-line"></div></div>
+    <div class="arch-node arch-telegraf"><div class="arch-icon">📡</div><div class="arch-name">Telegraf</div><div class="arch-sub">수집 에이전트</div></div>
+    <div class="arch-arr"><div class="arch-line"></div></div>
+    <div class="arch-node arch-influx"><div class="arch-icon">🗄️</div><div class="arch-name">InfluxDB</div><div class="arch-sub">시계열 DB</div></div>
+    <div class="arch-arr"><div class="arch-line"></div></div>
+    <div class="arch-node arch-uep"><div class="arch-icon">🌐</div><div class="arch-name">UEP</div><div class="arch-sub">Spring API</div></div>
+    <div class="arch-arr"><div class="arch-line"></div></div>
+    <div class="arch-node arch-front"><div class="arch-icon">💻</div><div class="arch-name">HEIS 2.0</div><div class="arch-sub">Vue.js 화면</div></div>
+  </div>
+
+  <!-- PRD 경로 -->
+  <div class="arch-env-label arch-label-prd" style="margin-top:16px;">PRD 환경</div>
+  <div class="arch-flow">
+    <div class="arch-node arch-scada"><div class="arch-icon">🏭</div><div class="arch-name">SCADA</div><div class="arch-sub">현장 설비</div></div>
+    <div class="arch-arr"><div class="arch-line"></div><div class="arch-albl">OPC UA</div></div>
+    <div class="arch-node arch-isl"><div class="arch-icon">🔌</div><div class="arch-name">ISL OPC UA<br>Agent</div><div class="arch-sub">프로토콜 변환</div></div>
+    <div class="arch-arr"><div class="arch-line"></div></div>
+    <div class="arch-node arch-isl"><div class="arch-icon">🖥️</div><div class="arch-name">ISL Server</div><div class="arch-sub">데이터 수집</div></div>
+    <div class="arch-arr"><div class="arch-line"></div></div>
+    <div class="arch-node arch-parser"><div class="arch-icon">⚙️</div><div class="arch-name">Parser</div><div class="arch-sub">K8s Pod</div></div>
+    <div class="arch-arr"><div class="arch-line"></div></div>
+    <div class="arch-node arch-kafka"><div class="arch-icon">📨</div><div class="arch-name">Kafka</div><div class="arch-sub">메시지 버스</div></div>
+    <div class="arch-arr"><div class="arch-line"></div></div>
+    <div class="arch-node arch-telegraf"><div class="arch-icon">📡</div><div class="arch-name">Telegraf</div><div class="arch-sub">수집 에이전트</div></div>
+    <div class="arch-arr"><div class="arch-line"></div></div>
+    <div class="arch-node arch-influx"><div class="arch-icon">🗄️</div><div class="arch-name">InfluxDB</div><div class="arch-sub">시계열 DB</div></div>
+    <div class="arch-arr"><div class="arch-line"></div></div>
+    <div class="arch-node arch-uep"><div class="arch-icon">🌐</div><div class="arch-name">UEP</div><div class="arch-sub">Spring API</div></div>
+    <div class="arch-arr"><div class="arch-line"></div></div>
+    <div class="arch-node arch-front"><div class="arch-icon">💻</div><div class="arch-name">HEIS 2.0</div><div class="arch-sub">Vue.js 화면</div></div>
+  </div>
+
+  <!-- HEIS Tool 개입 위치 -->
+  <div class="arch-heis-note">
+    <span class="arch-heis-badge">🛠️ HEIS Tool 개입 위치</span>
+    <span class="arch-heis-item item-orange">Tag Generator → ISL 분석 → DB 태그 등록</span>
+    <span class="arch-heis-item item-blue">Backfill → InfluxDB 데이터 추출 / 적재</span>
+    <span class="arch-heis-item item-purple">QC Tool → Parser 로그 분석 · SCADA ↔ InfluxDB 비교</span>
+  </div>
+
+  <!-- 기술 스택 -->
+  <p style="font-family:var(--font-d);font-size:16px;letter-spacing:0.04em;margin:36px 0 4px;color:var(--text);">🧱 기술 스택 (Tech Stack)</p>
+  <p style="font-size:12px;color:var(--text-3);margin-bottom:14px;">v1.5.2 기준 — 각 레이어의 핵심 기술만 명시합니다.</p>
+
+  <table style="width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:24px;">
+    <colgroup>
+      <col style="width:130px">
+      <col>
+    </colgroup>
+    <tbody>
+      <tr style="border-top:1.5px solid var(--hw);">
+        <td style="padding:10px 12px;font-weight:700;color:var(--hw);white-space:nowrap;vertical-align:top;">🖥️ Runtime</td>
+        <td style="padding:10px 12px;color:var(--text-2);border-bottom:1px solid var(--border);line-height:1.8;">
+          <strong>Python 3.14+</strong> &nbsp;·&nbsp; <strong>PySide6 / Qt6</strong> (데스크톱 UI) &nbsp;·&nbsp; <strong>QML</strong> (설정 페이지)
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:10px 12px;font-weight:700;color:var(--hw);white-space:nowrap;vertical-align:top;">🗄️ Database</td>
+        <td style="padding:10px 12px;color:var(--text-2);border-bottom:1px solid var(--border);line-height:1.8;">
+          <strong>MySQL/MariaDB</strong> (homdb, 매핑·태그 기준정보) &nbsp;·&nbsp; <strong>InfluxDB 1.x</strong> (시계열 센서 데이터)<br>
+          <span style="color:var(--text-3);">SSH → <code style="font-family:var(--font-m);font-size:11px;">mysql -N -B</code> TSV 스트림 &nbsp;·&nbsp; MappingRepository 세션 캐시 &nbsp;·&nbsp; Excel fallback</span>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:10px 12px;font-weight:700;color:var(--hw);white-space:nowrap;vertical-align:top;">🔒 Security</td>
+        <td style="padding:10px 12px;color:var(--text-2);border-bottom:1px solid var(--border);line-height:1.8;">
+          <strong>keyring</strong> (Win Credential Manager / macOS Keychain) → fallback <strong>AES-256-GCM + PBKDF2</strong> (320k iter)<br>
+          <span style="color:var(--text-3);">패스프레이즈: MAC+hostname SHA-256 머신 파생 &nbsp;·&nbsp; MySQL full-escape (백슬래시·NUL·CR·LF 포함) &nbsp;·&nbsp; InfluxQL tag_filter 화이트리스트 &nbsp;·&nbsp; DEV/PRD 크레덴셜 분리</span>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:10px 12px;font-weight:700;color:var(--hw);white-space:nowrap;vertical-align:top;">📡 SSH</td>
+        <td style="padding:10px 12px;color:var(--text-2);border-bottom:1px solid var(--border);line-height:1.8;">
+          <strong>OpenSSH</strong> (System32 &gt; <code style="font-family:var(--font-m);font-size:11px;">shutil.which</code>, Win/Mac/Linux 자동 탐지) &nbsp;·&nbsp; <strong>ProxyJump 3-hop</strong> 터널<br>
+          <span style="color:var(--text-3);">재시도 + 지수 백오프 (최대 2회) &nbsp;·&nbsp; PEM chmod 400 / icacls &nbsp;·&nbsp; config chmod 600 &nbsp;·&nbsp; atexit 자동 정리</span>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:10px 12px;font-weight:700;color:var(--hw);white-space:nowrap;vertical-align:top;">⚙️ 설정·빌드</td>
+        <td style="padding:10px 12px;color:var(--text-2);border-bottom:1px solid var(--border);line-height:1.8;">
+          <strong>단일 버전 소스</strong>: <code style="font-family:var(--font-m);font-size:11px;">heis_main.py __version__</code> → pyproject.toml / __init__.py / HEIS_guide.html 자동 동기화<br>
+          <span style="color:var(--text-3);">OS별 기본 경로 자동 선택 (Win/macOS/XDG) &nbsp;·&nbsp; backfill_config 상수 — IP·User 하드코딩 전면 제거 &nbsp;·&nbsp; Briefcase 빌드</span>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:10px 12px;font-weight:700;color:var(--hw);white-space:nowrap;vertical-align:top;">🗺️ 매핑</td>
+        <td style="padding:10px 12px;color:var(--text-2);line-height:1.8;">
+          <strong>DB-first</strong>: TB_TAG_STDR_INFO ⋈ TB_SCADA_TAG_INFO &nbsp;·&nbsp; tb_scale_info FORML 수식 eval &nbsp;·&nbsp; SP_GET_HEIS_TAG_INFO 저장 프로시저<br>
+          <span style="color:var(--text-3);">SSH 불가 시 _mapping.xlsx 자동 fallback &nbsp;·&nbsp; gzip 압축 업로드로 Excel → MySQL 일괄 임포트</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 빠른 팁 -->
+  <div class="callout callout-tip" style="margin-top:24px;">
+    <span class="callout-icon">💡</span>
+    <div class="callout-body">
+      <strong>시작하기 전에</strong>
+      <ul>
+        <li>상단 탭을 클릭하여 각 도구의 상세 가이드로 이동하세요.</li>
+        <li>처음 사용자라면 <strong>Backfill → QC Tool</strong> 순서로 탭을 확인하세요.</li>
+        <li>서버 상태는 우측 사이드바 <strong>서버 모니터</strong>에서 실시간 확인 가능합니다.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     TAB: SETUP (설치·설정)
+════════════════════════════════════ -->
+<div class="tab-panel" id="tab-setup">
+  <p class="section-title">⚙️ 설치 및 초기 설정</p>
+  <p class="section-desc">단계를 클릭해 상세 내용을 확인하세요. 완료한 항목은 체크리스트에서 클릭하면 진행률이 표시됩니다.</p>
+
+  <!-- ════ STEPPER ════ -->
+  <div class="setup-stepper" id="setup-stepper">
+
+    <!-- STEP 1 ─ PEM 키 배치 -->
+    <div class="setup-step active" data-step="1">
+      <div class="step-left">
+        <div class="step-num">1</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-body">
+        <div class="step-header">
+          <span class="step-icon-badge">📁</span>
+          <span class="step-title">PEM 키 파일 배치</span>
+          <span class="step-badge">필수 6 + 선택 2</span>
+        </div>
+        <div class="step-content">
+          <!-- ENV toggle -->
+          <div class="pem-env-tabs">
+            <button class="pem-env-btn active" onclick="switchPemEnv('DEV',this)">DEV 환경</button>
+            <button class="pem-env-btn" onclick="switchPemEnv('PRD',this)">PRD 환경</button>
+          </div>
+          <!-- DEV cards -->
+          <div class="pem-key-grid" id="pem-DEV">
+            <div class="pem-key-card hop1">
+              <div class="pem-hop-badge">❶</div>
+              <div class="pem-key-name">SIT_DEV_DP_KEY_<strong>Bastion</strong>_Virginia.pem</div>
+              <div class="pem-key-role">🌐 Public Bastion</div>
+              <div class="pem-key-sub">인터넷 → VPC 최초 진입<br>공인 IP · Public Subnet</div>
+              <span class="pem-key-user">ec2-user</span>
+              <span class="pem-key-user" style="margin-top:4px;background:rgba(230,140,70,0.12);color:var(--hw);border:1px solid rgba(230,140,70,0.3)">필수</span>
+            </div>
+            <div class="pem-key-card hop2">
+              <div class="pem-hop-badge">❷</div>
+              <div class="pem-key-name">SIT_DEV_DP_KEY_<strong>APSUB</strong>_Virginia.pem</div>
+              <div class="pem-key-role">🔗 App Subnet Bastion</div>
+              <div class="pem-key-sub">VPC 내부 사설망 중계<br>10.157.xx.xx · App Subnet</div>
+              <span class="pem-key-user">ubuntu</span>
+              <span class="pem-key-user" style="margin-top:4px;background:rgba(230,140,70,0.12);color:var(--hw);border:1px solid rgba(230,140,70,0.3)">필수</span>
+            </div>
+            <div class="pem-key-card hop3">
+              <div class="pem-hop-badge">❸</div>
+              <div class="pem-key-name">SIT_DEV_DP_KEY_<strong>EKSSUB</strong>_Virginia.pem</div>
+              <div class="pem-key-role">☸️ EKS Subnet Bastion</div>
+              <div class="pem-key-sub">K8s 워커노드 직접 디버깅용<br>10.157.xx.xx · EKS Subnet</div>
+              <span class="pem-key-user">ec2-user</span>
+              <span class="pem-key-user" style="margin-top:4px;background:rgba(97,175,239,0.1);color:#61afef;border:1px solid rgba(97,175,239,0.3)">선택</span>
+            </div>
+            <div class="pem-key-card hop4">
+              <div class="pem-hop-badge">❹</div>
+              <div class="pem-key-name">SIT_DEV_DP_KEY_<strong>DBSUB</strong>_Virginia.pem</div>
+              <div class="pem-key-role">🗄️ DB Subnet Server</div>
+              <div class="pem-key-sub">InfluxDB / MySQL 최종 대상<br>10.157.xx.xx · DB Subnet</div>
+              <span class="pem-key-user">ec2-user</span>
+              <span class="pem-key-user" style="margin-top:4px;background:rgba(230,140,70,0.12);color:var(--hw);border:1px solid rgba(230,140,70,0.3)">필수</span>
+            </div>
+          </div>
+          <!-- PRD cards -->
+          <div class="pem-key-grid" id="pem-PRD" style="display:none">
+            <div class="pem-key-card hop1">
+              <div class="pem-hop-badge">❶</div>
+              <div class="pem-key-name">SIT_PRD_DP_KEY_<strong>Bastion</strong>_Virginia.pem</div>
+              <div class="pem-key-role">🌐 Public Bastion</div>
+              <div class="pem-key-sub">인터넷 → PRD VPC 진입<br>공인 IP · Public Subnet</div>
+              <span class="pem-key-user">ec2-user</span>
+              <span class="pem-key-user" style="margin-top:4px;background:rgba(230,140,70,0.12);color:var(--hw);border:1px solid rgba(230,140,70,0.3)">필수</span>
+            </div>
+            <div class="pem-key-card hop2">
+              <div class="pem-hop-badge">❷</div>
+              <div class="pem-key-name">SIT_PRD_DP_KEY_<strong>APSUB</strong>_Virginia.pem</div>
+              <div class="pem-key-role">🔗 App Subnet Bastion</div>
+              <div class="pem-key-sub">PRD 사설망 중계<br>10.157.xx.xx · App Subnet</div>
+              <span class="pem-key-user">ubuntu</span>
+              <span class="pem-key-user" style="margin-top:4px;background:rgba(230,140,70,0.12);color:var(--hw);border:1px solid rgba(230,140,70,0.3)">필수</span>
+            </div>
+            <div class="pem-key-card hop3">
+              <div class="pem-hop-badge">❸</div>
+              <div class="pem-key-name">SIT_PRD_DP_KEY_<strong>EKSSUB</strong>_Virginia.pem</div>
+              <div class="pem-key-role">☸️ EKS Subnet Bastion</div>
+              <div class="pem-key-sub">K8s 워커노드 직접 디버깅용<br>10.157.xx.xx · EKS Subnet</div>
+              <span class="pem-key-user">ec2-user</span>
+              <span class="pem-key-user" style="margin-top:4px;background:rgba(97,175,239,0.1);color:#61afef;border:1px solid rgba(97,175,239,0.3)">선택</span>
+            </div>
+            <div class="pem-key-card hop4">
+              <div class="pem-hop-badge">❹</div>
+              <div class="pem-key-name">SIT_PRD_DP_KEY_<strong>DBSUB</strong>_Virginia.pem</div>
+              <div class="pem-key-role">🗄️ DB Subnet Server</div>
+              <div class="pem-key-sub">PRD InfluxDB / MySQL<br>10.157.xx.xx · DB Subnet</div>
+              <span class="pem-key-user">ec2-user</span>
+              <span class="pem-key-user" style="margin-top:4px;background:rgba(230,140,70,0.12);color:var(--hw);border:1px solid rgba(230,140,70,0.3)">필수</span>
+            </div>
+          </div>
+          <p style="margin:10px 0 0;font-size:11px;color:var(--dim)">
+            저장 경로: <code style="font-family:var(--font-m)">%USERPROFILE%\Documents\_tunnel\pem\</code>
+            &nbsp;·&nbsp; 자동 감지 키워드: <code style="font-family:var(--font-m)">Bastion</code> / <code style="font-family:var(--font-m)">APSUB</code> / <code style="font-family:var(--font-m)">EKSSUB</code> / <code style="font-family:var(--font-m)">DBSUB</code>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2 ─ SSH 터널 구조 -->
+    <div class="setup-step" data-step="2">
+      <div class="step-left">
+        <div class="step-num">2</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-body">
+        <div class="step-header">
+          <span class="step-icon-badge">📡</span>
+          <span class="step-title">SSH 3-hop ProxyJump 구조</span>
+          <span class="step-badge">자동 구성</span>
+        </div>
+        <div class="step-content">
+          <div class="tunnel-diagram">
+            <div class="tunnel-node node-local">
+              <span class="n-icon">🖥️</span>
+              <span class="n-label">내 PC</span>
+              <span class="n-ip">Local</span>
+            </div>
+            <div class="tunnel-arrow"><div class="tunnel-dot"></div></div>
+            <div class="tunnel-node node-pub">
+              <span class="n-hop">❶</span>
+              <span class="n-icon">🌐</span>
+              <span class="n-label">Public Bastion</span>
+              <span class="n-key">Bastion.pem</span>
+              <span class="n-ip">공인 IP</span>
+            </div>
+            <div class="tunnel-arrow"><div class="tunnel-dot"></div></div>
+            <div class="tunnel-node node-app">
+              <span class="n-hop">❷</span>
+              <span class="n-icon">🔗</span>
+              <span class="n-label">App Subnet</span>
+              <span class="n-key">APSUB.pem</span>
+              <span class="n-ip">10.157.xx.xx</span>
+            </div>
+            <div class="tunnel-arrow"><div class="tunnel-dot"></div></div>
+            <div class="tunnel-node node-eks">
+              <span class="n-hop">❸</span>
+              <span class="n-icon">☸️</span>
+              <span class="n-label">EKS Subnet</span>
+              <span class="n-key">EKSSUB.pem</span>
+              <span class="n-ip">10.157.xx.xx</span>
+            </div>
+            <div class="tunnel-arrow"><div class="tunnel-dot"></div></div>
+            <div class="tunnel-node node-db">
+              <span class="n-hop">❹</span>
+              <span class="n-icon">🗄️</span>
+              <span class="n-label">DB Subnet</span>
+              <span class="n-key">DBSUB.pem</span>
+              <span class="n-ip">10.157.xx.xx</span>
+            </div>
+          </div>
+          <p style="font-size:11.5px;color:var(--dim);margin:6px 0 0">
+            HEIS Tool이 SSH config 파일을 자동 생성 → OpenSSH ProxyJump로 4단계 터널을 투명하게 연결합니다.
+            키 파일 권한(icacls / chmod 400)도 자동 적용됩니다.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3 ─ 파일 권한 -->
+    <div class="setup-step" data-step="3">
+      <div class="step-left">
+        <div class="step-num">3</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-body">
+        <div class="step-header">
+          <span class="step-icon-badge">🛡️</span>
+          <span class="step-title">PEM 파일 권한 설정</span>
+          <span class="step-badge tag-auto" style="background:rgba(97,175,239,0.15);color:#61afef;border-color:#61afef40">앱 실행 시 자동</span>
+        </div>
+        <div class="step-content">
+          <p style="font-size:12.5px;color:var(--text-2);margin:0 0 10px">HEIS Tool 실행 시 자동 적용됩니다. 수동 실행이 필요한 경우에만 아래 명령을 사용하세요.</p>
+          <p style="font-size:12px;font-weight:600;color:var(--text-2);margin:0 0 6px">🪟 Windows PowerShell</p>
+          <div class="code-block-wrap">
+            <pre id="code-ps" style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:12px 16px;font-size:12px;line-height:1.6;overflow-x:auto;margin:0 0 10px">$pem = "$env:USERPROFILE\Documents\_tunnel\pem"
+Get-ChildItem "$pem\*.pem" | ForEach-Object {
+    icacls $_.FullName /inheritance:r /grant:r "${env:USERNAME}:R"
+    Write-Host "✅ $($_.Name)"
+}</pre>
+            <button class="copy-btn" onclick="copyCode('code-ps',this)">복사</button>
+          </div>
+          <p style="font-size:12px;font-weight:600;color:var(--text-2);margin:0 0 6px">🐧 Linux / macOS</p>
+          <div class="code-block-wrap">
+            <pre id="code-chmod" style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:12px 16px;font-size:12px;margin:0">chmod 400 ~/Documents/_tunnel/pem/*.pem</pre>
+            <button class="copy-btn" onclick="copyCode('code-chmod',this)">복사</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4 ─ DB 계정 -->
+    <div class="setup-step" data-step="4">
+      <div class="step-left">
+        <div class="step-num">4</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-body">
+        <div class="step-header">
+          <span class="step-icon-badge">🔐</span>
+          <span class="step-title">DB 계정 설정</span>
+          <span class="step-badge" style="background:rgba(230,140,70,0.15);color:var(--hw);border-color:#e68c4640">필수</span>
+        </div>
+        <div class="step-content">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div style="background:var(--bg3);border:2px solid var(--hw);border-radius:10px;padding:14px">
+              <p style="margin:0 0 6px;font-weight:700;font-size:12.5px;color:var(--hw)">✅ 방법 A — Settings UI <span style="font-size:10px;opacity:.8">(권장)</span></p>
+              <p style="font-size:12px;color:var(--text-2);margin:0 0 8px">Windows Credential Manager에 암호화 저장. 파일로 남지 않음.</p>
+              <ol style="margin:0;padding-left:16px;font-size:12px;color:var(--text-2);line-height:1.9">
+                <li>상단 ⚙️ 설정 탭 클릭</li>
+                <li>DB Credentials 입력</li>
+                <li>Save → keyring 자동 저장</li>
+              </ol>
+            </div>
+            <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px">
+              <p style="margin:0 0 6px;font-weight:700;font-size:12.5px;color:var(--text-2)">📄 방법 B — db_credentials.json</p>
+              <p style="font-size:11.5px;color:#e06c75;margin:0 0 8px">⚠️ 평문 저장 — OneDrive 동기화 폴더 제외</p>
+              <div class="code-block-wrap">
+                <pre id="code-cred" style="background:var(--bg0);border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:11px;margin:0">{
+  "db_user": "root",
+  "db_pass": "your_password",
+  "db_user_prd": "root",
+  "db_pass_prd": "your_prd_pw"
+}</pre>
+                <button class="copy-btn" onclick="copyCode('code-cred',this)">복사</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 5 ─ Settings UI -->
+    <div class="setup-step" data-step="5">
+      <div class="step-left">
+        <div class="step-num">5</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-body">
+        <div class="step-header">
+          <span class="step-icon-badge">⚙️</span>
+          <span class="step-title">Settings UI 경로 설정</span>
+          <span class="step-badge" style="background:rgba(230,140,70,0.15);color:var(--hw);border-color:#e68c4640">필수</span>
+        </div>
+        <div class="step-content">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px">
+            <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
+              <div style="font-size:20px;margin-bottom:6px">📂</div>
+              <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px">PEM Key Dir</div>
+              <div style="font-size:11px;color:var(--dim)">Documents\_tunnel\pem</div>
+            </div>
+            <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
+              <div style="font-size:20px;margin-bottom:6px">📊</div>
+              <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px">Mapping File</div>
+              <div style="font-size:11px;color:var(--dim)">_backfill.xlsx 경로</div>
+            </div>
+            <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
+              <div style="font-size:20px;margin-bottom:6px">🔑</div>
+              <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px">DB Credentials</div>
+              <div style="font-size:11px;color:var(--dim)">user / pass 입력</div>
+            </div>
+          </div>
+          <p style="font-size:11px;color:var(--dim);margin:10px 0 0">
+            설정 저장 위치: <code style="font-family:var(--font-m)">%USERPROFILE%\.hanwha\global_config.json</code>
+            (비밀번호는 Windows Credential Manager에 별도 보관)
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 6 ─ 연결 테스트 (마지막, step-line 없음) -->
+    <div class="setup-step" data-step="6">
+      <div class="step-left">
+        <div class="step-num">6</div>
+      </div>
+      <div class="step-body">
+        <div class="step-header">
+          <span class="step-icon-badge">🚀</span>
+          <span class="step-title">연결 테스트</span>
+          <span class="step-badge" style="background:rgba(152,195,121,0.15);color:#98c379;border-color:#98c37940">완료 확인</span>
+        </div>
+        <div class="step-content">
+          <p style="font-size:12.5px;color:var(--text-2);margin:0 0 10px">각 탭에서 연결 상태를 확인하세요.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:12.5px;color:var(--text-2)">
+              ☁️ <strong>Backfill</strong> — DEV/PRD 연결 버튼
+            </div>
+            <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:12.5px;color:var(--text-2)">
+              🏷️ <strong>Tag Generator</strong> — SQL Preview 확인
+            </div>
+            <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:12.5px;color:var(--text-2)">
+              🖥️ <strong>서버 모니터</strong> — 사이드바 로드 표시
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /setup-stepper -->
+
+  <!-- ════ CHECKLIST ════ -->
+  <div style="margin-top:32px">
+    <!-- 헤더 -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div>
+        <p style="font-size:14px;font-weight:800;color:var(--text);margin:0">📋 신규 PC 셋업 체크리스트</p>
+        <p style="font-size:11px;color:var(--dim);margin:3px 0 0">항목을 클릭하면 체크됩니다. 완료 시 자동으로 저장됩니다.</p>
+      </div>
+      <button onclick="resetChecklist()"
+        style="display:flex;align-items:center;gap:5px;font-size:11px;padding:6px 14px;border-radius:6px;
+               border:1px solid var(--border);background:var(--bg3);color:var(--dim);
+               cursor:pointer;transition:all 0.15s;font-weight:600;"
+        onmouseover="this.style.borderColor='var(--hw)';this.style.color='var(--hw)'"
+        onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--dim)'">
+        ↺ 초기화
+      </button>
+    </div>
+
+    <!-- 진행률 바 -->
+    <div class="setup-progress">
+      <div class="progress-header">
+        <span class="progress-title">진행률</span>
+        <span class="progress-count" id="progress-pct">0 / 7</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+
+    <!-- 체크 항목 -->
+    <div class="setup-checklist" id="setup-checklist">
+
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-circle"><span class="check-num">1</span><span class="check-mark">✓</span></div>
+        <div class="check-text">
+          PEM 키를 지정 폴더에 복사
+          <span class="check-tag tag-req">필수 6개</span>
+          <span class="check-sub">📁 %USERPROFILE%\Documents\_tunnel\pem\ · DEV/PRD 각 Bastion+APSUB+DBSUB (EKSSUB는 선택)</span>
+        </div>
+      </div>
+
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-circle"><span class="check-num">2</span><span class="check-mark">✓</span></div>
+        <div class="check-text">
+          PEM 키 권한 설정 (icacls / chmod 400)
+          <span class="check-tag tag-auto">앱 자동 적용</span>
+          <span class="check-sub">🔒 Windows: 앱 실행 시 자동 · 수동: PowerShell 스크립트 실행 (Step 3)</span>
+        </div>
+      </div>
+
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-circle"><span class="check-num">3</span><span class="check-mark">✓</span></div>
+        <div class="check-text">
+          HEIS Tool 실행 → ⚙️ 설정 탭 이동
+          <span class="check-tag tag-req">필수</span>
+          <span class="check-sub">🖥️ 상단 네비게이션 우측 끝 ⚙️ 클릭</span>
+        </div>
+      </div>
+
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-circle"><span class="check-num">4</span><span class="check-mark">✓</span></div>
+        <div class="check-text">
+          <strong>PEM Key Dir</strong> 경로 입력 후 Save
+          <span class="check-tag tag-req">필수</span>
+          <span class="check-sub">📂 pem 폴더 경로 입력 → SSH 터널 자동 감지</span>
+        </div>
+      </div>
+
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-circle"><span class="check-num">5</span><span class="check-mark">✓</span></div>
+        <div class="check-text">
+          <strong>Mapping File</strong> (_backfill.xlsx) 경로 입력 후 Save
+          <span class="check-tag tag-req">필수</span>
+          <span class="check-sub">📊 DEV/PRD 매핑 엑셀 파일 경로 지정</span>
+        </div>
+      </div>
+
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-circle"><span class="check-num">6</span><span class="check-mark">✓</span></div>
+        <div class="check-text">
+          <strong>DB Credentials</strong> 입력 (DEV · PRD 각각)
+          <span class="check-tag tag-req">필수</span>
+          <span class="check-sub">🔑 입력 즉시 Windows Credential Manager(keyring)에 암호화 저장</span>
+        </div>
+      </div>
+
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-circle"><span class="check-num">7</span><span class="check-mark">✓</span></div>
+        <div class="check-text">
+          각 탭에서 연결 테스트 완료
+          <span class="check-tag tag-opt">확인 권장</span>
+          <span class="check-sub">☁️ Backfill 연결버튼 · 🏷️ Tag SQL Preview · 🖥️ 사이드바 서버 상태</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 완료 배너 -->
+    <div class="checklist-done-banner" id="checklist-done">
+      🎉 모든 설정 완료! HEIS Tool을 사용할 준비가 됐습니다.
+    </div>
+  </div>
+
+</div><!-- /tab-setup -->
+
+<!-- ════════════════════════════════════
+     TAB 1: BACKFILL
+════════════════════════════════════ -->
+<div class="tab-panel" id="tab-backfill">
+  <p class="section-title">☁️ Backfill Tool — InfluxDB 데이터 이관</p>
+  <p class="section-desc">SCADA CSV 전처리부터 InfluxDB 추출·적재·상태 확인까지 처리하는 통합 도구입니다. 사이드바에서 작업 목적에 맞는 메뉴를 선택하세요.</p>
+
+  <!-- Workflow -->
+  <div class="workflow" id="wf-backfill">
+    <div class="wf-step active" data-step="0">
+      <div class="wf-num">01</div>
+      <div class="wf-icon">🛠️</div>
+      <div class="wf-name">Trim</div>
+    </div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-step" data-step="1">
+      <div class="wf-num">02</div>
+      <div class="wf-icon">🚀</div>
+      <div class="wf-name">Convert</div>
+    </div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-step" data-step="2">
+      <div class="wf-num">03</div>
+      <div class="wf-icon">📡</div>
+      <div class="wf-name">Extract</div>
+    </div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-step" data-step="3">
+      <div class="wf-num">04</div>
+      <div class="wf-icon">🚚</div>
+      <div class="wf-name">Load</div>
+    </div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-step" data-step="4">
+      <div class="wf-num">05</div>
+      <div class="wf-icon">📊</div>
+      <div class="wf-name">Data Status</div>
+    </div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-step" data-step="5">
+      <div class="wf-num">06</div>
+      <div class="wf-icon">⏱️</div>
+      <div class="wf-name">Unix Time</div>
+    </div>
+  </div>
+
+  <!-- Global Config -->
+  <div style="margin-top:28px;margin-bottom:24px;">
+    <p style="font-family:var(--font-d);font-size:16px;font-weight:700;margin-bottom:14px;color:var(--text);">🌍 Global Configuration — 공통 설정</p>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 20px;">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px;">
+          <div style="font-size:11px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:6px;">📅 날짜 범위</div>
+          <div style="font-size:12px;color:var(--text-2);line-height:1.9;">
+            <div>Start / End 날짜·시간 직접 입력</div>
+            <div>캘린더 팝업 또는 키보드 조작 지원</div>
+            <div>최근 사용 기간 히스토리 드롭다운</div>
+            <div>오늘·어제·최근 7일 프리셋 제공</div>
+          </div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px;">
+          <div style="font-size:11px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:6px;">🏭 Plant (사이트)</div>
+          <div style="font-size:12px;color:var(--text-2);line-height:1.9;">
+            <div>드롭다운에서 사이트 선택</div>
+            <div>Load 버튼으로 매핑 파일 갱신</div>
+            <div>사이트별 태그 필터 자동 적용</div>
+          </div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px;">
+          <div style="font-size:11px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:6px;">🖥️ 환경 (DEV / PRD)</div>
+          <div style="font-size:12px;color:var(--text-2);line-height:1.9;">
+            <div><code style="font-family:var(--font-m);font-size:11px;">DEV</code> — 개발 서버, 검증용</div>
+            <div><code style="font-family:var(--font-m);font-size:11px;">PRD</code> — 운영 서버, 실데이터</div>
+            <div>PRD 선택 시 노드 선택 옵션 표시</div>
+            <div style="font-size:11px;color:var(--text-3);">Auto / Host 1 (140) / Host 2 (170)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature Cards -->
+  <p style="font-family:var(--font-d);font-size:16px;font-weight:700;margin-bottom:14px;color:var(--text);">📋 메뉴별 기능 상세</p>
+
+  <!-- Trim -->
+  <div style="margin-bottom:16px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <span style="font-family:var(--font-m);font-size:11px;font-weight:700;background:rgba(59,130,246,0.12);color:#3b82f6;padding:3px 10px;border-radius:4px;">01</span>
+      <p style="font-family:var(--font-d);font-size:15px;font-weight:700;color:var(--text);margin:0;">🛠️ Trim — CSV 전처리</p>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid #3b82f6;border-radius:8px;padding:16px 20px;">
+      <p style="font-size:13px;color:var(--text-2);margin:0 0 12px;">대용량 원본 CSV 파일에서 <strong>설정한 날짜 범위만 잘라내어</strong> <code style="font-family:var(--font-m);font-size:11px;">trim/</code> 하위 폴더에 저장합니다. 또는 여러 CSV를 하나로 병합합니다.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <div style="font-size:11px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:5px;">주요 기능</div>
+          <ul style="font-size:12px;color:var(--text-2);margin:0;padding-left:14px;line-height:2.0;">
+            <li>날짜 범위 필터링 — 수백만 행도 빠르게 처리</li>
+            <li>UTC ↔ KST 시간대 자동 보정</li>
+            <li>Merge — 복수 CSV를 단일 파일로 합치기</li>
+            <li>작업 디렉토리 / 병합 디렉토리 개별 지정</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-size:11px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:5px;">입력 / 출력</div>
+          <div style="font-size:12px;color:var(--text-2);line-height:2.0;">
+            <div>📥 원본 CSV 파일 (날짜 컬럼 포함)</div>
+            <div>📤 <code style="font-family:var(--font-m);font-size:11px;">trim/</code> 폴더 내 정제된 CSV</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Convert -->
+  <div style="margin-bottom:16px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <span style="font-family:var(--font-m);font-size:11px;font-weight:700;background:rgba(99,102,241,0.12);color:#6366f1;padding:3px 10px;border-radius:4px;">02</span>
+      <p style="font-family:var(--font-d);font-size:15px;font-weight:700;color:var(--text);margin:0;">🚀 Convert — Line Protocol 변환</p>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid #6366f1;border-radius:8px;padding:16px 20px;">
+      <p style="font-size:13px;color:var(--text-2);margin:0 0 12px;">SCADA CSV를 InfluxDB 전용 <strong>Line Protocol(.lp)</strong> 형식으로 변환합니다. 엑셀 매핑 파일로 컬럼명·스케일을 자동 처리합니다.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <div style="font-size:11px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:5px;">주요 옵션</div>
+          <ul style="font-size:12px;color:var(--text-2);margin:0;padding-left:14px;line-height:2.0;">
+            <li>최대 파일 크기 제한 (MB 단위 분할)</li>
+            <li>Host 태그 모드: default / custom / no_host</li>
+            <li>파일명 유효성 검증 (Fuzzy Matching 포함)</li>
+            <li>기간 필터링, 단일 LP 병합 옵션</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-size:11px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:5px;">입력 / 출력</div>
+          <div style="font-size:12px;color:var(--text-2);line-height:2.0;">
+            <div>📥 정제된 CSV + 엑셀 매핑 파일</div>
+            <div>📤 <code style="font-family:var(--font-m);font-size:11px;">.lp</code> 파일 (InfluxDB 적재용)</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:2px;">태그명 불일치도 Fuzzy 자동 매칭</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Extract -->
+  <div style="margin-bottom:16px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <span style="font-family:var(--font-m);font-size:11px;font-weight:700;background:rgba(34,197,94,0.12);color:#16a34a;padding:3px 10px;border-radius:4px;">03</span>
+      <p style="font-family:var(--font-d);font-size:15px;font-weight:700;color:var(--text);margin:0;">📡 Extract — 서버 → 로컬</p>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid #16a34a;border-radius:8px;padding:16px 20px;">
+      <p style="font-size:13px;color:var(--text-2);margin:0 0 12px;">DEV 또는 PRD InfluxDB에서 데이터를 추출해 로컬 <code style="font-family:var(--font-m);font-size:11px;">.lp</code> 파일로 저장합니다. 서버 부하를 실시간 감지해 자동 스로틀링합니다.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <div style="font-size:11px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:5px;">주요 옵션</div>
+          <ul style="font-size:12px;color:var(--text-2);margin:0;padding-left:14px;line-height:2.0;">
+            <li>추출 환경 선택 (DEV / PRD)</li>
+            <li>날짜 범위 + 추출 간격 (1h / 1d 등) 설정</li>
+            <li>포함/제외 태그 필터, Measurement 선택</li>
+            <li>gzip 압축 여부, 태그 제외 패턴</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-size:11px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:5px;">스로틀링</div>
+          <div style="font-size:12px;color:var(--text-2);line-height:2.0;">
+            <div>서버 <code style="font-family:var(--font-m);font-size:11px;">iowait &gt; 15%</code> 시 자동 일시 중지</div>
+            <div>로그에서 <code style="font-family:var(--font-m);font-size:11px;">[THROTTLE]</code> 메시지 확인</div>
+            <div>중지 후 자동 재개</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load -->
+  <div style="margin-bottom:16px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <span style="font-family:var(--font-m);font-size:11px;font-weight:700;background:rgba(14,165,233,0.12);color:#0284c7;padding:3px 10px;border-radius:4px;">04</span>
+      <p style="font-family:var(--font-d);font-size:15px;font-weight:700;color:var(--text);margin:0;">🚚 Load — 로컬 → 서버 적재</p>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid #0284c7;border-radius:8px;padding:16px 20px;">
+      <p style="font-size:13px;color:var(--text-2);margin:0 0 12px;">로컬의 <code style="font-family:var(--font-m);font-size:11px;">.lp</code> 파일을 원격 InfluxDB 서버에 업로드·적재합니다. 다수 파일 일괄 전송과 스마트 스로틀링을 지원합니다.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <div style="font-size:11px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:5px;">주요 옵션</div>
+          <ul style="font-size:12px;color:var(--text-2);margin:0;padding-left:14px;line-height:2.0;">
+            <li>로컬/원격 작업 디렉토리 개별 설정</li>
+            <li>동기화 지연(초) — 파일 간 전송 간격 조절</li>
+            <li>로컬 정리 / 원격 정리 자동 삭제 옵션</li>
+            <li>gzip 압축 전송, 자동 스로틀 옵션</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-size:11px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:5px;">PRD 노드 자동 선택</div>
+          <div style="font-size:12px;color:var(--text-2);line-height:2.0;">
+            <div><strong>Auto</strong> — 활성 쓰기 노드 자동 감지</div>
+            <div><strong>Host 1</strong> — Node 140 고정</div>
+            <div><strong>Host 2</strong> — Node 170 고정</div>
+            <div style="font-size:11px;color:var(--text-3);">Telegraf HTTP 204 응답으로 활성 노드 판별</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Status -->
+  <div style="margin-bottom:16px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <span style="font-family:var(--font-m);font-size:11px;font-weight:700;background:rgba(168,85,247,0.12);color:#9333ea;padding:3px 10px;border-radius:4px;">05</span>
+      <p style="font-family:var(--font-d);font-size:15px;font-weight:700;color:var(--text);margin:0;">📊 Data Status — 서버 데이터 현황 조회</p>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid #9333ea;border-radius:8px;padding:16px 20px;">
+      <p style="font-size:13px;color:var(--text-2);margin:0 0 12px;">지정한 환경(DEV/PRD)·Plant·기간으로 InfluxDB 서버의 <strong>데이터 적재 현황</strong>을 조회합니다. 적재 완료 여부 확인 및 누락 구간 검출에 활용합니다.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <div style="font-size:11px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:5px;">조회 설정</div>
+          <ul style="font-size:12px;color:var(--text-2);margin:0;padding-left:14px;line-height:2.0;">
+            <li>환경 선택: DEV / PRD</li>
+            <li>Plant ID (사이트) 입력</li>
+            <li>조회 기간 (Global 날짜 범위 적용)</li>
+            <li><strong>Check InfluxDB</strong> 버튼으로 즉시 실행</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-size:11px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:5px;">조회 결과</div>
+          <div style="font-size:12px;color:var(--text-2);line-height:2.0;">
+            <div>데이터 행 수 (Row Count)</div>
+            <div>실제 데이터 시간 범위</div>
+            <div>누락 구간 또는 적재 공백 확인</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:2px;">Load 완료 후 검증 용도로 활용</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Unix Time -->
+  <div style="margin-bottom:24px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <span style="font-family:var(--font-m);font-size:11px;font-weight:700;background:rgba(245,158,11,0.12);color:#d97706;padding:3px 10px;border-radius:4px;">06</span>
+      <p style="font-family:var(--font-d);font-size:15px;font-weight:700;color:var(--text);margin:0;">⏱️ Unix Time — 타임스탬프 변환기</p>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid #d97706;border-radius:8px;padding:16px 20px;">
+      <p style="font-size:13px;color:var(--text-2);margin:0 0 12px;">Unix 타임스탬프(ms)와 UTC 날짜·시간을 <strong>양방향 실시간 변환</strong>합니다. LP 파일 디버깅 및 시간 범위 계산에 유용합니다.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <div style="font-size:11px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:5px;">기능</div>
+          <ul style="font-size:12px;color:var(--text-2);margin:0;padding-left:14px;line-height:2.0;">
+            <li>13자리 Unix ms 입력 → UTC 자동 변환</li>
+            <li>UTC 날짜 입력 → Unix ms 자동 변환</li>
+            <li>타임존 오프셋 (±12~14시) 조정</li>
+            <li>↑↓ 화살표 키로 1초 / 1분 단위 이동</li>
+          </ul>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px;">
+          <div style="font-size:11px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:6px;">💡 활용 예시</div>
+          <div style="font-size:12px;color:var(--text-2);line-height:1.9;">
+            <div>LP 파일의 타임스탬프 값 확인</div>
+            <div>InfluxDB 쿼리 시간 범위 계산</div>
+            <div>KST ↔ UTC 빠른 변환</div>
+            <div>데이터 누락 구간 시간 특정</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Smart Node Routing -->
+  <div class="node-routing">
+    <h4>🤖 스마트 PRD 노드 자동 선택</h4>
+    <p style="font-size:13px;color:var(--text-2);margin-bottom:16px;">
+      PRD 작업 시 툴이 자동으로 <strong>Node 140</strong> 또는 <strong>Node 170</strong> 중 활성 쓰기 노드를 선택합니다.
+    </p>
+    <div class="routing-flow">
+      <div class="routing-box rbox-start">
+        📡 작업 시작
+        <div class="routing-sub">Extract / Load</div>
+      </div>
+      <div class="routing-arrow">→</div>
+      <div class="routing-box rbox-check">
+        🔎 활성 노드 감지
+        <div class="routing-sub">Telegraf HTTP 204 확인</div>
+      </div>
+      <div class="routing-arrow">→</div>
+      <div class="routing-box rbox-140">
+        ✅ Node 140
+        <div class="routing-sub">유휴 or 낮은 Load</div>
+      </div>
+      <div style="color:var(--text-4);font-size:13px;">or</div>
+      <div class="routing-box rbox-170">
+        ✅ Node 170
+        <div class="routing-sub">유휴 or 낮은 Load</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">⚠️</span>
+    <div class="callout-body">
+      <strong>PRD 운영 환경 작업 시 주의</strong>
+      <ul>
+        <li>날짜 범위와 Plant 필터를 반드시 재확인하세요 — 실 운영 데이터입니다.</li>
+        <li>서버 I/O 대기(iowait)가 <strong>15%</strong>를 초과하면 작업이 자동으로 일시 중지됩니다.</li>
+        <li>로그에서 <code style="font-family:var(--font-m);font-size:11px;background:var(--amber-l);padding:1px 5px;border-radius:3px;">[THROTTLE]</code> 메시지를 확인하세요.</li>
+        <li>Load 완료 후 <strong>Data Status</strong> 탭에서 적재 현황을 반드시 검증하세요.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     TAB 2: TAG GENERATOR
+════════════════════════════════════ -->
+<div class="tab-panel" id="tab-tag">
+  <p class="section-title">🏷️ Tag Generator — 설비 태그 관리</p>
+  <p class="section-desc">ISL 파일을 입력받아 설비 기준 정보·태그·알람을 자동 생성하고 원격 DB에 등록하는 종합 태그 관리 도구입니다. <strong>Step 2 → 6</strong> 순서대로 진행합니다.</p>
+
+  <!-- ── 워크플로우 바 ── -->
+  <div class="workflow" id="wf-tag">
+    <div class="wf-step active">
+      <div class="wf-num" style="background:var(--purple-l);color:var(--purple);">S2</div>
+      <div class="wf-icon">🏗️</div>
+      <div class="wf-name">설비기준</div>
+    </div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-step">
+      <div class="wf-num" style="background:var(--purple-l);color:var(--purple);">S3-1</div>
+      <div class="wf-icon">🏷️</div>
+      <div class="wf-name">태그수집</div>
+    </div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-step">
+      <div class="wf-num" style="background:var(--purple-l);color:var(--purple);">S3-2</div>
+      <div class="wf-icon">⚖️</div>
+      <div class="wf-name">스케일변환</div>
+    </div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-step">
+      <div class="wf-num" style="background:var(--purple-l);color:var(--purple);">S4-1</div>
+      <div class="wf-icon">🚨</div>
+      <div class="wf-name">알람수집</div>
+    </div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-step">
+      <div class="wf-num" style="background:var(--purple-l);color:var(--purple);">S4-2</div>
+      <div class="wf-icon">➕</div>
+      <div class="wf-name">알람확장</div>
+    </div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-step">
+      <div class="wf-num" style="background:var(--purple-l);color:var(--purple);">S5</div>
+      <div class="wf-icon">🎯</div>
+      <div class="wf-name">알람대상</div>
+    </div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-step">
+      <div class="wf-num" style="background:var(--purple-l);color:var(--purple);">S6</div>
+      <div class="wf-icon">🚀</div>
+      <div class="wf-name">SQL 실행</div>
+    </div>
+  </div>
+  <!-- ── 파일 준비 ── -->
+  <div style="margin-top:28px;margin-bottom:24px;">
+    <p style="font-family:var(--font-d);font-size:16px;font-weight:700;margin-bottom:14px;color:var(--text);">📁 작업 전 파일 준비</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;">
+        <div style="font-family:var(--font-d);font-size:13px;font-weight:700;color:var(--purple);margin-bottom:8px;">📄 ISL 파일 (Source)</div>
+        <p style="font-size:13px;color:var(--text-2);margin:0 0 8px;">파일명이 <code style="font-family:var(--font-m);font-size:11px;background:var(--purple-l);color:var(--purple);padding:1px 6px;border-radius:3px;">ISL_</code> 로 시작해야 합니다.</p>
+        <ul style="font-size:12px;color:var(--text-3);margin:0;padding-left:16px;line-height:1.9;">
+          <li>설비 리스트 시트 포함</li>
+          <li>알람(alarm) 시트 포함</li>
+          <li>파일명으로 사이트 자동 감지 (예: <code style="font-family:var(--font-m);font-size:11px;">ISL_IA002.xlsx</code>)</li>
+        </ul>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;">
+        <div style="font-family:var(--font-d);font-size:13px;font-weight:700;color:var(--orange);margin-bottom:8px;">📊 HEIS 파일 (Target)</div>
+        <p style="font-size:13px;color:var(--text-2);margin:0 0 8px;">파일명이 <code style="font-family:var(--font-m);font-size:11px;background:rgba(240,90,40,0.12);color:var(--orange);padding:1px 6px;border-radius:3px;">HEIS_</code> 로 시작해야 합니다.</p>
+        <ul style="font-size:12px;color:var(--text-3);margin:0;padding-left:16px;line-height:1.9;">
+          <li>각 Step 결과가 시트별로 기록됨</li>
+          <li>실행 시 버전이 자동 증가하여 새 파일 생성 (예: <code style="font-family:var(--font-m);font-size:11px;">HEIS_v2.xlsx</code>)</li>
+          <li><code style="font-family:var(--font-m);font-size:11px;">tag</code> 시트 — 영문명·단위 매핑 기준표</li>
+        </ul>
+      </div>
+    </div>
+    <div style="margin-top:10px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;align-items:center;gap:12px;">
+      <span style="font-size:18px;">📂</span>
+      <div>
+        <span style="font-family:var(--font-d);font-size:13px;font-weight:700;color:var(--text);">Set Dir</span>
+        <span style="font-size:12px;color:var(--text-3);margin-left:8px;">— ISL 파일과 HEIS 파일이 모두 위치한 폴더를 지정합니다. 출력 파일도 동일 폴더에 생성됩니다.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Step 2 ── -->
+  <div style="margin-bottom:20px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+      <span style="font-family:var(--font-m);font-size:11px;font-weight:700;background:var(--purple-l);color:var(--purple);padding:3px 10px;border-radius:4px;">STEP 2</span>
+      <p style="font-family:var(--font-d);font-size:16px;font-weight:700;color:var(--text);margin:0;">🏗️ 설비 기준 정보 생성</p>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--purple);border-radius:8px;padding:18px 20px;">
+      <p style="font-size:13px;color:var(--text-2);margin:0 0 14px;">ISL 파일의 설비 시트에서 모든 설비를 추출하여 HEIS 파일의 <strong>「2. 설비 기준 정보」</strong> 시트를 구성합니다.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <div style="font-size:11px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:6px;">처리 내용</div>
+          <ul style="font-size:12px;color:var(--text-2);margin:0;padding-left:16px;line-height:2.0;">
+            <li>부모설비 ID / 자식설비 ID 계층 자동 추출</li>
+            <li>설비 유형별 정렬 및 그룹 코드 매핑 (HEIS <code style="font-family:var(--font-m);font-size:11px;">tag</code> 시트 기반)</li>
+            <li>한글명·영문명 자동 생성, 대표설비 여부 설정</li>
+            <li>단선도 사용 여부(Y/N) 자동 판별</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-size:11px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:6px;">입력 / 출력</div>
+          <div style="font-size:12px;color:var(--text-2);line-height:2.0;">
+            <div>📥 ISL 설비 시트 + HEIS <code style="font-family:var(--font-m);font-size:11px;">tag</code> 시트</div>
+            <div>📤 HEIS <strong>「2. 설비 기준 정보」</strong> 시트 업데이트</div>
+            <div>💾 <code style="font-family:var(--font-m);font-size:11px;">HEIS_v{n+1}.xlsx</code> 새 파일 생성</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Step 3-1 ── -->
+  <div style="margin-bottom:20px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+      <span style="font-family:var(--font-m);font-size:11px;font-weight:700;background:var(--purple-l);color:var(--purple);padding:3px 10px;border-radius:4px;">STEP 3-1</span>
+      <p style="font-family:var(--font-d);font-size:16px;font-weight:700;color:var(--text);margin:0;">🏷️ 설비 태그 정보 수집</p>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--purple);border-radius:8px;padding:18px 20px;">
+      <p style="font-size:13px;color:var(--text-2);margin:0 0 14px;">ISL의 SCADA TAG·파라미터·단위·데이터 타입을 수집하여 HEIS <strong>「3. 설비 태그 정보」</strong> 시트를 구성합니다.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <div style="font-size:11px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:6px;">처리 내용</div>
+          <ul style="font-size:12px;color:var(--text-2);margin:0;padding-left:16px;line-height:2.0;">
+            <li>ISL에서 SCADA TAG 전체 수집</li>
+            <li>설비 유형별 정렬 후 그룹 구분선 자동 삽입</li>
+            <li>영문명은 HEIS <code style="font-family:var(--font-m);font-size:11px;">tag</code> 시트에서 매핑하여 덮어쓰기</li>
+            <li>단위(UNIT), 데이터 타입(A/D) 자동 할당</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-size:11px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:6px;">입력 / 출력</div>
+          <div style="font-size:12px;color:var(--text-2);line-height:2.0;">
+            <div>📥 ISL 태그 시트 + HEIS <code style="font-family:var(--font-m);font-size:11px;">tag</code> 매핑 시트</div>
+            <div>📤 HEIS <strong>「3. 설비 태그 정보」</strong> 시트</div>
+            <div>💾 <code style="font-family:var(--font-m);font-size:11px;">HEIS_v{n+1}.xlsx</code> 새 파일 생성</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Step 3-2 ── -->
+  <div style="margin-bottom:20px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+      <span style="font-family:var(--font-m);font-size:11px;font-weight:700;background:var(--purple-l);color:var(--purple);padding:3px 10px;border-radius:4px;">STEP 3-2</span>
+      <p style="font-family:var(--font-d);font-size:16px;font-weight:700;color:var(--text);margin:0;">⚖️ 단위 및 스케일 변환</p>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--purple);border-radius:8px;padding:18px 20px;">
+      <p style="font-size:13px;color:var(--text-2);margin:0 0 14px;">Step 3-1에서 수집된 태그의 단위를 표준화하고 스케일 번호를 자동 적용합니다. 변환된 셀은 <strong>노란색 강조</strong>로 표시됩니다.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+        <div style="background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.3);border-radius:6px;padding:12px;">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+            <span style="font-size:12px;font-weight:700;color:var(--text);">☑ Unit &amp; Scale Conversion</span>
+            <span style="font-size:10px;background:rgba(74,222,128,0.12);color:#4ade80;border:1px solid rgba(74,222,128,0.3);padding:1px 6px;border-radius:100px;">PV 기본 ON</span>
+          </div>
+          <ul style="font-size:12px;color:var(--text-2);margin:0;padding-left:14px;line-height:1.9;">
+            <li>단위가 <code style="font-family:var(--font-m);font-size:11px;">MW</code> 인 태그 → <code style="font-family:var(--font-m);font-size:11px;">kW</code> 로 변환</li>
+            <li>스케일 번호 20 자동 부여 (×1,000 변환)</li>
+            <li>음수 보정 태그는 스케일 39 (÷−1,000)</li>
+            <li style="color:var(--text-3);">⚡ BESS 사이트는 단위 변환 불필요 — 체크 해제 후 실행</li>
+          </ul>
+        </div>
+        <div style="background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.3);border-radius:6px;padding:12px;">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+            <span style="font-size:12px;font-weight:700;color:var(--text);">☐ Duplicate TAP to ORGTAP</span>
+            <span style="font-size:10px;background:rgba(148,163,184,0.1);color:var(--text-3);border:1px solid var(--border);padding:1px 6px;border-radius:100px;">기본 OFF</span>
+          </div>
+          <ul style="font-size:12px;color:var(--text-2);margin:0;padding-left:14px;line-height:1.9;">
+            <li>파라미터명이 <code style="font-family:var(--font-m);font-size:11px;">TAP</code> 인 행 발견 시</li>
+            <li>해당 행 위에 <code style="font-family:var(--font-m);font-size:11px;">ORGTAP</code> 행 자동 삽입</li>
+            <li>스케일 구분을 위한 원본 보존 처리 — 필요 시만 ON</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Scale table -->
+      <p style="font-size:12px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:8px;">⚖️ 스케일 번호 참고표</p>
+      <table class="scale-table">
+        <thead>
+          <tr><th>Scale No.</th><th>변환 공식</th><th>단위 예시</th><th>적용 상황</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>20</strong></td><td>TAG × 1,000</td><td>MW → kW</td><td>표준 kW 단위 변환 (가장 일반적)</td></tr>
+          <tr><td><strong>39</strong></td><td>TAG ÷ −1,000</td><td>MW → kW (음수)</td><td>부호 반전이 필요한 특수 보정값</td></tr>
+          <tr><td><strong>19</strong></td><td>TAG × 100</td><td>ratio → %</td><td>백분율 계열 (0~1 → 0~100)</td></tr>
+          <tr><td><strong>42</strong></td><td>TAG × 10</td><td>—</td><td>소수점 1자리 보정</td></tr>
+          <tr><td><strong>0</strong></td><td>TAG (변환 없음)</td><td>kW, %, A, V …</td><td>이미 표준 단위인 경우</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── Step 4-1 ── -->
+  <div style="margin-bottom:20px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+      <span style="font-family:var(--font-m);font-size:11px;font-weight:700;background:var(--purple-l);color:var(--purple);padding:3px 10px;border-radius:4px;">STEP 4-1</span>
+      <p style="font-family:var(--font-d);font-size:16px;font-weight:700;color:var(--text);margin:0;">🚨 알람 태그 정보 수집</p>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--purple);border-radius:8px;padding:18px 20px;">
+      <p style="font-size:13px;color:var(--text-2);margin:0 0 14px;">ISL의 <code style="font-family:var(--font-m);font-size:11px;">alarm</code> 시트를 파싱하여 HEIS <strong>「4. 알람 설비 태그」</strong> 시트를 구성합니다. 파라미터 유형·태그 속성·데이터 타입을 자동 분류합니다.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text-3);font-family:var(--font-d);letter-spacing:0.07em;margin-bottom:6px;">PARMTY (파라미터 유형)</div>
+          <div style="font-size:12px;color:var(--text-2);line-height:1.9;">
+            <div><code style="font-family:var(--font-m);font-size:11px;">PARMTY02</code> — 디지털 알람</div>
+            <div><code style="font-family:var(--font-m);font-size:11px;">PARMTY04</code> — 아날로그 알람</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:4px;">PARAMETER 컬럼 값으로 자동 판별</div>
+          </div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text-3);font-family:var(--font-d);letter-spacing:0.07em;margin-bottom:6px;">태그 속성 (TAG ATTR)</div>
+          <div style="font-size:12px;color:var(--text-2);line-height:1.9;">
+            <div><code style="font-family:var(--font-m);font-size:11px;">R</code> — 읽기 전용 (Read)</div>
+            <div><code style="font-family:var(--font-m);font-size:11px;">A</code> — 알람 (Alarm)</div>
+            <div><code style="font-family:var(--font-m);font-size:11px;">H</code> — 히스토리 (History)</div>
+          </div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text-3);font-family:var(--font-d);letter-spacing:0.07em;margin-bottom:6px;">데이터 타입</div>
+          <div style="font-size:12px;color:var(--text-2);line-height:1.9;">
+            <div><code style="font-family:var(--font-m);font-size:11px;">A</code> — Analog (아날로그)</div>
+            <div><code style="font-family:var(--font-m);font-size:11px;">D</code> — Digital (디지털)</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:4px;">설비별 정렬 후 구분행 삽입</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Step 4-2 ── -->
+  <div style="margin-bottom:20px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+      <span style="font-family:var(--font-m);font-size:11px;font-weight:700;background:var(--purple-l);color:var(--purple);padding:3px 10px;border-radius:4px;">STEP 4-2</span>
+      <p style="font-family:var(--font-d);font-size:16px;font-weight:700;color:var(--text);margin:0;">➕ 알람 확장</p>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--purple);border-radius:8px;padding:18px 20px;">
+      <p style="font-size:13px;color:var(--text-2);margin:0 0 14px;">사이트별 설비 수·파라미터 구성을 기반으로 알람 파라미터(<code style="font-family:var(--font-m);font-size:11px;">ALRM1</code>, <code style="font-family:var(--font-m);font-size:11px;">ALRM2</code> …)를 대량으로 자동 생성합니다.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <div style="font-size:11px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:6px;">처리 내용</div>
+          <ul style="font-size:12px;color:var(--text-2);margin:0;padding-left:16px;line-height:2.0;">
+            <li><strong>사이트 자동 감지</strong> — ISL 파일명에서 사이트 ID 추출 (예: <code style="font-family:var(--font-m);font-size:11px;">IA002</code>)</li>
+            <li><code style="font-family:var(--font-m);font-size:11px;">site_configs.py</code> 에서 해당 사이트의 설비 수·파라미터 매트릭스 로드</li>
+            <li>ISL alarm 시트에서 영문명·한글명 자동 매핑 후 행 생성</li>
+            <li>수백~수천 행의 알람 파라미터를 수초 내 완성</li>
+          </ul>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:14px;">
+          <div style="font-size:11px;font-family:var(--font-d);font-weight:700;color:var(--text-3);letter-spacing:0.08em;margin-bottom:8px;">⚙️ Edit Config — 사이트 설정 편집</div>
+          <p style="font-size:12px;color:var(--text-2);margin:0 0 6px;">Step 4-2 화면 우측의 <strong>Edit Config</strong> 버튼을 클릭하면 <code style="font-family:var(--font-m);font-size:11px;">site_configs.py</code> 편집 창이 열립니다.</p>
+          <ul style="font-size:12px;color:var(--text-2);margin:0;padding-left:14px;line-height:1.8;">
+            <li>사이트별 설비 종류·개수 추가/수정</li>
+            <li>파라미터 확장 패턴 커스터마이징</li>
+            <li>저장 즉시 옵션 목록에 반영됨</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Step 5 ── -->
+  <div style="margin-bottom:20px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+      <span style="font-family:var(--font-m);font-size:11px;font-weight:700;background:var(--purple-l);color:var(--purple);padding:3px 10px;border-radius:4px;">STEP 5</span>
+      <p style="font-family:var(--font-d);font-size:16px;font-weight:700;color:var(--text);margin:0;">🎯 알람 대상 정보 생성</p>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--purple);border-radius:8px;padding:18px 20px;">
+      <p style="font-size:13px;color:var(--text-2);margin:0 0 14px;">Step 4 에서 생성된 알람 태그를 읽어, 알람명 키워드 분석으로 <strong>등급(ALVL)을 자동 분류</strong>하여 「5. 알람 설비 대상 정보」 시트를 생성합니다.</p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px;">
+        <div style="text-align:center;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.25);border-radius:6px;padding:10px 8px;">
+          <div style="font-family:var(--font-m);font-size:13px;font-weight:700;color:#3b82f6;margin-bottom:4px;">ALVL01</div>
+          <div style="font-size:11px;color:var(--text-3);">정보</div>
+          <div style="font-size:10px;color:var(--text-3);margin-top:4px;">Status·Info 계열</div>
+        </div>
+        <div style="text-align:center;background:rgba(234,179,8,0.08);border:1px solid rgba(234,179,8,0.25);border-radius:6px;padding:10px 8px;">
+          <div style="font-family:var(--font-m);font-size:13px;font-weight:700;color:#ca8a04;margin-bottom:4px;">ALVL02</div>
+          <div style="font-size:11px;color:var(--text-3);">주의</div>
+          <div style="font-size:10px;color:var(--text-3);margin-top:4px;">Caution·Limit 계열</div>
+        </div>
+        <div style="text-align:center;background:rgba(249,115,22,0.08);border:1px solid rgba(249,115,22,0.25);border-radius:6px;padding:10px 8px;">
+          <div style="font-family:var(--font-m);font-size:13px;font-weight:700;color:#f97316;margin-bottom:4px;">ALVL03</div>
+          <div style="font-size:11px;color:var(--text-3);">경보</div>
+          <div style="font-size:10px;color:var(--text-3);margin-top:4px;">Warning·Alarm 계열</div>
+        </div>
+        <div style="text-align:center;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);border-radius:6px;padding:10px 8px;">
+          <div style="font-family:var(--font-m);font-size:13px;font-weight:700;color:#ef4444;margin-bottom:4px;">ALVL04</div>
+          <div style="font-size:11px;color:var(--text-3);">최고 위험</div>
+          <div style="font-size:10px;color:var(--text-3);margin-top:4px;">Trip·Emergency·Fault 계열</div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text-3);background:var(--bg);border-radius:5px;padding:10px 14px;">
+        💡 <strong>IVT / IVS</strong> 파라미터는 별도 기준으로 등급 분류됩니다. 공백 구분행도 그대로 유지되어 시트 구조가 보존됩니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Step 6 ── -->
+  <div style="margin-bottom:24px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+      <span style="font-family:var(--font-m);font-size:11px;font-weight:700;background:var(--purple-l);color:var(--purple);padding:3px 10px;border-radius:4px;">STEP 6</span>
+      <p style="font-family:var(--font-d);font-size:16px;font-weight:700;color:var(--text);margin:0;">🚀 SQL 추출 및 원격 업로드</p>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--purple);border-radius:8px;padding:18px 20px;">
+      <p style="font-size:13px;color:var(--text-2);margin:0 0 14px;">완성된 HEIS 파일의 SQL 컬럼 데이터를 추출하여 로컬에 저장하고, SSH 터널을 통해 원격 DB 서버에서 직접 실행합니다.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:14px;">
+          <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:8px;">📤 Extract SQL (SQL 추출)</div>
+          <ul style="font-size:12px;color:var(--text-2);margin:0;padding-left:14px;line-height:1.9;">
+            <li>HEIS 파일의 SQL·SQL2 컬럼에서 쿼리 수집</li>
+            <li><code style="font-family:var(--font-m);font-size:11px;">INSERT</code> → <code style="font-family:var(--font-m);font-size:11px;">REPLACE</code> 자동 변환</li>
+            <li><code style="font-family:var(--font-m);font-size:11px;">query.sql</code> / <code style="font-family:var(--font-m);font-size:11px;">re_query.sql</code> 로컬 저장</li>
+          </ul>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:14px;">
+          <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:8px;">🛰️ Upload &amp; Execute (원격 실행)</div>
+          <ul style="font-size:12px;color:var(--text-2);margin:0;padding-left:14px;line-height:1.9;">
+            <li>SSH Bastion → DB 서버 2단 터널 접속</li>
+            <li>gzip 압축 전송 후 리모트에서 압축 해제</li>
+            <li>MySQL 자동 실행 후 임시 파일 정리 (Clean 옵션)</li>
+          </ul>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="display:flex;align-items:center;gap:10px;background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.25);border-radius:6px;padding:10px 14px;">
+          <span style="font-family:var(--font-m);font-size:12px;font-weight:700;color:#16a34a;background:rgba(34,197,94,0.15);padding:2px 8px;border-radius:3px;">DEV</span>
+          <span style="font-size:12px;color:var(--text-2);">개발 환경 — 검증용. 실제 서비스 영향 없음.</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.25);border-radius:6px;padding:10px 14px;">
+          <span style="font-family:var(--font-m);font-size:12px;font-weight:700;color:#dc2626;background:rgba(239,68,68,0.15);padding:2px 8px;border-radius:3px;">PRD</span>
+          <span style="font-size:12px;color:var(--text-2);">운영 환경 — DEV 검증 완료 후 실행.</span>
+        </div>
+      </div>
+      <div style="margin-top:12px;font-size:12px;color:var(--text-3);background:var(--bg);border-radius:5px;padding:10px 14px;">
+        🔑 DB 계정(db_user, db_pass)은 PEM 폴더 내 <code style="font-family:var(--font-m);font-size:11px;">db_credentials.json</code> 에 별도 저장됩니다. 소스 코드에 하드코딩하지 마세요.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 주의사항 ── -->
+  <div class="callout callout-warn">
+    <span class="callout-icon">⚠️</span>
+    <div class="callout-body">
+      <strong>작업 전 필수 확인</strong>
+      <ul>
+        <li>각 Step 실행 전 <strong>🚫 Kill Excel</strong> 버튼으로 열려 있는 엑셀을 모두 종료하세요 — 파일 잠금으로 인한 쓰기 오류 방지.</li>
+        <li>Source 파일명에 <code style="font-family:var(--font-m);font-size:11px;background:var(--amber-l);padding:1px 5px;border-radius:3px;">isl</code>, Target 파일명에 <code style="font-family:var(--font-m);font-size:11px;background:var(--amber-l);padding:1px 5px;border-radius:3px;">heis</code> 가 포함되어야 자동 인식됩니다.</li>
+        <li>Step 6 Upload 전 반드시 <strong>DEV</strong> 환경에서 먼저 검증한 뒤 <strong>PRD</strong> 로 전환하세요.</li>
+        <li>새 사이트 추가 시 Step 4-2 의 <strong>Edit Config</strong>에서 <code style="font-family:var(--font-m);font-size:11px;background:var(--amber-l);padding:1px 5px;border-radius:3px;">site_configs.py</code> 를 먼저 업데이트하세요.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     TAB 3: QC TOOL
+════════════════════════════════════ -->
+<div class="tab-panel" id="tab-qc">
+  <p class="section-title">🔍 QC Tool — 데이터 검증</p>
+  <p class="section-desc">데이터 정합성 확인, 캐시 갱신, 시스템 진단을 위한 통합 검증 도구입니다.</p>
+
+  <div class="qc-flow">
+    <div class="qc-row">
+      <div class="qc-card">
+        <div class="qc-card-head">
+          <div class="qc-num">1</div>
+          <strong>🔄 Cache Refresh</strong>
+        </div>
+        <p>Tag / Scale 캐시 정보를 즉시 갱신합니다. PV ID나 Tag ID를 입력하면 해당 항목의 캐시를 바로 업데이트합니다.</p>
+        <span class="card-tag tag-sky">캐시 갱신</span>
+      </div>
+      <div class="qc-card">
+        <div class="qc-card-head">
+          <div class="qc-num">2</div>
+          <strong>🔎 Missing Tags</strong>
+        </div>
+        <p>K8s 파서 포드의 로그를 분석하여 <strong>누락된 태그</strong>(<code style="font-family:var(--font-m);font-size:11px;">Not Registered</code>)나 시스템 오류를 빠르게 찾아냅니다.</p>
+        <span class="card-tag tag-red">로그 분석</span>
+      </div>
+    </div>
+    <div class="qc-row">
+      <div class="qc-card">
+        <div class="qc-card-head">
+          <div class="qc-num">3</div>
+          <strong>📡 Parser Data</strong>
+        </div>
+        <p>수집기(Parser) 데이터와 HEIS DB 데이터의 일치 여부를 실시간 API로 대조합니다. 주기적 자동 로깅도 지원합니다.</p>
+        <span class="card-tag tag-blue">실시간 대조</span>
+      </div>
+      <div class="qc-card">
+        <div class="qc-card-head">
+          <div class="qc-num">4</div>
+          <strong>📊 QC Compare</strong>
+        </div>
+        <p>현장 원본 데이터(SCADA) ↔ InfluxDB 서버 데이터를 정밀 비교합니다. 오차가 큰 태그를 <strong>HTML 시각화 리포트</strong>로 생성합니다.</p>
+        <span class="card-tag tag-purple">비교 리포트</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── QC Compare 상세 워크플로우 ── -->
+  <div style="margin-top:32px;">
+    <p style="font-family:var(--font-d);font-size:18px;letter-spacing:0.04em;margin-bottom:4px;color:var(--text);">📊 QC Compare — 단계별 흐름</p>
+    <p style="font-size:13px;color:var(--text-3);margin-bottom:22px;">SCADA(현장) 데이터와 InfluxDB(서버) 데이터가 어떻게 비교되어 리포트로 나오는지, 7단계로 설명합니다.</p>
+
+    <!-- Pipeline -->
+    <div class="qc-pipeline">
+
+      <!-- Step 1 -->
+      <div class="qcp-step">
+        <div class="qcp-icon" style="background:var(--hw-l);color:var(--hw);">📂</div>
+        <div class="qcp-body">
+          <div class="qcp-num">STEP 1</div>
+          <div class="qcp-title">LP 파일 준비 — Backfill Tool 사용</div>
+          <div class="qcp-desc">
+            QC Compare를 실행하려면 두 종류의 <em>Line Protocol(.lp)</em> 파일이 필요합니다.<br>
+            두 파일 모두 <strong>Backfill Tool</strong>에서 만들어집니다.
+          </div>
+
+          <!-- 두 파일 출처 카드 -->
+          <div class="qcp-lp-source-grid">
+            <!-- SCADA LP -->
+            <div class="lp-source-card lp-source-scada">
+              <div class="lp-source-header">
+                <span class="lp-source-tag tag-scada">SCADA LP</span>
+                <span class="lp-source-tool">Backfill → Convert</span>
+              </div>
+              <div class="lp-source-steps">
+                <div class="lp-source-step">
+                  <span class="lp-step-num">①</span>
+                  <span>현장에서 받은 <strong>SCADA CSV 파일</strong>을 준비</span>
+                </div>
+                <div class="lp-source-arrow">↓</div>
+                <div class="lp-source-step">
+                  <span class="lp-step-num">②</span>
+                  <span>Backfill <strong>Convert</strong> 탭에서 CSV → LP 변환<br>
+                  <em style="font-size:11px;color:var(--text-3);">매핑 엑셀 기반으로 컬럼명·스케일 자동 처리</em></span>
+                </div>
+                <div class="lp-source-arrow">↓</div>
+                <div class="lp-source-step lp-step-result">
+                  <span class="lp-step-num">✅</span>
+                  <span><code class="qcp-code">scada_사이트명.lp</code> 생성 완료</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- InfluxDB LP -->
+            <div class="lp-source-card lp-source-influx">
+              <div class="lp-source-header">
+                <span class="lp-source-tag tag-influx">InfluxDB LP</span>
+                <span class="lp-source-tool">Backfill → Extract</span>
+              </div>
+              <div class="lp-source-steps">
+                <div class="lp-source-step">
+                  <span class="lp-step-num">①</span>
+                  <span>Backfill <strong>Extract</strong> 탭에서 사이트·기간 선택</span>
+                </div>
+                <div class="lp-source-arrow">↓</div>
+                <div class="lp-source-step">
+                  <span class="lp-step-num">②</span>
+                  <span>서버에서 데이터 추출 — <strong>LP 파일 자동 생성</strong><br>
+                  <em style="font-size:11px;color:var(--text-3);">별도 변환 작업 없이 추출 즉시 .lp 형식으로 저장</em></span>
+                </div>
+                <div class="lp-source-arrow">↓</div>
+                <div class="lp-source-step lp-step-result">
+                  <span class="lp-step-num">✅</span>
+                  <span><code class="qcp-code">influx_사이트명.lp</code> 생성 완료</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="qcp-chips" style="margin-top:10px;">
+            <span class="qcp-chip chip-orange">SCADA.lp — Convert로 직접 변환</span>
+            <span class="qcp-chip chip-blue">InfluxDB.lp — Extract 시 자동 생성</span>
+          </div>
+        </div>
+      </div>
+      <div class="qcp-arrow">↓</div>
+
+      <!-- Step 2 -->
+      <div class="qcp-step">
+        <div class="qcp-icon" style="background:var(--blue-l);color:var(--blue);">🔬</div>
+        <div class="qcp-body">
+          <div class="qcp-num">STEP 2</div>
+          <div class="qcp-title">LP 파일 파싱</div>
+          <div class="qcp-desc">
+            각 .lp 파일을 한 줄씩 읽어 <strong>태그별로</strong> 데이터를 분류합니다.<br>
+            결과: <code class="qcp-code">태그명 → { 타임스탬프(ms): 값 }</code> 형태의 내부 구조
+          </div>
+          <div class="qcp-lp-box">
+            <div class="qcp-lp-label">LP 한 줄 예시</div>
+            <code class="qcp-lp">measurement,pdevice=PV01,cdevice=INV01,parameter=ACPower value=1234.5 1700000000000</code>
+            <div class="qcp-lp-parts">
+              <span class="lp-part lp-measurement">측정명</span>
+              <span class="lp-part lp-tags">태그(장비/파라미터)</span>
+              <span class="lp-part lp-value">값</span>
+              <span class="lp-part lp-ts">타임스탬프(ms)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="qcp-arrow">↓</div>
+
+      <!-- Step 3 -->
+      <div class="qcp-step">
+        <div class="qcp-icon" style="background:var(--amber-l);color:var(--amber);">⚖️</div>
+        <div class="qcp-body">
+          <div class="qcp-num">STEP 3</div>
+          <div class="qcp-title">스케일 보정 (SCADA 측)</div>
+          <div class="qcp-desc">
+            현장 SCADA는 원시 전기 신호 값을 전송하므로 HEIS Scale 번호에 따라 단위를 변환해야 합니다.<br>
+            변환 후 값이 InfluxDB에 저장된 값과 동일한 단위가 됩니다.
+          </div>
+          <div class="qcp-scale-table">
+            <table>
+              <thead><tr><th>Scale No.</th><th>변환 공식</th><th>예시</th></tr></thead>
+              <tbody>
+                <tr><td>20</td><td>값 × 1,000</td><td>5  → 500</td></tr>
+                <tr><td>18</td><td>값 ÷ 1,000</td><td>1000 → 1.0</td></tr>
+                <tr><td>42</td><td>값 × 10</td><td>12.3 → 123</td></tr>
+                <tr><td>39</td><td>값 ÷ −1,000</td><td>반전 보정</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="qcp-arrow">↓</div>
+
+      <!-- Step 4 -->
+      <div class="qcp-step">
+        <div class="qcp-icon" style="background:var(--sky-l);color:var(--sky);">🕐</div>
+        <div class="qcp-body">
+          <div class="qcp-num">STEP 4</div>
+          <div class="qcp-title">타임스탬프 매칭</div>
+          <div class="qcp-desc">
+            SCADA와 InfluxDB의 같은 시간대 데이터를 짝지읍니다.<br>
+            <strong>Tolerance(허용 오차)</strong> 설정 시 정확히 일치하지 않아도 가장 가까운 값을 자동으로 찾습니다.
+          </div>
+          <div class="qcp-match-viz">
+            <div class="qcp-match-row">
+              <div class="qcp-match-side scada-side">
+                <div class="qcp-match-label">SCADA</div>
+                <div class="qcp-match-pts">
+                  <span class="match-pt">13:00:00</span>
+                  <span class="match-pt">13:05:00</span>
+                  <span class="match-pt">13:10:00</span>
+                </div>
+              </div>
+              <div class="qcp-match-lines">
+                <div class="match-line"></div>
+                <div class="match-line"></div>
+                <div class="match-line match-approx">≈</div>
+              </div>
+              <div class="qcp-match-side influx-side">
+                <div class="qcp-match-label">InfluxDB</div>
+                <div class="qcp-match-pts">
+                  <span class="match-pt">13:00:00</span>
+                  <span class="match-pt">13:05:00</span>
+                  <span class="match-pt">13:10:08 <em style="font-size:10px;color:var(--amber);">±허용</em></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="qcp-arrow">↓</div>
+
+      <!-- Step 5 -->
+      <div class="qcp-step">
+        <div class="qcp-icon" style="background:var(--red-l);color:var(--red);">🎯</div>
+        <div class="qcp-body">
+          <div class="qcp-num">STEP 5</div>
+          <div class="qcp-title">오차 판정 (Pass / Fail)</div>
+          <div class="qcp-desc">
+            짝지어진 두 값의 차이를 계산하여 오차율이 기준(기본 <strong>15%</strong>) 이상이면 <strong style="color:var(--red);">Fail</strong>, 미만이면 <strong style="color:var(--green);">Pass</strong>로 기록합니다.
+          </div>
+          <div class="qcp-formula-box">
+            <div class="qcp-formula">
+              <span class="formula-part">오차율</span>
+              <span class="formula-op">=</span>
+              <span class="formula-part">|SCADA값 − InfluxDB값|</span>
+              <span class="formula-op">÷</span>
+              <span class="formula-part">|SCADA값|</span>
+            </div>
+            <div class="qcp-verdict-row">
+              <span class="verdict pass">✅ Pass &nbsp; 오차율 ≤ 15%</span>
+              <span class="verdict fail">❌ Fail &nbsp; 오차율 &gt; 15%</span>
+              <span class="verdict na">⚪ N/A &nbsp; 한쪽만 데이터 존재</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="qcp-arrow">↓</div>
+
+      <!-- Step 6 -->
+      <div class="qcp-step">
+        <div class="qcp-icon" style="background:var(--green-l);color:var(--green);">📄</div>
+        <div class="qcp-body">
+          <div class="qcp-num">STEP 6</div>
+          <div class="qcp-title">CSV 결과 파일 생성</div>
+          <div class="qcp-desc">
+            태그별·시간별 비교 결과를 <strong>CSV 파일</strong>로 출력합니다. 이 파일이 최종 HTML 보고서의 데이터 원천입니다.
+          </div>
+          <div class="qcp-csv-preview">
+            <div class="csv-header-row">
+              <span>timestamp</span><span>lp_tag</span><span>scada_value</span><span>influx_value</span><span>Test Result</span><span>Scale_N</span>
+            </div>
+            <div class="csv-data-row">
+              <span>2024-01-15 13:00:00</span><span>PV01/INV01/ACPower</span><span>500.0</span><span>499.2</span><span class="cell-pass">Pass</span><span>20</span>
+            </div>
+            <div class="csv-data-row fail-row">
+              <span>2024-01-15 13:05:00</span><span>PV01/INV01/DCPower</span><span>320.0</span><span>185.1</span><span class="cell-fail">Fail</span><span>20</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="qcp-arrow">↓</div>
+
+      <!-- Step 7 -->
+      <div class="qcp-step">
+        <div class="qcp-icon" style="background:var(--purple-l);color:var(--purple);">📊</div>
+        <div class="qcp-body">
+          <div class="qcp-num">STEP 7</div>
+          <div class="qcp-title">HTML 시각화 리포트 생성</div>
+          <div class="qcp-desc">
+            CSV 데이터를 바탕으로 <strong>Fail 태그를 중심으로</strong> 차트와 표가 포함된 HTML 보고서를 자동 생성합니다.<br>
+            브라우저에서 바로 열어 누구나 쉽게 결과를 확인할 수 있습니다.
+          </div>
+          <div class="qcp-report-viz">
+            <div class="report-header-bar">
+              <span class="report-title-mock">📊 QC Compare Report</span>
+              <span class="report-badge-pass">Pass: 372</span>
+              <span class="report-badge-fail">Fail: 16</span>
+            </div>
+            <div class="report-chart-mock">
+              <div class="chart-bar-group">
+                <div class="chart-bar-wrap"><div class="chart-bar scada-bar" style="height:60px;"></div><div class="chart-bar-lbl">SCADA</div></div>
+                <div class="chart-bar-wrap"><div class="chart-bar influx-bar" style="height:38px;"></div><div class="chart-bar-lbl">InfluxDB</div></div>
+              </div>
+              <div class="chart-label">태그별 값 비교 (차트 예시)</div>
+            </div>
+            <div class="report-table-mock">
+              <div class="rtm-row rtm-head"><span>태그</span><span>SCADA</span><span>Influx</span><span>결과</span></div>
+              <div class="rtm-row"><span>ACPower</span><span>500.0</span><span>499.2</span><span class="cell-pass">Pass</span></div>
+              <div class="rtm-row fail-row"><span>DCPower</span><span>320.0</span><span>185.1</span><span class="cell-fail">Fail</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /qc-pipeline -->
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">💡</span>
+    <div class="callout-body">
+      <strong>사용 팁</strong>
+      <ul>
+        <li>분석 결과는 <strong>Copy</strong> 버튼으로 클립보드에 즉시 복사할 수 있습니다.</li>
+        <li><strong>Clear files</strong>로 작업 중 생성된 임시 CSV/HTML 파일을 일괄 삭제하세요.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     TAB 4: MONITOR
+════════════════════════════════════ -->
+<div class="tab-panel" id="tab-monitor">
+  <p class="section-title">🖥️ 서버 모니터 — 실시간 부하 현황</p>
+  <p class="section-desc">앱 우측 사이드바에 항상 표시되는 실시간 서버 모니터입니다. DEV · PRD · PRD2 세 환경을 동시에 확인하고 작업 시점을 판단하는 데 활용합니다.</p>
+
+  <!-- ── 가로 바 그래프 ── -->
+  <div class="monitor-viz">
+    <h4>● live — cpu load average (예시 수치)</h4>
+    <div class="monitor-envs">
+
+      <!-- DEV -->
+      <div class="monitor-env">
+        <div class="env-label">
+          <div class="env-dot" style="background:#4dabf7;box-shadow:0 0 6px #4dabf7;"></div>
+          <span style="color:#4dabf7;">DEV</span>
+        </div>
+        <div class="env-graph">
+          <div class="env-bar" style="height:38%;background:linear-gradient(0deg,#1c7ed6,#74c0fc);animation-delay:0s;"></div>
+          <div class="env-bar" style="height:52%;background:linear-gradient(0deg,#1c7ed6,#74c0fc);animation-delay:0.3s;"></div>
+          <div class="env-bar" style="height:30%;background:linear-gradient(0deg,#1c7ed6,#74c0fc);animation-delay:0.6s;"></div>
+          <div class="env-bar" style="height:46%;background:linear-gradient(0deg,#1c7ed6,#74c0fc);animation-delay:0.1s;"></div>
+          <div class="env-bar" style="height:58%;background:linear-gradient(0deg,#1c7ed6,#74c0fc);animation-delay:0.4s;"></div>
+          <div class="env-bar" style="height:40%;background:linear-gradient(0deg,#1c7ed6,#74c0fc);animation-delay:0.7s;"></div>
+          <div class="env-bar" style="height:50%;background:linear-gradient(0deg,#1c7ed6,#74c0fc);animation-delay:0.2s;"></div>
+          <div class="env-bar" style="height:35%;background:linear-gradient(0deg,#1c7ed6,#74c0fc);animation-delay:0.5s;"></div>
+        </div>
+        <div class="env-meta">
+          <span class="load-val">1.3</span>
+          <span class="env-status ok">정상</span>
+        </div>
+      </div>
+
+      <!-- PRD -->
+      <div class="monitor-env">
+        <div class="env-label">
+          <div class="env-dot" style="background:#ff6b7a;box-shadow:0 0 6px #ff6b7a;"></div>
+          <span style="color:#ff6b7a;">PRD</span>
+        </div>
+        <div class="env-graph">
+          <div class="env-bar" style="height:82%;background:linear-gradient(0deg,#c92a2a,#ff6b7a);animation-delay:0.2s;"></div>
+          <div class="env-bar" style="height:75%;background:linear-gradient(0deg,#c92a2a,#ff6b7a);animation-delay:0.5s;"></div>
+          <div class="env-bar" style="height:90%;background:linear-gradient(0deg,#c92a2a,#ff6b7a);animation-delay:0.8s;"></div>
+          <div class="env-bar" style="height:68%;background:linear-gradient(0deg,#c92a2a,#ff6b7a);animation-delay:0.3s;"></div>
+          <div class="env-bar" style="height:85%;background:linear-gradient(0deg,#c92a2a,#ff6b7a);animation-delay:0.6s;"></div>
+          <div class="env-bar" style="height:92%;background:linear-gradient(0deg,#c92a2a,#ff6b7a);animation-delay:0.9s;"></div>
+          <div class="env-bar" style="height:78%;background:linear-gradient(0deg,#c92a2a,#ff6b7a);animation-delay:0.4s;"></div>
+          <div class="env-bar" style="height:88%;background:linear-gradient(0deg,#c92a2a,#ff6b7a);animation-delay:0.7s;"></div>
+        </div>
+        <div class="env-meta">
+          <span class="load-val" style="color:#ff6b7a;">4.2</span>
+          <span class="env-status warn">주의</span>
+        </div>
+      </div>
+
+      <!-- PRD2 -->
+      <div class="monitor-env">
+        <div class="env-label">
+          <div class="env-dot" style="background:#fbbf24;box-shadow:0 0 6px #fbbf24;"></div>
+          <span style="color:#fbbf24;">PRD2</span>
+          <span style="background:rgba(251,191,36,0.15);color:#fbbf24;font-size:9px;padding:1px 6px;border-radius:100px;border:1px solid rgba(251,191,36,0.3);">NEW</span>
+        </div>
+        <div class="env-graph">
+          <div class="env-bar" style="height:28%;background:linear-gradient(0deg,#b45309,#fbbf24);animation-delay:0.4s;"></div>
+          <div class="env-bar" style="height:40%;background:linear-gradient(0deg,#b45309,#fbbf24);animation-delay:0.7s;"></div>
+          <div class="env-bar" style="height:22%;background:linear-gradient(0deg,#b45309,#fbbf24);animation-delay:1.0s;"></div>
+          <div class="env-bar" style="height:48%;background:linear-gradient(0deg,#b45309,#fbbf24);animation-delay:0.5s;"></div>
+          <div class="env-bar" style="height:33%;background:linear-gradient(0deg,#b45309,#fbbf24);animation-delay:0.8s;"></div>
+          <div class="env-bar" style="height:25%;background:linear-gradient(0deg,#b45309,#fbbf24);animation-delay:1.1s;"></div>
+          <div class="env-bar" style="height:42%;background:linear-gradient(0deg,#b45309,#fbbf24);animation-delay:0.6s;"></div>
+          <div class="env-bar" style="height:36%;background:linear-gradient(0deg,#b45309,#fbbf24);animation-delay:0.9s;"></div>
+        </div>
+        <div class="env-meta">
+          <span class="load-val">1.8</span>
+          <span class="env-status ok">정상</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="monitor-legend">
+      <div class="legend-item"><div class="legend-line" style="background:#4dabf7;"></div><span>DEV — 개발 서버</span></div>
+      <div class="legend-item"><div class="legend-line" style="background:#ff6b7a;"></div><span>PRD — 운영 Node 1 (140)</span></div>
+      <div class="legend-item"><div class="legend-line" style="background:#fbbf24;"></div><span>PRD2 — 운영 Node 2 (170)</span></div>
+      <div class="legend-item" style="margin-left:auto;">
+        <div style="width:18px;height:1px;background:repeating-linear-gradient(90deg,rgba(255,100,100,0.6) 0,rgba(255,100,100,0.6) 3px,transparent 3px,transparent 6px);"></div>
+        <span>Load 5 경고선</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 표시 항목 ── -->
+  <p style="font-family:var(--font-d);font-size:16px;font-weight:700;margin-bottom:14px;color:var(--text);">📋 모니터 표시 항목</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:28px;">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;">⚡ CPU Load</div>
+      <p style="font-size:12px;color:var(--text-2);margin:0 0 6px;">서버가 처리 중인 작업량. 숫자가 높을수록 서버가 바쁜 상태입니다.</p>
+      <div style="font-size:11px;color:var(--text-3);">기준: Load &lt; 3 정상 · 3~5 주의 · &gt;5 위험</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;">🧠 InfluxDB CPU/MEM</div>
+      <p style="font-size:12px;color:var(--text-2);margin:0 0 6px;">InfluxDB 프로세스의 CPU 사용률과 메모리 점유량을 개별 표시합니다.</p>
+      <div style="font-size:11px;color:var(--text-3);">INFLUX 탭에서 상세 확인 가능</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;">💾 디스크 사용률</div>
+      <p style="font-size:12px;color:var(--text-2);margin:0 0 6px;">서버 디스크 여유 공간 현황. Load 이후 디스크가 가득 찰 경우 오류 발생 가능.</p>
+      <div style="font-size:11px;color:var(--text-3);">BASTION 탭에서 서버별 확인</div>
+    </div>
+  </div>
+
+  <!-- ── 서버 로드 감소를 위해 취한 조치 ── -->
+  <p style="font-family:var(--font-d);font-size:16px;font-weight:700;margin-bottom:14px;color:var(--text);">🛡️ 서버 부하 감소를 위한 자동 보호 장치</p>
+  <p style="font-size:13px;color:var(--text-2);margin-bottom:18px;">대용량 데이터 작업 중 서버에 과도한 부하가 걸리지 않도록 툴이 자동으로 여러 안전장치를 작동합니다. 별도 설정 없이 항상 활성화되어 있습니다.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;">
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid #4ade80;border-radius:8px;padding:16px 18px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <span style="font-size:18px;">🐢</span>
+        <span style="font-family:var(--font-d);font-size:14px;font-weight:700;color:var(--text);">자동 스로틀링</span>
+        <span style="font-size:10px;background:rgba(74,222,128,0.12);color:#4ade80;border:1px solid rgba(74,222,128,0.25);padding:1px 7px;border-radius:100px;">항상 활성</span>
+      </div>
+      <p style="font-size:13px;color:var(--text-2);margin:0 0 10px;">Extract / Load 작업 중 서버의 I/O 대기(iowait)가 <strong>15%</strong>를 초과하면 데이터 전송 속도를 자동으로 줄입니다. 서버가 안정되면 자동으로 재개합니다.</p>
+      <div style="font-size:12px;color:var(--text-3);background:var(--bg);border-radius:5px;padding:8px 12px;">
+        💬 로그에 <code style="font-family:var(--font-m);font-size:11px;">[THROTTLE] iowait=XX% — pausing</code> 메시지가 표시됩니다.
+      </div>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid #60a5fa;border-radius:8px;padding:16px 18px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <span style="font-size:18px;">🔀</span>
+        <span style="font-family:var(--font-d);font-size:14px;font-weight:700;color:var(--text);">스마트 노드 자동 선택</span>
+        <span style="font-size:10px;background:rgba(96,165,250,0.12);color:#60a5fa;border:1px solid rgba(96,165,250,0.25);padding:1px 7px;border-radius:100px;">PRD 전용</span>
+      </div>
+      <p style="font-size:13px;color:var(--text-2);margin:0 0 10px;">PRD 환경 작업 시 Node 140(PRD)과 Node 170(PRD2) 중 현재 쓰기 요청을 처리 중인 <strong>활성 노드를 자동으로 감지</strong>하여 접속합니다. 덜 바쁜 서버로 자동 분산됩니다.</p>
+      <div style="font-size:12px;color:var(--text-3);background:var(--bg);border-radius:5px;padding:8px 12px;">
+        💬 Telegraf가 HTTP 204 응답을 반환하는 노드가 활성 노드로 판별됩니다.
+      </div>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid #f59e0b;border-radius:8px;padding:16px 18px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <span style="font-size:18px;">🔁</span>
+        <span style="font-family:var(--font-d);font-size:14px;font-weight:700;color:var(--text);">SSH 터널 자동 갱신</span>
+        <span style="font-size:10px;background:rgba(245,158,11,0.12);color:#f59e0b;border:1px solid rgba(245,158,11,0.25);padding:1px 7px;border-radius:100px;">5분 주기</span>
+      </div>
+      <p style="font-size:13px;color:var(--text-2);margin:0 0 10px;">서버 접속은 SSH 보안 터널을 통해 이루어집니다. 장시간 실행 시 터널이 끊길 수 있어 <strong>5분마다 자동으로 갱신</strong>합니다. 작업 중 연결이 끊기는 상황을 방지합니다.</p>
+      <div style="font-size:12px;color:var(--text-3);background:var(--bg);border-radius:5px;padding:8px 12px;">
+        💬 별도 조작 없이 백그라운드에서 자동 처리됩니다.
+      </div>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid #a78bfa;border-radius:8px;padding:16px 18px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <span style="font-size:18px;">🔄</span>
+        <span style="font-family:var(--font-d);font-size:14px;font-weight:700;color:var(--text);">자동 재연결</span>
+        <span style="font-size:10px;background:rgba(167,139,250,0.12);color:#a78bfa;border:1px solid rgba(167,139,250,0.25);padding:1px 7px;border-radius:100px;">지수 백오프</span>
+      </div>
+      <p style="font-size:13px;color:var(--text-2);margin:0 0 10px;">네트워크 불안정 등으로 연결이 끊기면 모니터에 <strong>[OFFLINE]</strong>이 표시되고 <strong>5초 → 10초 → 30초</strong> 간격으로 자동 재연결을 시도합니다. 자동 복구되므로 별도 조작이 필요 없습니다.</p>
+      <div style="font-size:12px;color:var(--text-3);background:var(--bg);border-radius:5px;padding:8px 12px;">
+        💬 연결 복구 시 모니터 수치가 자동으로 업데이트됩니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── UI 사용 방법 ── -->
+  <p style="font-family:var(--font-d);font-size:16px;font-weight:700;margin-bottom:14px;color:var(--text);">🖱️ 모니터 UI 사용 방법</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;">탭 전환 (INFLUX / BASTION)</div>
+      <p style="font-size:12px;color:var(--text-2);margin:0;">사이드바 상단의 탭을 클릭하면 InfluxDB 상세 정보 또는 Bastion 서버 정보로 전환됩니다.</p>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;">🔍 상세 보기 다이얼로그</div>
+      <p style="font-size:12px;color:var(--text-2);margin:0;">각 환경 항목 옆 🔍 버튼을 클릭하면 CPU·메모리·디스크·InfluxDB 버전 등 상세 정보 팝업이 열립니다.</p>
+    </div>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">ℹ️</span>
+    <div class="callout-body">
+      <strong>Load 5 경고선 안내</strong>
+      <p>가로 바 그래프의 분홍색 점선이 <strong>Load 5</strong> 기준선입니다. PRD 서버가 이 수준을 초과하면 작업 속도가 자동으로 줄어들며, 가능하면 작업을 잠시 대기하거나 서버 부하가 낮은 시간대에 진행하세요.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     TAB 5: CHANGELOG
+     ✏️ 작성 규칙: 오래된 버전이 위, 최신 버전이 아래
+        새 버전 추가 → 파일 맨 아래 "새 버전은 여기 아래에 추가" 주석 위치에 붙여넣기
+        이전 latest의 class="tl-item current" → "tl-item" 으로 변경, LATEST 배지 제거
+════════════════════════════════════ -->
+<div class="tab-panel active" id="tab-changelog">
+  <p class="section-title">📋 릴리즈 노트</p>
+  <p class="section-desc">오래된 버전이 위 · <strong>최신 버전이 아래</strong>에 표시됩니다. 탭을 열면 자동으로 최신 버전으로 스크롤됩니다.</p>
+
+  <div class="timeline" id="timeline-wrap">
+
+    <!-- v1.0.0 ─────────────────────────────────────────────────────────── -->
+    <div class="tl-item">
+      <div class="tl-head">
+        <span class="tl-ver"><span class="ver-label">ver</span>1.0.0</span>
+        <span class="tl-date">2025-11-20</span>
+      </div>
+      <div class="tl-item-simple">
+        <p>초기 릴리즈 — 핵심 Backfill Tool 기능 출시 by Juns</p>
+      </div>
+    </div>
+
+    <!-- v1.4.2 ─────────────────────────────────────────────────────────── -->
+    <div class="tl-item">
+      <div class="tl-head">
+        <span class="tl-ver"><span class="ver-label">ver</span>1.4.2</span>
+        <span class="tl-date">2026-03-20</span>
+      </div>
+      <div class="tl-item-simple">
+        <p>모듈식 UI 구현 — 사이드바 레이아웃 및 통합 다크 테마 적용</p>
+        <p>SSH 멀티플렉싱 지원 추가 (실험적)</p>
+        <p>CPU Load / 메모리 기반 기본 자동 속도 조절(Auto-Throttle) 구현</p>
+      </div>
+    </div>
+
+    <!-- v1.4.3 ─────────────────────────────────────────────────────────── -->
+    <div class="tl-item">
+      <div class="tl-head">
+        <span class="tl-ver"><span class="ver-label">ver</span>1.4.3</span>
+        <span class="tl-date">2026-03-25</span>
+      </div>
+      <div class="tl-cards">
+        <div class="tl-card">
+          <span class="tl-card-icon">📊</span>
+          <div class="tl-card-title">모니터링 PRD2 추가</div>
+          <span class="tl-card-desc">DEV·PRD·PRD2 3개 환경 동시 모니터링 및 사이드바 3선 그래프.</span>
+        </div>
+        <div class="tl-card">
+          <span class="tl-card-icon">🤖</span>
+          <div class="tl-card-title">스마트 노드 자동 선택</div>
+          <span class="tl-card-desc">CPU Load 기반 Node 140/170 자동 라우팅. Telegraf 쓰기 회피.</span>
+        </div>
+        <div class="tl-card">
+          <span class="tl-card-icon">🛡️</span>
+          <div class="tl-card-title">iowait 자동 중지</div>
+          <span class="tl-card-desc">PRD I/O 대기 15% 초과 시 백필 자동 일시 중지.</span>
+        </div>
+        <div class="tl-card">
+          <span class="tl-card-icon">🔄</span>
+          <div class="tl-card-title">SSH 자동 재연결</div>
+          <span class="tl-card-desc">KeepAlive 15s + 지수 백오프(5→10→30s) 백그라운드 복구.</span>
+        </div>
+        <div class="tl-card">
+          <span class="tl-card-icon">📝</span>
+          <div class="tl-card-title">로그 형식 통일</div>
+          <span class="tl-card-desc">청크 진행률 [현재/전체] 포맷, 집계 간격 반영 Row 수 추정.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- v1.4.5 ─────────────────────────────────────────────────────────── -->
+    <div class="tl-item">
+      <div class="tl-head">
+        <span class="tl-ver"><span class="ver-label">ver</span>1.4.5</span>
+        <span class="tl-date">2026-03-31</span>
+      </div>
+      <div class="tl-cards">
+        <div class="tl-card">
+          <span class="tl-card-icon">🎯</span>
+          <div class="tl-card-title">QC Tool — 유연한 시간 매칭</div>
+          <span class="tl-card-desc">±10분 허용 오차로 가장 가까운 타임스탬프 자동 매칭.</span>
+        </div>
+        <div class="tl-card">
+          <span class="tl-card-icon">📊</span>
+          <div class="tl-card-title">Backfill 메뉴명 변경</div>
+          <span class="tl-card-desc">QC Verify → Data Status(데이터 확인)로 명칭 변경.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- v1.4.6 ─────────────────────────────────────────────────────────── -->
+    <div class="tl-item">
+      <div class="tl-head">
+        <span class="tl-ver"><span class="ver-label">ver</span>1.4.6</span>
+        <span class="tl-date">2026-04-03</span>
+      </div>
+      <div class="tl-cards">
+        <div class="tl-card">
+          <span class="tl-card-icon">⚡</span>
+          <div class="tl-card-title">QC Tool — 대용량 비교 안정화</div>
+          <span class="tl-card-desc">GC 최적화 + 차트 다운샘플링(Max 1000pt)으로 멈춤 현상 해결.</span>
+        </div>
+        <div class="tl-card">
+          <span class="tl-card-icon">📡</span>
+          <div class="tl-card-title">Backfill — hbeat 추출 누락 수정</div>
+          <span class="tl-card-desc">제외 목록에서 <code>hbeat</code> 제거, 모든 항목 누락 없이 추출.</span>
+        </div>
+        <div class="tl-card">
+          <span class="tl-card-icon">🛡️</span>
+          <div class="tl-card-title">Graceful Abort</div>
+          <span class="tl-card-desc">Stop 클릭 시 즉시·안전한 리소스 해제. 비정상 종료 방지.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- v1.4.7 ─────────────────────────────────────────────────────────── -->
+    <div class="tl-item">
+      <div class="tl-head">
+        <span class="tl-ver"><span class="ver-label">ver</span>1.4.7</span>
+        <span class="tl-date">2026-04-08</span>
+      </div>
+      <div class="tl-cards">
+        <div class="tl-card">
+          <span class="tl-card-icon">🚀</span>
+          <div class="tl-card-title">신규 사이트 지원 강화</div>
+          <span class="tl-card-desc">Settings 우측 상단 사이트 추가 기능으로 HEIS 확장성 강화.</span>
+        </div>
+        <div class="tl-card">
+          <span class="tl-card-icon">🔍</span>
+          <div class="tl-card-title">TAG 감지 우선순위 개선</div>
+          <span class="tl-card-desc">파일명 사이트명 → 시트 내용보다 우선 매칭하여 오탐 방지.</span>
+        </div>
+        <div class="tl-card">
+          <span class="tl-card-icon">⚙️</span>
+          <div class="tl-card-title">사이트 관리 전용 다이얼로그</div>
+          <span class="tl-card-desc">전용 편집 창에서 사이트 ID-Name 매칭 추가·삭제·저장.</span>
+        </div>
+        <div class="tl-card">
+          <span class="tl-card-icon">📂</span>
+          <div class="tl-card-title">사용자 사이트 JSON 로컬 저장</div>
+          <span class="tl-card-desc"><code>site_registry.json</code>에 영구 보관 및 앱 시작 시 자동 로드.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- v1.4.8 ─────────────────────────────────────────────────────────── -->
+    <div class="tl-item">
+      <div class="tl-head">
+        <span class="tl-ver"><span class="ver-label">ver</span>1.4.8</span>
+        <span class="tl-date">2026-04-09</span>
+      </div>
+      <div class="tl-cards">
+        <div class="tl-card">
+          <span class="tl-card-icon">📖</span>
+          <div class="tl-card-title">도움말 통합 HTML 페이지</div>
+          <span class="tl-card-desc">NavBar ❓ HELP 단일 버튼으로 통합. <code>HEIS_guide.html</code> 탭 구조 전환.</span>
+        </div>
+        <div class="tl-card">
+          <span class="tl-card-icon">📋</span>
+          <div class="tl-card-title">도움말 내용 대폭 보강</div>
+          <span class="tl-card-desc">Tag Generator Step 2~6, Backfill 메뉴, 서버 모니터 보호 장치 비개발자 설명 추가.</span>
+        </div>
+        <div class="tl-card">
+          <span class="tl-card-icon">🏗️</span>
+          <div class="tl-card-title">빌드 버전 자동 동기화</div>
+          <span class="tl-card-desc"><code>heis_main.py __version__</code> 단일 소스 → 빌드 시 HTML changelog 자동 갱신.</span>
+        </div>
+        <div class="tl-card">
+          <span class="tl-card-icon">⚡</span>
+          <div class="tl-card-title">HELP 열기 UI 블로킹 수정</div>
+          <span class="tl-card-desc">daemon 스레드 분리로 클릭 시 5초 멈춤 현상 해결.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- v1.5.1 ─────────────────────────────────────────────────────────── -->
+    <div class="tl-item">
+      <div class="tl-head">
+        <span class="tl-ver"><span class="ver-label">ver</span>1.5.1</span>
+        <span class="tl-date">2026-04-10</span>
+      </div>
+      <div class="tl-cards">
+        <div class="tl-card">
+          <span class="tl-card-icon">🗄️</span>
+          <div class="tl-card-title">MappingRepository — DB-first 매핑</div>
+          <span class="tl-card-desc">SSH → <code>mysql -N -B</code> TSV 조회·세션 캐시. Excel 파일 의존성 제거, SSH 불가 시 자동 fallback.</span>
+        </div>
+        <div class="tl-card">
+          <span class="tl-card-icon">🔗</span>
+          <div class="tl-card-title">homdb 스키마 정합성 수정</div>
+          <span class="tl-card-desc">6개 테이블 DDL 검증 — 컬럼명 정오표 적용, 복합 PK JOIN 보정.</span>
+        </div>
+        <div class="tl-card">
+          <span class="tl-card-icon">⚖️</span>
+          <div class="tl-card-title">스케일 처리 DB 연동</div>
+          <span class="tl-card-desc"><code>tb_scale_info.FORML</code> 수식 우선 eval. 수식 없으면 하드코딩 fallback 유지.</span>
+        </div>
+        <div class="tl-card">
+          <span class="tl-card-icon">🔒</span>
+          <div class="tl-card-title">DB 크레덴셜 AES-256-GCM 업그레이드</div>
+          <span class="tl-card-desc">keyring 우선, fallback AES-256-GCM+PBKDF2(320k). DEV/PRD 분리. 레거시 enc:/fenc: 자동 마이그레이션.</span>
+        </div>
+        <div class="tl-card">
+          <span class="tl-card-icon">📋</span>
+          <div class="tl-card-title">매핑 소스 로그 강화</div>
+          <span class="tl-card-desc">DB 성공·실패·파일·소스 없음 각 경로별 로그. QC Tool 동일 추적.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✏️ 새 버전은 여기 아래에 추가 ───────────────────────────────────
+         1. 아래 템플릿을 복사해서 붙여넣기
+         2. 이전 버전의 class="tl-item current" → "tl-item" 으로 수정
+            (LATEST 배지도 제거)
+
+    <div class="tl-item current">
+      <div class="tl-head">
+        <span class="tl-ver"><span class="ver-label">ver</span>X.Y.Z</span>
+        <span class="tl-date">YYYY-MM-DD</span>
+        <span class="tl-badge-cur">LATEST</span>
+      </div>
+      <div class="tl-cards">
+        <div class="tl-card">
+          <span class="tl-card-icon">🔧</span>
+          <div class="tl-card-title">변경 제목</div>
+          <span class="tl-card-desc">변경 설명.</span>
+        </div>
+      </div>
+    </div>
+    ─────────────────────────────────────────────────────────────────── -->
+
+    <!-- v1.5.2 ─────────────────────────────────────────────────────────── -->
+    <div class="tl-item current">
+      <div class="tl-head">
+        <span class="tl-ver"><span class="ver-label">ver</span>1.5.2</span>
+        <span class="tl-date">2026-04-10</span>
+        <span class="tl-badge-cur">LATEST</span>
+      </div>
+      <div class="tl-cards">
+        <div class="tl-card">
+          <span class="tl-card-icon">🔒</span>
+          <div class="tl-card-title">보안 전면 강화</div>
+          <span class="tl-card-desc">MySQL full-escape (백슬래시·NUL·CR·LF) 적용. InfluxQL tag_filter 화이트리스트. traceback UI 노출 제거. 하드코딩 IP 전면 제거.</span>
+        </div>
+        <div class="tl-card">
+          <span class="tl-card-icon">🔑</span>
+          <div class="tl-card-title">크리덴셜 패스프레이즈 머신 파생으로 교체</div>
+          <span class="tl-card-desc">고정 문자열 제거 → MAC+hostname SHA-256 자동 유도. 소스 노출 시에도 크리덴셜 안전.</span>
+        </div>
+        <div class="tl-card">
+          <span class="tl-card-icon">📡</span>
+          <div class="tl-card-title">SSH 크로스플랫폼 + 재시도 로직</div>
+          <span class="tl-card-desc">System32 → shutil.which 자동 탐지 (Win/Mac/Linux). 지수 백오프 재시도 2회. PEM/config 권한 자동 설정.</span>
+        </div>
+        
+      </div>
+    </div>
+
+  </div><!-- /timeline -->
+</div>
+
+</div><!-- /main -->
+
+</body>
+</html>

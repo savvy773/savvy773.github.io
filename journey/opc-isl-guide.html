@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OPC-ISL Engine — 사용 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #1b1f2e;
+  --s0:       #20253a;
+  --s1:       #262c40;
+  --s2:       #2e3450;
+  --border:   #323a55;
+  --bhi:      #424e70;
+  --red:      #ff5535;
+  --blue:     #4e9eff;
+  --teal:     #22dba8;
+  --purple:   #9b7fff;
+  --text:     #c8d2e0;
+  --hi:       #eef2f8;
+  --muted:    #5e6e88;
+  --warn:     #f5a533;
+  --ok:       #22dba8;
+  --mono:     'IBM Plex Mono', monospace;
+  --sans:     'Noto Sans KR', sans-serif;
+  --display:  'Bebas Neue', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--bhi) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bhi); border-radius: 999px; border: 2px solid var(--bg); background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(var(--blue), var(--teal)); background-clip: padding-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+/* ── HEADER ── */
+header {
+  background: linear-gradient(135deg, #1a2040 0%, #1b1f2e 55%);
+  border-bottom: 1px solid var(--border);
+  padding: 24px 48px 22px;
+  position: relative;
+  overflow: hidden;
+}
+header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--red), var(--blue), var(--teal));
+}
+.header-inner {
+  max-width: 980px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.header-logo {
+  font-family: var(--display);
+  font-size: 42px;
+  letter-spacing: .05em;
+  line-height: 1;
+  color: var(--hi);
+  white-space: nowrap;
+}
+.header-logo em { font-style: normal; color: var(--red); }
+.header-divider {
+  width: 1px;
+  height: 36px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+.header-meta { display: flex; flex-direction: column; gap: 4px; }
+.header-desc { font-size: 12px; color: var(--muted); font-family: var(--mono); letter-spacing: .04em; }
+.badge-row { display: flex; gap: 8px; }
+.badge {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+.badge-red  { background: rgba(255,85,53,.12); color: var(--red);  border: 1px solid rgba(255,85,53,.25); }
+.badge-mute { background: rgba(255,255,255,.04); color: var(--muted); border: 1px solid var(--border); }
+
+/* ── TOC ── */
+.toc-bar {
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(27,31,46,.94);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 48px;
+}
+.toc-inner {
+  max-width: 980px; margin: 0 auto;
+  display: flex; overflow-x: auto;
+}
+.toc-inner::-webkit-scrollbar { display: none; }
+.toc-link {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: .09em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none;
+  padding: 12px 16px;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: color .15s, border-color .15s;
+}
+.toc-link:hover { color: var(--blue); border-color: var(--blue); }
+
+/* ── MAIN ── */
+main {
+  max-width: 980px; margin: 0 auto;
+  padding: 56px 48px 100px;
+  display: flex; flex-direction: column; gap: 72px;
+}
+
+/* ── 섹션 레이블 ── */
+.sec-head {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 26px;
+}
+.sec-num {
+  font-family: var(--mono); font-size: 9.5px;
+  letter-spacing: .14em; color: var(--red);
+  padding: 2px 8px; border-radius: 3px;
+  background: rgba(255,85,53,.08);
+  border: 1px solid rgba(255,85,53,.2);
+}
+.sec-title {
+  font-family: var(--display);
+  font-size: 24px; letter-spacing: .06em;
+  color: var(--hi);
+}
+.sec-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+
+/* ════════════════════════════════
+   설치 — 타임라인 스타일
+════════════════════════════════ */
+.timeline { display: flex; flex-direction: column; position: relative; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 19px; top: 20px; bottom: 20px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--red) 0%, var(--blue) 50%, var(--teal) 100%);
+  opacity: .3;
+}
+
+.tl-item {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 20px;
+  padding: 0 0 24px;
+  position: relative;
+}
+.tl-item:last-child { padding-bottom: 0; }
+
+.tl-dot {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--s1);
+  border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--display); font-size: 16px;
+  color: var(--red);
+  position: relative; z-index: 1;
+  flex-shrink: 0;
+  transition: border-color .2s, background .2s;
+}
+.tl-item:nth-child(2) .tl-dot { color: var(--blue); }
+.tl-item:nth-child(3) .tl-dot { color: var(--teal); }
+.tl-item:nth-child(4) .tl-dot { color: var(--purple); }
+
+.tl-card {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  transition: border-color .18s, background .18s;
+}
+.tl-card:hover { border-color: var(--bhi); background: var(--s2); }
+.tl-card:hover + .tl-dot,
+.tl-item:hover .tl-dot { border-color: var(--bhi); }
+
+.tl-card h3 { font-size: 13.5px; font-weight: 600; color: var(--hi); margin-bottom: 4px; }
+.tl-card p  { font-size: 12.5px; color: var(--muted); }
+
+/* ════════════════════════════════
+   워크플로우 — 비주얼 파이프라인
+════════════════════════════════ */
+.pipeline {
+  display: flex; flex-direction: column; gap: 0;
+}
+
+.pipe-step {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+/* 화살표 연결 */
+.pipe-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+}
+.pipe-arrow-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.pipe-arrow-line {
+  width: 2px;
+  height: 32px;
+  background: linear-gradient(180deg, var(--border), var(--blue));
+}
+.pipe-arrow-head {
+  width: 0; height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 7px solid var(--blue);
+}
+.pipe-arrow-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: .08em;
+  margin-top: 2px;
+}
+
+/* 입력 패널 */
+.pipe-input, .pipe-output {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color .18s;
+}
+.pipe-input:hover, .pipe-output:hover { border-color: var(--bhi); }
+
+.panel-head {
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(255,255,255,.02);
+}
+.panel-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+}
+.panel-head-title {
+  font-family: var(--mono);
+  font-size: 10px; letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.panel-body { padding: 14px 18px; }
+
+/* 단계 카드 */
+.step-card {
+  background: var(--s0);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.step-card-head {
+  padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.step-label {
+  display: flex; align-items: center; gap: 10px;
+}
+.step-badge {
+  font-family: var(--mono);
+  font-size: 9px; letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 2px 8px; border-radius: 3px;
+}
+.step-a .step-badge { background: rgba(255,85,53,.1); color: var(--red); border: 1px solid rgba(255,85,53,.2); }
+.step-b .step-badge { background: rgba(78,158,255,.1); color: var(--blue); border: 1px solid rgba(78,158,255,.2); }
+
+.step-name {
+  font-family: var(--display);
+  font-size: 18px; letter-spacing: .04em;
+  color: var(--hi);
+}
+.step-output-tag {
+  font-family: var(--mono);
+  font-size: 9.5px; color: var(--teal);
+  background: rgba(34,219,168,.07);
+  border: 1px solid rgba(34,219,168,.18);
+  padding: 3px 10px; border-radius: 3px;
+  letter-spacing: .03em;
+}
+
+.step-card-body { padding: 16px 20px; }
+
+.field-list { display: flex; flex-direction: column; gap: 8px; }
+
+.field-row {
+  display: flex; align-items: baseline; gap: 10px;
+  font-size: 12.5px;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+}
+.field-row:last-child { border-bottom: none; }
+
+.field-key {
+  font-family: var(--mono); font-size: 10.5px;
+  color: var(--blue); opacity: .85;
+  width: 148px; flex-shrink: 0;
+}
+.field-val { color: var(--text); flex: 1; }
+
+.tag {
+  font-family: var(--mono); font-size: 9px;
+  padding: 1px 6px; border-radius: 3px;
+  margin-left: 5px; vertical-align: middle;
+}
+.tag-auto { background: rgba(34,219,168,.09); color: var(--teal);  border: 1px solid rgba(34,219,168,.22); }
+.tag-req  { background: rgba(255,85,53,.09);  color: var(--red);   border: 1px solid rgba(255,85,53,.22); }
+
+/* ════════════════════════════════
+   설정 테이블
+════════════════════════════════ */
+.settings-card {
+  border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden;
+}
+.settings-row {
+  display: grid; grid-template-columns: 190px 1fr;
+  border-bottom: 1px solid var(--border);
+}
+.settings-row:last-child { border-bottom: none; }
+.settings-key {
+  padding: 14px 18px;
+  font-family: var(--mono); font-size: 10.5px;
+  color: var(--blue);
+  background: rgba(255,255,255,.02);
+  border-right: 1px solid var(--border);
+  display: flex; align-items: center;
+}
+.settings-val {
+  padding: 14px 18px;
+  font-size: 12.5px; color: var(--muted);
+  background: var(--s1);
+  display: flex; align-items: center;
+}
+
+/* ════════════════════════════════
+   주의사항 — 글로우 카드
+════════════════════════════════ */
+.notice-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+.notice-card {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+  display: flex; flex-direction: column; gap: 8px;
+  position: relative; overflow: hidden;
+  transition: border-color .18s, transform .18s;
+}
+.notice-card::after {
+  content: '';
+  position: absolute;
+  top: -1px; left: 20px; right: 20px;
+  height: 2px;
+  border-radius: 0 0 3px 3px;
+  background: var(--warn);
+  opacity: .7;
+}
+.notice-card.ok::after { background: var(--ok); }
+.notice-card:hover { border-color: var(--bhi); transform: translateY(-2px); }
+
+.notice-title { font-size: 13px; font-weight: 600; color: var(--warn); }
+.notice-card.ok .notice-title { color: var(--ok); }
+.notice-body { font-size: 12px; color: var(--muted); line-height: 1.65; }
+
+/* ════════════════════════════════
+   로그
+════════════════════════════════ */
+.code-block {
+  font-family: var(--mono); font-size: 12px;
+  background: rgba(78,158,255,.05);
+  border: 1px solid rgba(78,158,255,.15);
+  border-left: 3px solid var(--blue);
+  border-radius: 0 6px 6px 0;
+  padding: 13px 18px; color: var(--blue);
+  letter-spacing: .03em; overflow-x: auto; white-space: nowrap;
+}
+
+code {
+  font-family: var(--mono); font-size: .88em;
+  color: var(--blue);
+  background: rgba(78,158,255,.1);
+  border: 1px solid rgba(78,158,255,.15);
+  padding: 1px 6px; border-radius: 3px;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 22px 48px; text-align: center;
+  background: rgba(0,0,0,.12);
+}
+footer p {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--muted); letter-spacing: .07em; opacity: .55;
+}
+
+/* ── 반응형 ── */
+@media (max-width: 700px) {
+  header, .toc-bar, main, footer { padding-left: 20px; padding-right: 20px; }
+  .header-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .header-divider { display: none; }
+  .pipe-step { grid-template-columns: 1fr; }
+  .notice-grid { grid-template-columns: 1fr; }
+  .field-row { flex-wrap: wrap; }
+  .settings-row { grid-template-columns: 1fr; }
+  .settings-key { border-right: none; border-bottom: 1px solid var(--border); }
+}
+
+/* ── 진입 애니메이션 ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.header-inner { animation: fadeUp .4s ease both; }
+section { animation: fadeUp .4s ease both; animation-delay: .15s; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="header-logo">OPC-ISL <em>ENGINE</em></div>
+    <div class="header-divider"></div>
+    <div class="header-meta">
+      <div class="badge-row">
+        <span class="badge badge-red">Hanwha Energy · HEIS</span>
+        <span class="badge badge-mute">v0.1.0</span>
+      </div>
+      <div class="header-desc">OPC 태그 → HEIS 표준 포맷 자동 변환 도구 · 사용 가이드</div>
+    </div>
+  </div>
+</header>
+
+<!-- TOC -->
+<nav class="toc-bar">
+  <div class="toc-inner">
+    <a class="toc-link" href="#install">설치</a>
+    <a class="toc-link" href="#workflow">사용법</a>
+    <a class="toc-link" href="#settings">초기 설정</a>
+    <a class="toc-link" href="#notices">주의사항</a>
+    <a class="toc-link" href="#logs">로그</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- 설치 -->
+  <section id="install">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">설치</span>
+      <div class="sec-line"></div>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot">1</div>
+        <div class="tl-card">
+          <h3>인스톨러 다운로드</h3>
+          <p>NAS 배포 폴더에서 <code>OPC-ISL-x.x.x-setup.exe</code>를 로컬 PC로 복사합니다.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">2</div>
+        <div class="tl-card">
+          <h3>설치 실행</h3>
+          <p>복사한 인스톨러를 실행합니다. UAC 요청 시 "예"를 클릭하세요.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">3</div>
+        <div class="tl-card">
+          <h3>WebView2 런타임 확인</h3>
+          <p>Windows 11은 기본 탑재. Windows 10 미설치 시 인스톨러가 자동으로 다운로드합니다.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">4</div>
+        <div class="tl-card">
+          <h3>초기 실행 — 매퍼 파일 지정</h3>
+          <p>최초 실행 시 <code>isl_mapper.xlsx</code> 경로를 지정하고 "설정 완료 및 시작"을 클릭합니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 사용법 -->
+  <section id="workflow">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">사용법 — 2단계 워크플로우</span>
+      <div class="sec-line"></div>
+    </div>
+    <div class="pipeline">
+
+      <!-- Step A -->
+      <div class="step-card step-a">
+        <div class="step-card-head">
+          <div class="step-label">
+            <span class="step-badge">Step A</span>
+            <span class="step-name">ISL 자동 생성</span>
+          </div>
+          <span class="step-output-tag">→ ISL_TagList_*_a_*.xlsx</span>
+        </div>
+        <div class="step-card-body">
+          <div class="field-list">
+            <div class="field-row">
+              <span class="field-key">OPC 원본 파일</span>
+              <span class="field-val">XLSX 또는 CSV <span class="tag tag-req">필수</span></span>
+            </div>
+            <div class="field-row">
+              <span class="field-key">발전소명</span>
+              <span class="field-val">파일명에서 자동 감지 <span class="tag tag-auto">자동</span></span>
+            </div>
+            <div class="field-row">
+              <span class="field-key">발전소 타입</span>
+              <span class="field-val">PV / BESS / Hybrid — 태그명 기반 <span class="tag tag-auto">자동</span></span>
+            </div>
+            <div class="field-row">
+              <span class="field-key">OPC 형식</span>
+              <span class="field-val">KepServer / SCADA IO <span class="tag tag-auto">자동</span></span>
+            </div>
+            <div class="field-row">
+              <span class="field-key"></span>
+              <span class="field-val" style="color:var(--muted);font-size:12px">"ISL 생성" 버튼 클릭 → 원본 파일과 동일 폴더에 결과 생성</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 화살표 -->
+      <div class="pipe-arrow">
+        <div class="pipe-arrow-inner">
+          <div class="pipe-arrow-line"></div>
+          <div class="pipe-arrow-head"></div>
+          <div class="pipe-arrow-label">ISL 파일 전달</div>
+        </div>
+      </div>
+
+      <!-- Step B -->
+      <div class="step-card step-b">
+        <div class="step-card-head">
+          <div class="step-label">
+            <span class="step-badge">Step B</span>
+            <span class="step-name">HEIS Import 파일 생성</span>
+          </div>
+          <span class="step-output-tag">→ HEIS_Import_*.xlsx</span>
+        </div>
+        <div class="step-card-body">
+          <div class="field-list">
+            <div class="field-row">
+              <span class="field-key">ISL 파일</span>
+              <span class="field-val">Step A 결과 파일 <span class="tag tag-req">필수</span></span>
+            </div>
+            <div class="field-row">
+              <span class="field-key">HEIS 템플릿</span>
+              <span class="field-val">Row4=헤더, Row5=기본값 형식 <span class="tag tag-req">필수</span></span>
+            </div>
+            <div class="field-row">
+              <span class="field-key">SERVER_ID / NAME</span>
+              <span class="field-val">HEIS 서버 식별자 및 이름</span>
+            </div>
+            <div class="field-row">
+              <span class="field-key">AGENT_ID / NAME</span>
+              <span class="field-val">HEIS 에이전트 식별자 및 이름</span>
+            </div>
+            <div class="field-row">
+              <span class="field-key">ConnectionId</span>
+              <span class="field-val">OPC 연결 ID</span>
+            </div>
+            <div class="field-row">
+              <span class="field-key">PollingGroup A/D</span>
+              <span class="field-val">아날로그 / 디지털 폴링 그룹명</span>
+            </div>
+            <div class="field-row">
+              <span class="field-key">NamespaceIndex</span>
+              <span class="field-val">0 ~ 99 범위</span>
+            </div>
+            <div class="field-row">
+              <span class="field-key"></span>
+              <span class="field-val" style="color:var(--muted);font-size:12px">"Import 파일 생성" 클릭 → HEIS_Import_*.xlsx 생성</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 설정 -->
+  <section id="settings">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">초기 설정</span>
+      <div class="sec-line"></div>
+    </div>
+    <div class="settings-card">
+      <div class="settings-row">
+        <div class="settings-key">ISL 매핑 룰 파일</div>
+        <div class="settings-val">최초 실행 시 <code>isl_mapper.xlsx</code> 경로 지정. 설정은 영구 저장됩니다.</div>
+      </div>
+      <div class="settings-row">
+        <div class="settings-key">설정 폴더 위치</div>
+        <div class="settings-val"><code>%USERPROFILE%\.hanwha\opc\</code></div>
+      </div>
+      <div class="settings-row">
+        <div class="settings-key">화면 초기화</div>
+        <div class="settings-val">입력 필드만 초기화. 매퍼 파일 경로 설정은 유지됩니다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 주의사항 -->
+  <section id="notices">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">주의사항</span>
+      <div class="sec-line"></div>
+    </div>
+    <div class="notice-grid">
+      <div class="notice-card">
+        <div class="notice-title">⚠ NAS에서 직접 실행 금지</div>
+        <div class="notice-body">네트워크 경로(UNC)에서 exe를 직접 실행하면 사이드카 바이너리 로딩이 실패합니다. 반드시 로컬 PC에 설치 후 실행하세요.</div>
+      </div>
+      <div class="notice-card">
+        <div class="notice-title">⚠ HEIS 템플릿 형식 준수</div>
+        <div class="notice-body">Import 생성 시 템플릿의 <strong style="color:var(--text)">4행 = 헤더, 5행 = 기본값</strong> 형식이 반드시 지켜져야 합니다.</div>
+      </div>
+      <div class="notice-card">
+        <div class="notice-title">⚠ OPC 형식 자동 감지 실패 시</div>
+        <div class="notice-body">감지 실패 시 기본값 KepServer로 처리됩니다. 결과 파일 확인 후 필요 시 수동 지정하세요.</div>
+      </div>
+      <div class="notice-card ok">
+        <div class="notice-title">✔ 경고 발생 시 로그 자동 표시</div>
+        <div class="notice-body">처리 중 경고가 발생하면 앱 하단에 로그가 자동 표시됩니다. 상세 내용은 로그 파일을 확인하세요.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 로그 -->
+  <section id="logs">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <span class="sec-title">로그 위치</span>
+      <div class="sec-line"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p style="font-size:13px;color:var(--muted)">문제 발생 시 아래 경로의 로그 파일을 확인하거나 담당자에게 전달하세요.</p>
+      <div class="code-block">%USERPROFILE%\.hanwha\opc\logs\api.log</div>
+      <p style="font-size:12px;color:var(--muted)">앱 내 "설정 폴더 열기" 버튼으로 해당 디렉토리에 바로 접근할 수 있습니다.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>HANWHA ENERGY &nbsp;·&nbsp; IT 플랫폼 개발팀 &nbsp;·&nbsp; OPC-ISL Engine &nbsp;·&nbsp; Juns</p>
+</footer>
+
+</body>
+</html>

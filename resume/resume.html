@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Juns — 이력서</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  :root {
+    --bg: #1b1a22;
+    --surface: #232131;
+    --surface-2: #2b2839;
+    --border: #3a3749;
+    --text: #ece9f5;
+    --text-2: #a9a5bc;
+    --text-dim: #757087;
+    --accent: #b3a4ff;
+    --accent-2: #78e8c7;
+    --accent-soft: rgba(179,164,255,.15);
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  }
+  html, body { background: var(--bg); }
+  body {
+    margin: 0;
+    padding: 13mm 16mm;
+    font-family: 'Inter', -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+    color: var(--text);
+    font-size: 9.6pt;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .top-accent { height: 3px; border-radius: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); margin-bottom: 7mm; }
+
+  header { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-bottom: 11px; }
+  .id { display: flex; align-items: center; gap: 12px; }
+  .mark {
+    width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: flex; align-items: center; justify-content: center;
+    color: #17151f; font-weight: 800; font-size: 15pt;
+  }
+  .name { font-size: 19pt; font-weight: 800; letter-spacing: -0.01em; margin: 0 0 2px; }
+  .role { color: var(--accent); font-size: 9.5pt; font-weight: 600; margin: 0; }
+  .contact { text-align: right; font-family: var(--mono); font-size: 8pt; color: var(--text-2); line-height: 1.75; }
+  .contact a { color: var(--text-2); text-decoration: none; }
+  .contact .primary { color: var(--accent); }
+  .contact .primary a { color: var(--accent); }
+
+  section { margin-bottom: 11px; }
+  h2 {
+    font-family: var(--mono);
+    font-size: 8.4pt;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: .13em;
+    color: var(--accent);
+    margin: 0 0 7px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h2::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+
+  .summary { margin: 0; color: var(--text-2); }
+
+  .job { position: relative; padding-left: 15px; border-left: 2px solid var(--accent-soft); margin-bottom: 9px; }
+  .job:last-child { margin-bottom: 0; }
+  .job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-weight: 700; font-size: 10.1pt; }
+  .job-head .period { font-family: var(--mono); font-weight: 500; font-size: 7.8pt; color: var(--text-dim); white-space: nowrap; }
+  .job-sub { font-family: var(--mono); color: var(--text-dim); font-size: 8pt; letter-spacing: .03em; margin: 3px 0 6px; }
+  ul { margin: 0; padding-left: 15px; }
+  li { margin-bottom: 3px; color: var(--text-2); }
+  li::marker { color: var(--accent); }
+
+  .proj { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 9px 13px; margin-bottom: 6px; }
+  .proj:last-child { margin-bottom: 0; }
+  .proj-title { font-weight: 700; font-size: 9.7pt; margin-bottom: 3px; color: var(--text); }
+  .proj-desc { color: var(--text-2); margin: 0 0 6px; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 4px; }
+  .tag { font-family: var(--mono); font-size: 7.2pt; font-weight: 500; letter-spacing: .02em; padding: 2px 8px; background: var(--accent-soft); color: var(--accent); border-radius: 999px; }
+
+  .skill-grid { display: grid; grid-template-columns: 92px 1fr; row-gap: 6px; column-gap: 12px; }
+  .skill-cat { font-family: var(--mono); font-weight: 500; font-size: 7.9pt; letter-spacing: .02em; color: var(--text-dim); text-transform: uppercase; }
+  .skill-val { color: var(--text-2); }
+
+  .bg-note { color: var(--text-2); margin: 0 0 6px; }
+  .bg-row { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 8.6pt; color: var(--text-dim); }
+  .bg-row span b { color: var(--text-2); font-weight: 600; }
+
+  .edu-row { display: flex; justify-content: space-between; gap: 10px; font-size: 9.2pt; }
+  .edu-row .period { font-family: var(--mono); font-size: 7.8pt; color: var(--text-dim); white-space: nowrap; }
+  .edu-row + .edu-row { margin-top: 4px; }
+</style>
+</head>
+<body>
+  <div class="top-accent"></div>
+
+  <header>
+    <div class="id">
+      <div class="mark">J</div>
+      <div>
+        <h1 class="name">Juns</h1>
+        <p class="role">AI 풀스택 엔지니어 · AI Engineer</p>
+      </div>
+    </div>
+    <div class="contact">
+      <div class="primary"><a href="https://github.com/savvy773">github.com/savvy773</a></div>
+      <div><a href="https://savvy773.github.io">savvy773.github.io</a></div>
+    </div>
+  </header>
+
+  <section>
+    <h2>Summary</h2>
+    <p class="summary">
+      영업관리·고객지원 분야에서 14년 이상 경력을 쌓은 뒤, 한화에너지에서 AI 엔지니어로 직무를 전환했습니다.
+      태양광 발전소 모니터링 시스템과 AI/LLM 기반 업무 자동화를 개발했으며, 기존 약 1주일 소요되던 업무를
+      1일로 단축한 경험이 있습니다. Python·Rust·Java·SQL 기반 백엔드와 Vue·React·TypeScript 기반
+      프론트엔드 개발 경험을 보유하고 있습니다.
+    </p>
+  </section>
+
+  <section>
+    <h2>Development Experience</h2>
+    <div class="job">
+      <div class="job-head">
+        <span>한화에너지 — AI 풀스택 엔지니어 (프로)</span>
+        <span class="period">2024.11 – 2026.05</span>
+      </div>
+      <div class="job-sub">영업관리 경력에서 개발 직무로 전환한 첫 포지션</div>
+      <ul>
+        <li>태양광 ONM(운영·유지보수) 웹 프로그램 개발 및 운영</li>
+        <li>HEIS TAG 관리·QC·SQL 기반 데이터 관리, TCS 트래커 연동 발전소 모니터링 자동화 구축</li>
+        <li>서버 장애 시 누락 데이터 복구를 위한 InfluxDB 기반 Backfill 자동화 기능을 PySide5/Tauri GUI로 구현</li>
+        <li>백엔드(Python·Rust·Java·SQL)·프론트엔드(Vue·TypeScript) 풀스택 개발</li>
+        <li>반복 업무 자동화로 약 1주일 소요되던 업무 처리 기간을 1일로 단축</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Projects</h2>
+    <div class="proj">
+      <div class="proj-title">HEIS Tool — 발전소 데이터 통합 자동화 툴</div>
+      <div class="proj-desc">
+        TAG 관리·SQL 등록·QC 검증·Backfill·PVsyst 업로드를 하나로 통합한 GUI 툴. 대용량 CSV를 InfluxDB
+        Line Protocol로 변환·적재하는 Backfill 파이프라인 포함. 서버 통신은 사용자별로 격리된 SSH 터널로
+        처리해 다중 사용자 동시 작업 시 프로세스 충돌을 원천 차단.
+      </div>
+      <div class="tag-row">
+        <span class="tag">PYTHON</span><span class="tag">INFLUXDB</span><span class="tag">SSH TUNNELING</span>
+        <span class="tag">SQL</span><span class="tag">PYSIDE5 / TAURI</span>
+      </div>
+    </div>
+    <div class="proj">
+      <div class="proj-title">OPC-ISL Engine — OPC 태그 → HEIS 표준 포맷 변환 도구</div>
+      <div class="proj-desc">
+        발전소마다 다른 OPC 원본 태그 파일을 HEIS Import 표준 포맷으로 변환하는 Windows 데스크톱 툴.
+        발전소명·타입·OPC 형식을 파일 내용 기반으로 자동 감지해 수작업 매핑을 최소화.
+      </div>
+      <div class="tag-row">
+        <span class="tag">PYTHON</span><span class="tag">OPC UA</span><span class="tag">XLSX PARSING</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Core Skills</h2>
+    <div class="skill-grid">
+      <div class="skill-cat">Backend</div><div class="skill-val">Python, Rust, Java, Go, SQL, C++</div>
+      <div class="skill-cat">Frontend</div><div class="skill-val">Vue, React, TypeScript, Vite</div>
+      <div class="skill-cat">Data</div><div class="skill-val">InfluxDB, HEIS TAG 관리, QC, 데이터 백필 자동화</div>
+      <div class="skill-cat">AI</div><div class="skill-val">AI/LLM 기반 업무 자동화, 컨텍스트 엔지니어링</div>
+      <div class="skill-cat">H/W · S/W</div><div class="skill-val">PC 조립·정비, H/W·S/W 장애 진단, 시스템 트러블슈팅</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Career Background</h2>
+    <p class="bg-note">
+      개발 직무 전환 전, 다양한 산업군에서 영업관리·채널 운영·고객 기술지원 업무를 14년 이상 수행했습니다.
+      HP 서버 채널 실적 관리, PC H/W 기술지원, 카드사 핫라인 운영 등 현장 커뮤니케이션과 데이터 기반
+      실적 분석 경험을 쌓았습니다.
+    </p>
+    <div class="bg-row">
+      <span><b>현대카드</b> · 주임 · 2015.11–2017.10</span>
+      <span><b>제이씨현</b> · 주임 · 2014.02–2015.03</span>
+      <span><b>한국네트인</b> · 과장 · 2011.07–2013.04</span>
+      <span><b>HP 휴렛패커드 센터</b> · 대리 · 2000.07–2008.07</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Education</h2>
+    <div class="edu-row">
+      <span>부천대학교 · 컴퓨터제어과</span>
+      <span class="period">1997.03 – 1999.02</span>
+    </div>
+  </section>
+
+</body>
+</html>
