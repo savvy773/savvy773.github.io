@@ -1763,6 +1763,25 @@ header::after {
   .workflow { gap: 6px; }
   .wf-step { min-width: 72px; }
   .wf-arrow { display: none; }
+
+  /* 본문 곳곳의 인라인 grid(대부분 2~4열 통계/비교 카드)를 1열로 스택 —
+     인라인 style은 명시도가 가장 높아 !important로만 덮어쓸 수 있음 */
+  [style*="grid-template-columns:1fr 1fr"],
+  [style*="grid-template-columns: 1fr 1fr"],
+  [style*="grid-template-columns:repeat(3,1fr)"],
+  [style*="grid-template-columns:repeat(4,1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+  .pem-key-grid { grid-template-columns: 1fr; }
+
+  /* CSV/리포트 미리보기 그리드: 칼럼이 많아 억지로 접으면 안 보이니
+     스크롤 가능한 최소 폭을 주고 옆으로 스크롤하게 함 */
+  .qcp-csv-preview { overflow-x: auto; }
+  .csv-header-row, .csv-data-row { min-width: 480px; }
+  .report-table-mock { overflow-x: auto; display: block; }
+  .rtm-row { min-width: 380px; }
+
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 }
 /* ══════════════════════════════════════════
    SETUP TAB — Dynamic Components
