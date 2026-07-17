@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>최준섭 — 이력서</title>
+<style>
+  @page { size: A4; margin: 13mm 15mm; }
+  * { box-sizing: border-box; }
+  :root {
+    --ink: #16181d;
+    --muted: #6b7280;
+    --faint: #9aa1ac;
+    --accent: #2563eb;
+    --accent-soft: #eef3ff;
+    --line: #e6e8ec;
+    --tint: #f7f8fa;
+  }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Pretendard", "Malgun Gothic", sans-serif;
+    color: var(--ink);
+    font-size: 10pt;
+    line-height: 1.52;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* header */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 10px;
+    margin-bottom: 13px;
+    border-bottom: 2.5px solid var(--ink);
+  }
+  .name { font-size: 24pt; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 5px; }
+  .role { color: var(--accent); font-size: 11pt; font-weight: 600; margin: 0; }
+  .contact { text-align: right; font-size: 9pt; color: var(--muted); line-height: 1.75; }
+  .contact a { color: var(--muted); text-decoration: none; }
+  .contact .primary { color: var(--accent); font-weight: 600; }
+  .contact .primary a { color: var(--accent); }
+
+  section { margin-bottom: 11px; }
+  h2 {
+    font-size: 9.2pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--accent);
+    margin: 0 0 7px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+  .summary { margin: 0; color: #333; }
+
+  .job { position: relative; padding-left: 14px; border-left: 2px solid var(--accent-soft); }
+  .job-head { display: flex; justify-content: space-between; align-items: baseline; font-weight: 700; font-size: 10.6pt; }
+  .job-sub { color: var(--faint); font-size: 8.8pt; letter-spacing: 0.03em; margin: 2px 0 7px; text-transform: uppercase; }
+  ul { margin: 0; padding-left: 15px; }
+  li { margin-bottom: 4px; color: #2a2d33; }
+  li::marker { color: var(--accent); }
+
+  .proj { background: var(--tint); border: 1px solid var(--line); border-radius: 10px; padding: 9px 13px; margin-bottom: 7px; }
+  .proj-title { font-weight: 700; font-size: 10.1pt; margin-bottom: 2px; }
+  .proj-desc { color: #3a3d44; margin: 0 0 6px; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tag { font-size: 8pt; font-weight: 600; padding: 2px 9px; background: var(--accent-soft); color: var(--accent); border-radius: 999px; }
+
+  .skill-grid { display: grid; grid-template-columns: 100px 1fr; row-gap: 7px; column-gap: 12px; }
+  .skill-cat { font-weight: 700; font-size: 9pt; color: var(--ink); }
+  .skill-val { color: #3a3d44; }
+</style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <h1 class="name">최준섭</h1>
+      <p class="role">AI를 적극 활용하는 소프트웨어 개발자</p>
+    </div>
+    <div class="contact">
+      <div class="primary"><a href="mailto:chosup77@gmail.com">chosup77@gmail.com</a></div>
+      <div><a href="https://github.com/savvy773">github.com/savvy773</a></div>
+      <div><a href="https://savvy773.github.io">savvy773.github.io</a></div>
+    </div>
+  </header>
+
+  <section>
+    <h2>Summary</h2>
+    <p class="summary">
+      한화에너지 GEP 개발팀에서 발전소 데이터 연동 업무를 담당하며, TAG 관리·SQL DB 등록·QC 검증
+      ·Backfill·PVsyst 업로드 등 반복적인 수작업 프로세스를 데스크톱 자동화 툴로 직접 설계·개발해 전환했습니다.
+      OPC 원본 태그를 사내 표준 포맷으로 자동 변환하는 도구, 다중 사용자 환경에서 안전하게 서버와 통신하는
+      세션 격리형 SSH 터널 관리 시스템을 구축한 경험이 있으며, 업무 전반에 AI 도구를 적극 활용해 개발 생산성을
+      높이는 데 관심이 많습니다.
+    </p>
+  </section>
+
+  <section>
+    <h2>Experience</h2>
+    <div class="job">
+      <div class="job-head">
+        <span>한화에너지 GEP 개발팀 — 발전소 연동 담당</span>
+      </div>
+      <div class="job-sub">HEIS · UEP · OPC 연동</div>
+      <ul>
+        <li>TAG 작업·DB 등록·QC 검증·Backfill·PVsyst 업로드를 통합한 자동화 툴을 직접 설계·개발하여 메인 업무 5종을 하나의 툴로 통합</li>
+        <li>Report 수동 취합 프로세스를 자동화 툴로 전환해 해외 발전소 사이트 운영 효율을 개선</li>
+        <li>HEIS–SCADA 연동 QC 검증 프로세스를 확립하고, OPC·TCP 프로토콜 기반 데이터 파이프라인을 안정화</li>
+        <li>담당 업무 전반(자동화 툴 3종 포함)에 대한 운영 매뉴얼을 작성하고 후임에게 인수인계 완료</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Projects</h2>
+
+    <div class="proj">
+      <div class="proj-title">HEIS Tool — 발전소 데이터 통합 자동화 툴</div>
+      <div class="proj-desc">
+        TAG 관리·SQL 등록·QC 검증·Backfill·PVsyst 업로드를 하나로 통합한 사내 자동화 툴.
+        대용량 CSV를 InfluxDB Line Protocol로 변환·적재하는 Backfill 파이프라인과, ISL 파일로부터
+        설비·태그·알람 정보를 자동 생성해 SQL로 등록하는 HEIS 파일 생성 자동화(S2~S6)를 포함.
+        서버 통신은 사용자별로 격리된 SSH 터널로 처리해 다중 사용자 동시 작업 시 프로세스 충돌을 원천 차단.
+      </div>
+      <div class="tag-row">
+        <span class="tag">Python</span><span class="tag">InfluxDB</span><span class="tag">SSH Tunneling</span>
+        <span class="tag">SQL</span><span class="tag">Excel 자동화</span><span class="tag">Fuzzy Matching</span>
+      </div>
+    </div>
+
+    <div class="proj">
+      <div class="proj-title">OPC-ISL Engine — OPC 태그 → HEIS 표준 포맷 변환 도구</div>
+      <div class="proj-desc">
+        발전소마다 다른 OPC 원본 태그 파일을 HEIS Import 표준 포맷으로 변환하는 Windows 데스크톱 툴.
+        발전소명·타입(PV/BESS/Hybrid)·OPC 형식(KepServer/SCADA IO)을 파일 내용 기반으로 자동 감지해
+        수작업 매핑을 최소화한 2단계 워크플로우(ISL 생성 → HEIS Import 생성) 설계.
+      </div>
+      <div class="tag-row">
+        <span class="tag">Python</span><span class="tag">OPC UA</span><span class="tag">xlsx Parsing</span><span class="tag">Windows Installer</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Skills</h2>
+    <div class="skill-grid">
+      <div class="skill-cat">Language</div><div class="skill-val">Python, SQL</div>
+      <div class="skill-cat">Data</div><div class="skill-val">InfluxDB, Line Protocol, Excel/xlsx 파이프라인</div>
+      <div class="skill-cat">Protocol</div><div class="skill-val">OPC UA, TCP, SCADA 연동</div>
+      <div class="skill-cat">Infra</div><div class="skill-val">SSH 터널링·세션 격리, 프로세스 생명주기 관리</div>
+      <div class="skill-cat">Domain</div><div class="skill-val">발전소 설비/태그 표준화, QC 검증, 데이터 파이프라인 안정화</div>
+    </div>
+  </section>
+
+</body>
+</html>

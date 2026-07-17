@@ -1,9 +1,10 @@
-``<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Savvy773 Portfolio</title>
+<script src="https://unpkg.com/htmx.org@2/dist/htmx.min.js"></script>
 <style>
   :root {
     color-scheme: light dark;
@@ -11,10 +12,12 @@
     --fg: #1a1a1a;
     --muted: #666;
     --accent: #2563eb;
+    --accent-soft: #eff4ff;
     --border: #e5e5e5;
+    --card-bg: #fafafa;
   }
   @media (prefers-color-scheme: dark) {
-    :root { --bg: #0d1117; --fg: #e6edf3; --muted: #8b949e; --border: #21262d; }
+    :root { --bg: #0d1117; --fg: #e6edf3; --muted: #8b949e; --border: #21262d; --card-bg: #161b22; --accent-soft: #12203f; }
   }
   * { box-sizing: border-box; }
   body {
@@ -24,9 +27,10 @@
     color: var(--fg);
     line-height: 1.6;
   }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 4rem 1.5rem; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 4rem 1.5rem; }
   h1 { font-size: 2rem; margin-bottom: 0.25rem; }
-  .tagline { color: var(--muted); margin-bottom: 2.5rem; }
+  .tagline { color: var(--muted); margin-bottom: 0.75rem; }
+  .exp-note { color: var(--muted); font-size: 0.92rem; margin-bottom: 2.5rem; }
   section { margin-bottom: 2.5rem; }
   h2 {
     font-size: 1rem;
@@ -37,16 +41,72 @@
     padding-bottom: 0.5rem;
     margin-bottom: 1rem;
   }
-  .project {
+
+  /* project cards */
+  .card-grid { display: grid; gap: 0.75rem; }
+  .project-card {
     display: block;
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--border);
-    text-decoration: none;
+    width: 100%;
+    text-align: left;
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--card-bg);
     color: inherit;
+    font: inherit;
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease;
   }
-  .project:last-child { border-bottom: none; }
-  .project h3 { margin: 0 0 0.25rem; font-size: 1.05rem; }
-  .project p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+  .project-card:hover { border-color: var(--accent); }
+  .project-card.active { border-color: var(--accent); background: var(--accent-soft); }
+  .project-card h3 { margin: 0 0 0.25rem; font-size: 1.05rem; }
+  .project-card p { margin: 0 0 0.5rem; color: var(--muted); font-size: 0.9rem; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .tag {
+    font-size: 0.72rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  /* detail panel (htmx target) */
+  #detail { margin-top: 1rem; }
+  #detail:empty { display: none; }
+  .detail-panel {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    animation: fadeIn .15s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  .detail-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; }
+  .detail-head h3 { margin: 0 0 0.25rem; font-size: 1.2rem; }
+  .detail-head p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+  .detail-close {
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    border-radius: 6px;
+    width: 1.8rem; height: 1.8rem;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .detail-close:hover { color: var(--fg); border-color: var(--accent); }
+  .detail-sub { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin: 1.25rem 0 0.6rem; }
+  .feature-grid { display: grid; gap: 0.6rem; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .feature-card { border: 1px solid var(--border); border-radius: 8px; padding: 0.7rem 0.85rem; }
+  .feature-card .f-title { font-size: 0.88rem; font-weight: 600; margin-bottom: 0.25rem; }
+  .feature-card .f-desc { font-size: 0.82rem; color: var(--muted); }
+  .step-flow { display: flex; flex-direction: column; gap: 0.5rem; }
+  .step { display: flex; gap: 0.75rem; border: 1px solid var(--border); border-radius: 8px; padding: 0.7rem 0.85rem; }
+  .step-badge { flex-shrink: 0; font-size: 0.72rem; font-weight: 600; color: var(--accent); }
+  .step .s-title { font-size: 0.88rem; font-weight: 600; margin-bottom: 0.2rem; }
+  .step .s-desc { font-size: 0.82rem; color: var(--muted); }
+  .detail-panel .tag-row { margin-top: 0.75rem; }
+
+  .project { /* legacy alias kept for links section spacing if needed */ }
   .links a {
     color: var(--accent);
     text-decoration: none;
@@ -59,14 +119,53 @@
 <body>
   <div class="wrap">
     <h1>Savvy773</h1>
-    <p class="tagline">여기에 한 줄 소개를 적어주세요.</p>
+    <p class="tagline">AI를 적극 활용하는 소프트웨어 개발자</p>
+    <p class="exp-note">
+      한화에너지 GEP 개발팀에서 발전소 데이터 연동 업무를 담당하며 HEIS 플랫폼의 TAG 관리·QC 검증·Backfill·OPC 연동 업무 전반을 자동화 툴로 전환했습니다.
+      Report 수동 취합 프로세스를 자동화해 해외 발전소 사이트 운영 효율을 개선했고, HEIS–SCADA 연동 QC 검증 체계를 확립했습니다.
+    </p>
 
     <section>
       <h2>Projects</h2>
-      <a class="project" href="#">
-        <h3>프로젝트 이름</h3>
-        <p>한 줄 설명 — 사용 기술, 역할, 성과.</p>
-      </a>
+      <div class="card-grid" id="project-list">
+        <button
+          class="project-card"
+          data-key="heis-tool"
+          hx-get="partials/heis-tool.html"
+          hx-target="#detail"
+          hx-swap="innerHTML"
+          hx-push-url="true"
+          aria-expanded="false">
+          <h3>HEIS Tool</h3>
+          <p>발전소 TAG 관리·SQL 등록·QC 검증·Backfill·PVsyst 업로드를 하나로 통합한 사내 자동화 툴. 세션별로 격리된 SSH 터널로 서버와 안전하게 통신합니다.</p>
+          <div class="tag-row">
+            <span class="tag">Python</span>
+            <span class="tag">InfluxDB</span>
+            <span class="tag">SSH Tunneling</span>
+            <span class="tag">Excel Automation</span>
+          </div>
+        </button>
+
+        <button
+          class="project-card"
+          data-key="opc-isl"
+          hx-get="partials/opc-isl.html"
+          hx-target="#detail"
+          hx-swap="innerHTML"
+          hx-push-url="true"
+          aria-expanded="false">
+          <h3>OPC-ISL Engine</h3>
+          <p>OPC 원본 태그를 HEIS 표준 Import 포맷으로 자동 변환하는 2단계 워크플로우 툴. 발전소명·타입·OPC 형식을 자동 감지합니다.</p>
+          <div class="tag-row">
+            <span class="tag">Python</span>
+            <span class="tag">OPC UA</span>
+            <span class="tag">Windows Installer</span>
+            <span class="tag">xlsx Parsing</span>
+          </div>
+        </button>
+      </div>
+
+      <div id="detail" hidden></div>
     </section>
 
     <section>
@@ -79,5 +178,30 @@
 
     <footer>&copy; 2026 Savvy773</footer>
   </div>
+
+  <script>
+    document.body.addEventListener('htmx:afterSwap', (e) => {
+      if (e.detail.target.id !== 'detail') return;
+      const detail = e.detail.target;
+      detail.hidden = false;
+      document.querySelectorAll('.project-card').forEach(c => c.setAttribute('aria-expanded', 'false'));
+      const trigger = e.detail.requestConfig.elt;
+      if (trigger && trigger.dataset.key) trigger.setAttribute('aria-expanded', 'true');
+      document.querySelectorAll('.project-card').forEach(c => c.classList.remove('active'));
+      if (trigger) trigger.classList.add('active');
+      detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    function closeDetail() {
+      const detail = document.getElementById('detail');
+      detail.innerHTML = '';
+      detail.hidden = true;
+      document.querySelectorAll('.project-card').forEach(c => {
+        c.classList.remove('active');
+        c.setAttribute('aria-expanded', 'false');
+      });
+      history.pushState({}, '', location.pathname);
+    }
+  </script>
 </body>
 </html>

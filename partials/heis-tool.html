@@ -1,0 +1,111 @@
+<div class="detail-panel">
+  <div class="detail-head">
+    <div>
+      <h3>HEIS Tool</h3>
+      <p>GEP Operations · HEIS TAG · InfluxDB 데이터 관리 · 사내 통합 자동화 툴</p>
+    </div>
+    <button class="detail-close" onclick="closeDetail()" aria-label="닫기">✕</button>
+  </div>
+
+  <p style="font-size:0.9rem;color:var(--muted);margin:0 0 0.5rem;">
+    발전소 연동 업무에서 반복되던 TAG 작업 · SQL DB 등록 · QC 검증 · Backfill · PVsyst 업로드를
+    하나의 데스크톱 툴로 통합 자동화했습니다. 로컬 PC에서 원격 서버로의 모든 통신은 사용자별로
+    격리된 SSH 터널을 통해 안전하게 이루어집니다.
+  </p>
+
+  <div class="detail-sub">Backfill Tool — 누락 데이터 적재</div>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="f-title">✂️ Trim — CSV 전처리</div>
+      <div class="f-desc">대용량 원본 CSV에서 필요한 날짜 구간만 추출하고 UTC ↔ KST 시간대를 보정. 수백만 행도 빠르게 처리.</div>
+    </div>
+    <div class="feature-card">
+      <div class="f-title">🔄 Convert — 형식 변환</div>
+      <div class="f-desc">CSV를 InfluxDB Line Protocol(.lp)로 변환. 매핑 파일 기반 컬럼명·스케일 자동 처리 + Fuzzy Matching.</div>
+    </div>
+    <div class="feature-card">
+      <div class="f-title">📥 Extract — 서버 → 로컬</div>
+      <div class="f-desc">PRD 서버 부하(CPU/I·O)를 실시간 감지해 속도를 자동 조절하며 필요한 구간만 추출.</div>
+    </div>
+    <div class="feature-card">
+      <div class="f-title">🚚 Load — 로컬 → 서버</div>
+      <div class="f-desc">.lp 파일을 타겟 서버에 업로드해 InfluxDB에 적재. 다수 파일 묶음 전송으로 효율 극대화.</div>
+    </div>
+    <div class="feature-card">
+      <div class="f-title">✅ Data Status — 수량 검증</div>
+      <div class="f-desc">적재 전/후 데이터 수량을 실시간 비교해 불일치를 즉시 확인.</div>
+    </div>
+    <div class="feature-card">
+      <div class="f-title">⏱️ Unix Time 변환</div>
+      <div class="f-desc">날짜와 타임스탬프(ms)를 즉시 상호 변환해 쿼리 작성을 보조.</div>
+    </div>
+  </div>
+
+  <div class="detail-sub">HEIS 파일 자동 생성 — S2 ~ S6</div>
+  <div class="step-flow">
+    <div class="step">
+      <span class="step-badge">S2</span>
+      <div>
+        <div class="s-title">설비 기준 정보 생성</div>
+        <div class="s-desc">ISL 파일에서 부모/자식 설비 계층을 추출하고 그룹 코드·한글/영문명·단선도 여부를 자동 생성.</div>
+      </div>
+    </div>
+    <div class="step">
+      <span class="step-badge">S3</span>
+      <div>
+        <div class="s-title">설비 태그 수집 · 단위 변환</div>
+        <div class="s-desc">SCADA TAG·파라미터·단위를 Fuzzy Matching으로 자동 매칭하고, kW·음수 보정 등 스케일을 자동 적용.</div>
+      </div>
+    </div>
+    <div class="step">
+      <span class="step-badge">S4</span>
+      <div>
+        <div class="s-title">알람 정보 수집 · 확장</div>
+        <div class="s-desc">알람 태그의 아날로그/디지털을 자동 판별하고, 사이트별 설비 구성 기반으로 알람 파라미터를 대량 생성.</div>
+      </div>
+    </div>
+    <div class="step">
+      <span class="step-badge">S5</span>
+      <div>
+        <div class="s-title">알람 대상 정보 생성</div>
+        <div class="s-desc">알람명 키워드 분석으로 정보/주의/경보/위험 4단계를 자동 분류.</div>
+      </div>
+    </div>
+    <div class="step">
+      <span class="step-badge">S6</span>
+      <div>
+        <div class="s-title">SQL 실행</div>
+        <div class="s-desc">생성된 HEIS 파일을 바탕으로 설비·태그·알람 등록 SQL을 생성하고 미리보기 후 원격 DB에 직접 실행.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-sub">세션 격리 SSH 터널 관리</div>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="f-title">사용자별 완전 격리</div>
+      <div class="f-desc">각 세션이 독립된 임시 SSH config와 프로세스로 격리되어 다수 사용자가 동시 작업해도 서로 간섭하지 않음.</div>
+    </div>
+    <div class="feature-card">
+      <div class="f-title">자동 재연결 + 지수 백오프</div>
+      <div class="f-desc">연결 실패 또는 5분 경과 시 터널을 자동 재수립. 일시적 오류는 2s → 4s 간격으로 재시도.</div>
+    </div>
+    <div class="feature-card">
+      <div class="f-title">프로세스 추적 & 정리</div>
+      <div class="f-desc">실행 중인 SSH/SCP 프로세스를 추적해 작업 취소·앱 종료 시 순차 정리, 비정상 종료 시에도 종료 훅으로 보장.</div>
+    </div>
+    <div class="feature-card">
+      <div class="f-title">상태 실시간 표시</div>
+      <div class="f-desc">연결 실패 시 OFFLINE, 재시도 중에는 RECONNECTING을 사이드바에 즉시 표시.</div>
+    </div>
+  </div>
+
+  <div class="tag-row">
+    <span class="tag">Python</span>
+    <span class="tag">InfluxDB</span>
+    <span class="tag">SSH / SCP</span>
+    <span class="tag">SQL</span>
+    <span class="tag">Excel 자동화</span>
+    <span class="tag">Fuzzy Matching</span>
+  </div>
+</div>

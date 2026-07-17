@@ -1,0 +1,52 @@
+<div class="detail-panel">
+  <div class="detail-head">
+    <div>
+      <h3>OPC-ISL Engine</h3>
+      <p>OPC 태그 → HEIS 표준 포맷 자동 변환 도구</p>
+    </div>
+    <button class="detail-close" onclick="closeDetail()" aria-label="닫기">✕</button>
+  </div>
+
+  <p style="font-size:0.9rem;color:var(--muted);margin:0 0 0.5rem;">
+    발전소마다 제각각인 OPC 태그 원본 파일을 HEIS 시스템이 요구하는 표준 Import 포맷으로 변환하는
+    Windows 데스크톱 툴입니다. 발전소명·타입·OPC 형식을 파일 내용에서 자동으로 감지해 수작업 매핑을
+    최소화했습니다.
+  </p>
+
+  <div class="detail-sub">2단계 워크플로우</div>
+  <div class="step-flow">
+    <div class="step">
+      <span class="step-badge">Step A</span>
+      <div>
+        <div class="s-title">ISL 자동 생성</div>
+        <div class="s-desc">
+          OPC 원본 파일(XLSX/CSV)을 입력하면 발전소명·발전소 타입(PV/BESS/Hybrid)·OPC 형식(KepServer/SCADA IO)을
+          태그명 기반으로 자동 감지해 ISL_TagList 파일을 생성합니다.
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <span class="step-badge">Step B</span>
+      <div>
+        <div class="s-title">HEIS Import 파일 생성</div>
+        <div class="s-desc">
+          Step A의 ISL 파일과 HEIS 템플릿을 입력받아 SERVER/AGENT ID, ConnectionId, PollingGroup(A/D),
+          NamespaceIndex 등을 매핑해 HEIS_Import 파일을 생성합니다.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-sub">발전소 연동 체계 구축</div>
+  <p style="font-size:0.85rem;color:var(--muted);margin:0;">
+    이 툴을 통해 HEIS–SCADA 연동 QC 검증 프로세스를 확립하고, OPC·TCP 프로토콜 기반 데이터 파이프라인을
+    안정화했습니다.
+  </p>
+
+  <div class="tag-row">
+    <span class="tag">Python</span>
+    <span class="tag">OPC UA</span>
+    <span class="tag">xlsx Parsing</span>
+    <span class="tag">WebView2 Installer</span>
+  </div>
+</div>
