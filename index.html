@@ -81,7 +81,7 @@
   /* ambient mesh background */
   .mesh { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
   .mesh::before, .mesh::after {
-    content: ""; position: absolute; border-radius: 50%; filter: blur(100px);
+    content: ""; position: absolute; border-radius: 50%; filter: blur(64px);
   }
   .mesh::before { width: 50vw; height: 50vw; top: -18vw; right: -16vw; background: radial-gradient(circle, var(--accent), transparent 70%); opacity: .28; }
   .mesh::after { width: 42vw; height: 42vw; bottom: -16vw; left: -14vw; background: radial-gradient(circle, var(--accent-2), transparent 70%); opacity: .16; }
@@ -104,7 +104,7 @@
     padding: 14px 1.5rem;
     margin-top: 3px;
     background: color-mix(in srgb, var(--bg) 72%, transparent);
-    backdrop-filter: blur(16px);
+    backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
   }
   .topbar-inner { max-width: 840px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: space-between; }
@@ -176,6 +176,7 @@
   }
   .hero-svg path { animation: waveFlow 5s linear infinite; }
   .hero-svg path:nth-child(2) { animation-duration: 7s; animation-direction: reverse; }
+  body.modal-open .hero-svg path { animation-play-state: paused; }
   @keyframes waveFlow { to { stroke-dashoffset: -240; } }
   @media (max-width: 640px) { .hero-svg { display: none; } }
   .kicker {
@@ -677,6 +678,8 @@
       modalNewTab.href = url;
       dialog.showModal();
       navDd.classList.remove('open');
+      document.body.classList.add('modal-open');
+      document.dispatchEvent(new Event('bg:pause')); // 모달 뒤에 가려진 배경 애니메이션(캔버스) 정지
       return false;
     }
     function closeModal() { dialog.close(); }
@@ -696,6 +699,8 @@
     dialog.addEventListener('click', (e) => { if (e.target === dialog) closeModal(); });
     // native ESC/close cleans up the iframe after the close animation
     dialog.addEventListener('close', () => {
+      document.body.classList.remove('modal-open');
+      document.dispatchEvent(new Event('bg:resume'));
       setTimeout(() => { iframe.src = 'about:blank'; }, 200);
     });
   </script>
@@ -810,6 +815,9 @@
       document.addEventListener('visibilitychange', () => {
         if (document.hidden) stop(); else if (!reduceMotion) start();
       });
+      // 모달이 열려 배경이 가려진 동안은 애니메이션을 완전히 정지
+      document.addEventListener('bg:pause', stop);
+      document.addEventListener('bg:resume', () => { if (!reduceMotion && !document.hidden) start(); });
     })();
   </script>
 </body>
