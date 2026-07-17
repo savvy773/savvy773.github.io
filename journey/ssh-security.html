@@ -362,6 +362,29 @@ code {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ── MOBILE ── */
+@media (max-width: 760px) {
+  .tb-inner { padding: 0 14px !important; }
+  .tb-nav { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .tb-nav::-webkit-scrollbar { display: none; }
+  .tb-date-wrap { display: none !important; }
+
+  .hero-inner { padding: 0 18px 24px; flex-direction: column; align-items: flex-start; gap: 18px; }
+  .hero-meta { min-width: 0; width: 100%; }
+
+  .main { padding: 30px 16px 70px; }
+  .ov-grid { grid-template-columns: 1fr 1fr; }
+  .grid2 { grid-template-columns: 1fr; }
+  .step-grid { grid-template-columns: 1fr; }
+
+  table:not(.auto) { font-size: 11px; }
+  table.auto { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+@media (max-width: 420px) {
+  .ov-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -369,7 +392,7 @@ code {
 
 <!-- TOPBAR -->
 <div class="topbar">
-  <div style="max-width:1060px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:100%;">
+  <div class="tb-inner" style="max-width:1060px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:100%;">
     <div class="tb-brand">
       <div style="position:relative;flex-shrink:0;">
         <div style="width:26px;height:26px;background:linear-gradient(135deg,#E8450A 0%,#C73508 100%);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:14px;color:#fff;letter-spacing:.02em;box-shadow:0 2px 8px rgba(232,69,10,0.4),inset 0 1px 0 rgba(255,255,255,0.25);">H</div>
@@ -391,7 +414,7 @@ code {
       <a href="#compression">압축 파이프라인</a>
       <a href="#checklist">점검</a>
     </nav>
-    <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+    <div class="tb-date-wrap" style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
       <div style="width:1px;height:18px;background:rgba(255,255,255,0.1);"></div>
       <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,0.18);letter-spacing:.08em;">2026-04-27</div>
     </div>
