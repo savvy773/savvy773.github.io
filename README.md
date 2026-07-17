@@ -21,6 +21,10 @@
 - 네이티브 `<dialog>` 기반 모달 뷰어 — 문서/프로젝트를 새 탭 이동 없이 그 자리에서 미리보기
 - Canvas 파티클 배경, SVG 웨이브 일러스트 등 가벼운 인터랙션 디테일
 
+## Currently Learning
+- **Godot / Unity** — 게임 엔진 기초 및 인터랙티브 콘텐츠 제작 학습 중
+- **DaVinci Resolve** — 영상 편집·컬러 그레이딩 학습 중
+
 ## Sections
 | | |
 |---|---|
