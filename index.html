@@ -171,7 +171,7 @@
   }
   .kicker::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-2); box-shadow: 0 0 10px var(--accent-2); }
   h1 {
-    font-size: clamp(2.6rem, 6vw, 3.6rem); font-weight: 900; letter-spacing: -0.03em; margin: 0 0 .6rem;
+    font-size: clamp(2.15rem, 7vw, 3.6rem); font-weight: 900; letter-spacing: -0.03em; margin: 0 0 .6rem;
     line-height: 1.05;
   }
   h1 .hl {
@@ -371,6 +371,16 @@
     .tl-meta { width: auto; display: flex; gap: .5rem; align-items: center; }
     footer { flex-direction: column; gap: .6rem; text-align: center; }
     .nav-dd-panel { width: 80vw; max-width: 320px; }
+
+    /* 좁은 화면: 상단바 공간 확보, 여백 축소 */
+    .brand-name { display: none; }
+    .topbar { padding: 12px 1rem; }
+    .topnav { gap: 0; }
+    .topnav a, .nav-dd-btn { padding: 6px 8px; font-size: 12.5px; }
+    .wrap { padding: 3.5rem 1.1rem 3.5rem; }
+    .exp-note { margin-bottom: 2.4rem; }
+    .repo-grid { grid-template-columns: 1fr; }
+    .skill-strip span { font-size: .68rem; padding: .28rem .6rem; }
   }
 
   /* modal viewer — native <dialog> */
@@ -407,7 +417,7 @@
     background: var(--surface-2);
     flex-shrink: 0;
   }
-  .modal-title { font-family: var(--mono); font-size: .78rem; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .modal-title { flex: 1; min-width: 0; font-family: var(--mono); font-size: .78rem; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .modal-actions { display: flex; align-items: center; gap: .5rem; flex-shrink: 0; }
   .modal-actions a {
     font-family: var(--mono); font-size: .72rem; color: var(--accent-2); text-decoration: none;
@@ -682,9 +692,11 @@
       function update() {
         ticking = false;
         const rect = track.getBoundingClientRect();
-        const progress = Math.min(1, Math.max(0,
-          (innerHeight - rect.top) / (innerHeight + rect.height)
-        ));
+        // 타임라인 아래에 남은 콘텐츠(footer 등)가 짧으면 기하학적 계산만으로는
+        // 페이지 최하단까지 스크롤해도 100%에 못 미칠 수 있어, 스크롤 끝에 도달하면 강제로 100%
+        const atBottom = Math.ceil(scrollY + innerHeight) >= document.documentElement.scrollHeight - 1;
+        const rawProgress = (innerHeight - rect.top) / (innerHeight + rect.height);
+        const progress = atBottom ? 1 : Math.min(1, Math.max(0, rawProgress));
         const total = Math.max(0, track.clientHeight - inset * 2);
         fill.style.height = (total * progress) + 'px';
       }
