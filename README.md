@@ -1,17 +1,15 @@
-# savvy773.github.io
+# Juns — Portfolio
 
-Personal portfolio site, served via GitHub Pages at https://savvy773.github.io/
+**https://savvy773.github.io/**
 
-1페이지 구조. Repositories/Journey 항목을 클릭하면 `<dialog>` 기반 모달에 iframe으로 해당 문서를 띄운다 (새 탭 이동 없음, "새 탭에서 열기" 버튼으로 선택 가능).
+AI 풀스택 엔지니어 Juns의 개인 포트폴리오. 실제 사내 개발 문서(가이드, 인수인계 보고서 등)를 익명화해 개발 과정의 발자취로 기록하고, 진행 중인 오픈소스 프로젝트를 함께 소개합니다.
 
-## 구조
-- `index.html` — 메인 페이지 (hero, Repositories, Journey 타임라인, 모달 뷰어)
-- `journey/*.html` — 실제 개발 과정에서 작성한 원문 문서 아카이브 (동료 실명 등은 익명화 처리됨)
-- `resume/resume.html`, `resume/resume.pdf` — 공개용 이력서. `resume/resume.md`(연락처·신상정보 포함 원본)는 `.gitignore`로 제외되어 git에 올라가지 않음
+## Highlights
+- 프레임워크 없이 순수 HTML/CSS/JS로 구현한 다크 테마 1페이지 포트폴리오
+- 네이티브 `<dialog>` 기반 모달 뷰어 — 문서/프로젝트를 새 탭 이동 없이 그 자리에서 미리보기
+- Canvas 파티클 배경, SVG 웨이브 일러스트 등 가벼운 인터랙션 디테일
 
-## Edit
-- 소개글·타임라인 항목: `index.html`
-- 원문 문서: `journey/*.html` 직접 수정
-- 이력서: `resume/resume.md`를 뼈대로 `resume/resume.html` 수정 → PDF는 headless Chrome/puppeteer-core로 재생성 (`resume/resume.pdf`)
-
-수정 후 `main`에 push하면 GitHub Pages가 자동 재배포된다.
+## Sections
+- **Repositories** — 진행 중인 오픈소스 프로젝트 라이브 데모
+- **Journey** — HEIS Tool, OPC-ISL Engine 등 실제 개발 여정을 담은 원문 문서 아카이브
+- **Resume** — 다운로드 가능한 이력서 (PDF)
