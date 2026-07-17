@@ -299,28 +299,32 @@
     .nav-dd-panel { width: 80vw; max-width: 320px; }
   }
 
-  /* modal viewer */
-  .modal-overlay {
-    position: fixed; inset: 0; z-index: 200;
-    background: rgba(6,6,10,.72);
-    backdrop-filter: blur(6px);
-    display: flex; align-items: center; justify-content: center;
-    padding: 3vh 3vw;
-    opacity: 0; visibility: hidden;
-    transition: opacity .18s ease, visibility .18s;
-  }
-  .modal-overlay.open { opacity: 1; visibility: visible; }
-  .modal-frame {
-    width: 100%; max-width: 1100px; height: 94vh;
+  /* modal viewer — native <dialog> */
+  dialog.modal-frame {
+    display: none;
+    width: min(1100px, 94vw); height: 94vh;
+    margin: auto;
+    padding: 0;
     background: var(--surface);
+    color: var(--text);
     border: 1px solid var(--border-hi);
     border-radius: 16px;
     box-shadow: var(--shadow-lg);
-    display: flex; flex-direction: column;
+    flex-direction: column;
     overflow: hidden;
-    transform: scale(.97); transition: transform .18s ease;
   }
-  .modal-overlay.open .modal-frame { transform: scale(1); }
+  dialog.modal-frame[open] {
+    display: flex;
+    animation: modalIn .18s ease;
+  }
+  dialog.modal-frame::backdrop {
+    background: rgba(6,6,10,.72);
+    backdrop-filter: blur(6px);
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(.97); }
+    to   { opacity: 1; transform: scale(1); }
+  }
   .modal-bar {
     display: flex; align-items: center; justify-content: space-between;
     gap: 1rem;
@@ -491,18 +495,16 @@
     </footer>
   </div>
 
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal-frame">
-      <div class="modal-bar">
-        <span class="modal-title" id="modalTitle"></span>
-        <div class="modal-actions">
-          <a id="modalNewTab" href="#" target="_blank" rel="noopener">새 탭에서 열기 ↗</a>
-          <button class="modal-close" onclick="closeModal()" aria-label="닫기">✕</button>
-        </div>
+  <dialog class="modal-frame" id="modalDialog">
+    <div class="modal-bar">
+      <span class="modal-title" id="modalTitle"></span>
+      <div class="modal-actions">
+        <a id="modalNewTab" href="#" target="_blank" rel="noopener">새 탭에서 열기 ↗</a>
+        <button class="modal-close" onclick="closeModal()" aria-label="닫기">✕</button>
       </div>
-      <iframe id="modalIframe" src="about:blank" title="문서 미리보기" loading="lazy"></iframe>
     </div>
-  </div>
+    <iframe id="modalIframe" src="about:blank" title="문서 미리보기" loading="lazy"></iframe>
+  </dialog>
 
   <script>
     // ── nav dropdown ──
@@ -512,8 +514,8 @@
       if (!navDd.contains(e.target)) navDd.classList.remove('open');
     });
 
-    // ── modal viewer ──
-    const overlay = document.getElementById('modalOverlay');
+    // ── modal viewer (native <dialog>) ──
+    const dialog = document.getElementById('modalDialog');
     const iframe = document.getElementById('modalIframe');
     const modalTitle = document.getElementById('modalTitle');
     const modalNewTab = document.getElementById('modalNewTab');
@@ -527,21 +529,17 @@
       iframe.src = bust;
       modalTitle.textContent = title;
       modalNewTab.href = url;
-      overlay.classList.add('open');
-      document.documentElement.style.overflow = 'hidden';
-      document.body.style.overflow = 'hidden';
+      dialog.showModal();
       navDd.classList.remove('open');
       return false;
     }
-    function closeModal() {
-      overlay.classList.remove('open');
-      document.documentElement.style.overflow = '';
-      document.body.style.overflow = '';
+    function closeModal() { dialog.close(); }
+
+    // click on the backdrop (outside the dialog's own box) closes it
+    dialog.addEventListener('click', (e) => { if (e.target === dialog) closeModal(); });
+    // native ESC/close cleans up the iframe after the close animation
+    dialog.addEventListener('close', () => {
       setTimeout(() => { iframe.src = 'about:blank'; }, 200);
-    }
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') { closeModal(); navDd.classList.remove('open'); }
     });
   </script>
 
