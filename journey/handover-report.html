@@ -10,24 +10,24 @@
 
 <style>
 :root {
-  --orange:      #E8450A;
-  --orange-light:#FDF0E8;
-  --orange-mid:  rgba(232,69,10,0.1);
+  --orange:      #FF6A3A;
+  --orange-light:#2a1c14;
+  --orange-mid:  rgba(255,106,58,0.14);
   --navy:        #2A3845;
   --navy-mid:    #38505F;
-  --bg:          #FAF7F4;
-  --bg-2:        #F2EDE8;
-  --bg-3:        #E8E0D8;
-  --text:        #1A1210;
-  --text-2:      #3D3028;
-  --text-dim:    #8C7D72;
-  --border:      #DDD5CC;
-  --done-bg:     #EDFAF3;
-  --done-text:   #166534;
-  --done-border: #A7F3D0;
-  --pend-bg:     #FEF3EA;
-  --pend-text:   #9A3412;
-  --pend-border: #FDBA74;
+  --bg:          #17161e;
+  --bg-2:        #201f29;
+  --bg-3:        #292734;
+  --text:        #f5f5f8;
+  --text-2:      #9d9ca8;
+  --text-dim:    #8a8794;
+  --border:      #34323f;
+  --done-bg:     rgba(34,197,94,0.12);
+  --done-text:   #4ade80;
+  --done-border: rgba(34,197,94,0.35);
+  --pend-bg:     rgba(251,146,60,0.12);
+  --pend-text:   #fb923c;
+  --pend-border: rgba(251,146,60,0.35);
   --radius:      4px;
 }
 
@@ -379,7 +379,7 @@ body {
 .sec-title {
   font-size: 17px;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--text);
   letter-spacing: -0.01em;
 }
 
@@ -474,7 +474,7 @@ body {
 
 .task-status { text-align: right; }
 
-.task-row:hover .task-name { color: var(--navy); }
+.task-row:hover .task-name { color: var(--text); }
 
 /* ── PENDING CARD ── */
 .pend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -507,7 +507,7 @@ body {
 .pend-card-title {
   font-size: 13.5px;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--text);
   margin-bottom: 3px;
 }
 
@@ -623,7 +623,7 @@ body {
 .footer-who {
   font-size: 16px;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--text);
 }
 
 .footer-date {
@@ -648,14 +648,14 @@ body {
 
 .footer-stamp::before {
   top: -3px; right: -3px;
-  border-top: 2px solid var(--navy);
-  border-right: 2px solid var(--navy);
+  border-top: 2px solid var(--text-dim);
+  border-right: 2px solid var(--text-dim);
 }
 
 .footer-stamp::after {
   bottom: -3px; left: -3px;
-  border-bottom: 2px solid var(--navy);
-  border-left: 2px solid var(--navy);
+  border-bottom: 2px solid var(--text-dim);
+  border-left: 2px solid var(--text-dim);
 }
 
 .stamp-main {
@@ -735,7 +735,7 @@ body {
 .donut-pct {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 30px;
-  color: var(--navy);
+  color: var(--text);
   line-height: 1;
 }
 
@@ -831,7 +831,7 @@ body {
 
 .mc-done { background: var(--done-bg); border-color: var(--done-border); }
 .mc-pend { background: var(--pend-bg); border-color: var(--pend-border); }
-.mc-blue { background: #EFF6FF; border-color: #BFDBFE; }
+.mc-blue { background: rgba(59,130,246,0.12); border-color: rgba(59,130,246,0.35); }
 
 .mc-icon {
   font-size: 16px;
@@ -843,13 +843,13 @@ body {
 
 .mc-done .mc-icon { background: rgba(22,101,52,0.12); color: var(--done-text); }
 .mc-pend .mc-icon { background: rgba(154,52,18,0.12); color: var(--pend-text); }
-.mc-blue .mc-icon { background: #DBEAFE; color: #1D4ED8; }
+.mc-blue .mc-icon { background: rgba(29,78,216,0.18); color: #60a5fa; }
 
 .mc-n {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 26px;
   line-height: 1;
-  color: var(--navy);
+  color: var(--text);
 }
 
 .mc-l {
@@ -865,8 +865,8 @@ body {
   display: flex;
   align-items: center;
   gap: 24px;
-  background: linear-gradient(135deg, #FDF0E8 0%, #FAF7F4 100%);
-  border: 1px solid #F0C9A8;
+  background: linear-gradient(135deg, var(--orange-light) 0%, var(--bg) 100%);
+  border: 1px solid #4a3020;
   border-left: 4px solid var(--orange);
   padding: 20px 24px;
   border-radius: var(--radius);
@@ -887,7 +887,7 @@ body {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 24px;
   letter-spacing: 0.06em;
-  color: var(--navy);
+  color: var(--text);
   margin-bottom: 6px;
 }
 
@@ -964,7 +964,7 @@ body {
 .achieve-title {
   font-size: 13px;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--text);
   margin-bottom: 6px;
 }
 
@@ -1025,7 +1025,7 @@ body {
 .tl-title {
   font-size: 13.5px;
   font-weight: 600;
-  color: var(--navy);
+  color: var(--text);
   margin-bottom: 3px;
 }
 
@@ -1100,7 +1100,7 @@ body {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 26px;
   letter-spacing: 0.06em;
-  color: var(--navy);
+  color: var(--text);
   margin-bottom: 10px;
 }
 
@@ -1117,7 +1117,7 @@ body {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 10px;
   letter-spacing: 0.08em;
-  color: var(--navy);
+  color: var(--text);
   font-weight: 500;
   margin-bottom: 10px;
   padding: 4px 8px;
@@ -1262,8 +1262,8 @@ body {
     <a class="nav-link" href="#sec-sw">핵심 SW</a>
     <a class="nav-link" href="#sec-achieve">성과</a>
     <div class="topbar-divider"></div>
-    <a class="nav-kpi nav-done" href="#sec-monitoring">완료 인계 <strong>11</strong></a>
-    <a class="nav-kpi nav-pend" href="#sec-pending">진행중 <strong>2</strong></a>
+    <a class="nav-kpi nav-done" href="#sec-monitoring">완료 인계 <strong>14</strong></a>
+    <a class="nav-kpi nav-done" href="#sec-pending">진행중 <strong>0</strong></a>
   </div>
 </nav>
 
@@ -1293,7 +1293,7 @@ body {
       </div>
       <div class="hero-info-cell">
         <div class="hi-label">완료율</div>
-        <div class="hi-value orange">90% 완료</div>
+        <div class="hi-value orange">100% 완료</div>
       </div>
     </div>
   </div>
@@ -1308,7 +1308,7 @@ body {
       <span class="kpi-arrow">↓</span>
     </a>
     <a class="kpi-cell kpi-link" href="#sec-monitoring">
-      <span class="kpi-n orange">11</span>
+      <span class="kpi-n orange">14</span>
       <div class="kpi-meta">
         <span class="kpi-l">완료 인계</span>
         <div class="kpi-bar-wrap"><div class="kpi-bar orange"></div></div>
@@ -1316,10 +1316,10 @@ body {
       <span class="kpi-arrow">↓</span>
     </a>
     <a class="kpi-cell kpi-link" href="#sec-pending">
-      <span class="kpi-n">2</span>
+      <span class="kpi-n">0</span>
       <div class="kpi-meta">
         <span class="kpi-l">진행중 · 이관</span>
-        <div class="kpi-bar-wrap"><div class="kpi-bar white"></div></div>
+        <div class="kpi-bar-wrap"><div class="kpi-bar white" style="width:0%"></div></div>
       </div>
       <span class="kpi-arrow">↓</span>
     </a>
@@ -1339,17 +1339,16 @@ body {
         <svg class="donut-svg" viewBox="0 0 120 120">
           <circle class="donut-bg" cx="60" cy="60" r="48" />
           <circle class="donut-fill" cx="60" cy="60" r="48"
-            stroke-dasharray="271 30"
+            stroke-dasharray="301.6 0"
             stroke-dashoffset="0" />
         </svg>
         <div class="donut-center">
-          <span class="donut-pct">90%</span>
+          <span class="donut-pct">100%</span>
           <span class="donut-sub">완료</span>
         </div>
       </div>
       <div class="donut-legend">
-        <span class="leg-dot done-dot"></span><span class="leg-text">완료 11건</span>
-        <span class="leg-dot pend-dot"></span><span class="leg-text">이관 3건</span>
+        <span class="leg-dot done-dot"></span><span class="leg-text">완료 14건</span>
       </div>
     </div>
 
@@ -1379,8 +1378,8 @@ body {
         </div>
         <div class="cat-row">
           <span class="cat-name">Pending</span>
-          <div class="bar-track"><div class="bar-fill pend-fill" style="width:0%"></div></div>
-          <span class="cat-stat pend-text">0/2 이관</span>
+          <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+          <span class="cat-stat done-text">2/2</span>
         </div>
       </div>
     </div>
@@ -1391,12 +1390,12 @@ body {
       <div class="mini-cards">
         <div class="mini-card mc-done">
           <span class="mc-icon">✓</span>
-          <span class="mc-n">11</span>
+          <span class="mc-n">14</span>
           <span class="mc-l">완료 처리</span>
         </div>
-        <div class="mini-card mc-pend">
-          <span class="mc-icon">→</span>
-          <span class="mc-n">2</span>
+        <div class="mini-card mc-done">
+          <span class="mc-icon">✓</span>
+          <span class="mc-n">0</span>
           <span class="mc-l">이관 필요</span>
         </div>
         <div class="mini-card mc-blue">
@@ -1644,14 +1643,14 @@ body {
         <div class="pend-icon">🔌</div>
         <div>
           <div class="pend-card-title">OPC TOOL</div>
-          <div class="pend-card-note">이관 담당: <strong>동료 D 프로</strong><br>→ 이관 진행 중</div>
+          <div class="pend-card-note">이관 담당: <strong>동료 D 프로</strong><br>→ 이관 완료</div>
         </div>
       </div>
       <div class="pend-card">
         <div class="pend-icon">📊</div>
         <div>
           <div class="pend-card-title">TCS TOOL</div>
-          <div class="pend-card-note">이관 담당: <strong>동료 B 프로</strong><br>→ 이관 진행 중</div>
+          <div class="pend-card-note">이관 담당: <strong>동료 B 프로</strong><br>→ 이관 완료</div>
         </div>
       </div>
     </div>
@@ -1663,7 +1662,7 @@ body {
       <span class="sec-num">06</span>
       <h2 class="sec-title">핵심 SW 인수인계</h2>
       <div class="sec-rule"></div>
-      <span class="badge pend">인계 완료</span>
+      <span class="badge done">인계 완료</span>
     </div>
 
     <div class="sw-banner">
@@ -1684,7 +1683,7 @@ body {
 
       <div class="sw-card">
         <div class="sw-card-top">
-          <div class="sw-icon" style="background:#1C2B3A18; color:var(--navy);">T</div>
+          <div class="sw-icon" style="background:#2A384540; color:var(--text);">T</div>
           <span class="sw-tag">SW · 02</span>
         </div>
         <div class="sw-name">TCS TOOL</div>
@@ -1695,7 +1694,7 @@ body {
 
       <div class="sw-card">
         <div class="sw-card-top">
-          <div class="sw-icon" style="background:#16653420; color:#15803D;">O</div>
+          <div class="sw-icon" style="background:rgba(34,197,94,0.15); color:#4ade80;">O</div>
           <span class="sw-tag">SW · 03</span>
         </div>
         <div class="sw-name">OPC TOOL</div>
@@ -1769,7 +1768,7 @@ body {
       <div class="tl-dot"><div class="tl-dot-inner"></div></div>
       <div class="tl-label">Step 05 · 완료</div>
       <div class="tl-title">최종 인수인계 보고서 제출</div>
-      <div class="tl-desc">전체 업무 완료율 85% · 잔여 이관 항목 (VPP · 이미지 학습) 별도 파일 전달</div>
+      <div class="tl-desc">전체 업무 완료율 100% · 전 항목 인수인계 완료</div>
     </div>
   </div>
 
