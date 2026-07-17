@@ -9,28 +9,28 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=IBM+Plex+Mono:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
 :root {
-  --accent:    #E8450A;
-  --accent-lt: rgba(232,69,10,0.08);
-  --navy:      #1E3A5F;
-  --navy-lt:   rgba(30,58,95,0.07);
-  --bg:        #F4F6F9;
-  --surface:   #FFFFFF;
-  --border:    #E2E8F0;
-  --border-lt: #EEF2F7;
-  --text:      #1C2B3A;
-  --text-2:    #4A5568;
-  --text-dim:  #8A97A6;
-  --ok:        #059669;
-  --ok-bg:     #ECFDF5;
-  --ok-border: #A7F3D0;
-  --warn-bg:   #FFF7ED;
-  --warn-text: #9A3412;
-  --warn-border:#FDBA74;
-  --blue-bg:   #EFF6FF;
-  --blue:      #2563EB;
+  --accent:    #FF6A3A;
+  --accent-lt: rgba(255,106,58,0.14);
+  --navy:      #a8c5e8;
+  --navy-lt:   rgba(168,197,232,0.10);
+  --bg:        #17161e;
+  --surface:   #201f29;
+  --border:    #34323f;
+  --border-lt: #292734;
+  --text:      #f5f5f8;
+  --text-2:    #9d9ca8;
+  --text-dim:  #8a8794;
+  --ok:        #34d399;
+  --ok-bg:     rgba(5,150,105,0.14);
+  --ok-border: rgba(5,150,105,0.35);
+  --warn-bg:   rgba(251,146,60,0.14);
+  --warn-text: #fb923c;
+  --warn-border:rgba(251,146,60,0.35);
+  --blue-bg:   rgba(37,99,235,0.14);
+  --blue:      #60a5fa;
   --r:         8px;
   --r-sm:      5px;
-  --shadow:    0 1px 4px rgba(0,0,0,0.06), 0 0 0 1px var(--border);
+  --shadow:    0 1px 4px rgba(0,0,0,0.3), 0 0 0 1px var(--border);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -212,7 +212,7 @@ td {
   color: var(--text-2);
 }
 tr:last-child td { border-bottom: none; }
-tbody tr:hover td { background: #F8FAFC; }
+tbody tr:hover td { background: var(--surface); }
 
 /* ── TAGS / BADGES ── */
 .tag {
@@ -221,7 +221,7 @@ tbody tr:hover td { background: #F8FAFC; }
 }
 .tag-ok   { background: var(--ok-bg);   color: var(--ok);        border: 1px solid var(--ok-border); }
 .tag-warn { background: var(--warn-bg); color: var(--warn-text); border: 1px solid var(--warn-border); }
-.tag-navy { background: var(--navy-lt); color: var(--navy);      border: 1px solid rgba(30,58,95,0.15); }
+.tag-navy { background: var(--navy-lt); color: var(--navy);      border: 1px solid rgba(168,197,232,0.25); }
 .tag-gray { background: var(--bg);      color: var(--text-dim);  border: 1px solid var(--border); }
 
 /* ── CODE BLOCK ── */
@@ -345,7 +345,7 @@ tbody tr:hover td { background: #F8FAFC; }
   font-family: 'Bebas Neue', sans-serif; font-size: 14px; color: #fff;
 }
 .step-n.a { background: var(--accent); }
-.step-n.n { background: var(--navy); }
+.step-n.n { background: #1E3A5F; }
 .step-title { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 3px; }
 .step-desc  { font-size: 11.5px; color: var(--text-dim); line-height: 1.5; font-weight: 300; }
 
@@ -442,9 +442,9 @@ code {
 <main class="main">
 
   <!-- SUMMARY CALLOUT -->
-  <div style="background:#EBF3FF;border:1px solid #BFDBFE;border-left:4px solid #2563EB;border-radius:var(--r);padding:16px 20px;margin-bottom:28px;animation:fadeUp .4s ease both;">
-    <div style="font-size:13px;font-weight:600;color:#1E3A5F;margin-bottom:5px;">설계 원칙 — 다중 사용자 동시 사용 시에도 서버에 영향 없음</div>
-    <div style="font-size:12.5px;color:#374151;line-height:1.7;font-weight:300;">
+  <div style="background:rgba(37,99,235,0.1);border:1px solid rgba(96,165,250,0.3);border-left:4px solid #60a5fa;border-radius:var(--r);padding:16px 20px;margin-bottom:28px;animation:fadeUp .4s ease both;">
+    <div style="font-size:13px;font-weight:600;color:#a8c5e8;margin-bottom:5px;">설계 원칙 — 다중 사용자 동시 사용 시에도 서버에 영향 없음</div>
+    <div style="font-size:12.5px;color:#9d9ca8;line-height:1.7;font-weight:300;">
       각 사용자 세션은 독립된 임시 SSH config와 고유 프로세스로 완전 격리됩니다.
       KeepAlive · 터널 자동 갱신 · 지수 백오프 재시도로 불필요한 재연결 시도를 최소화하여
       <strong>서버에 누적 부하가 발생하지 않도록</strong> 설계되어 있습니다.
