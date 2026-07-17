@@ -6,18 +6,6 @@
 <title>Juns — Portfolio</title>
 <meta name="description" content="AI 풀스택 엔지니어 Juns의 포트폴리오. 발전소 데이터 연동 자동화 툴 개발 여정과 오픈소스 프로젝트.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-weight='800' font-size='16' fill='%230b0b10' text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E">
-<script>
-  // 저사양 기기 감지: CPU 코어 수 / 메모리 / 데이터 절약 모드 기준
-  // 첫 페인트 전에 클래스를 붙여야 블러·애니메이션이 처음부터 빠짐 (FOUC 방지)
-  (function () {
-    var cores = navigator.hardwareConcurrency || 8;
-    var mem = navigator.deviceMemory || 8;
-    var saveData = !!(navigator.connection && navigator.connection.saveData);
-    if (cores <= 2 || mem <= 2 || saveData) {
-      document.documentElement.classList.add('low-spec');
-    }
-  })();
-</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -78,13 +66,18 @@
     overflow-x: hidden;
   }
 
-  /* ambient mesh background */
+  /* ambient mesh background — 정적 블러 블롭 (면적이 커서 애니메이션 시 GPU 비용이 컸음, 정적으로 고정) */
   .mesh { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
   .mesh::before, .mesh::after {
     content: ""; position: absolute; border-radius: 50%; filter: blur(64px);
   }
   .mesh::before { width: 50vw; height: 50vw; top: -18vw; right: -16vw; background: radial-gradient(circle, var(--accent), transparent 70%); opacity: .28; }
   .mesh::after { width: 42vw; height: 42vw; bottom: -16vw; left: -14vw; background: radial-gradient(circle, var(--accent-2), transparent 70%); opacity: .16; }
+
+  /* 웨이브 선 + 반짝이는 별을 캔버스 1개(레이어 1개)로 통합 렌더링.
+     이전엔 SVG stroke-dasharray 애니메이션 + 별 42개 개별 CSS 레이어로 나뉘어 있었는데,
+     레이어 수 자체가 GPU 비용의 큰 축이었음 — 캔버스로 합치고 JS에서 15fps로 캡. */
+  .bg-canvas { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
   .grid-overlay {
     position: fixed; inset: 0; z-index: -1; pointer-events: none;
     background-image:
@@ -103,8 +96,9 @@
     display: flex; align-items: center; justify-content: space-between;
     padding: 14px 1.5rem;
     margin-top: 3px;
-    background: color-mix(in srgb, var(--bg) 72%, transparent);
-    backdrop-filter: blur(10px);
+    /* backdrop-filter는 뒤에서 움직이는 배경(별/블롭)을 매 프레임 실시간으로 다시 블러링해야 해서
+       배경 애니메이션 주기에 맞춰 GPU가 같이 출렁이는 원인이 됨 — 불투명도 높은 단색으로 대체 */
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
     border-bottom: 1px solid var(--border);
   }
   .topbar-inner { max-width: 840px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: space-between; }
@@ -147,6 +141,8 @@
     padding: .6rem;
     opacity: 0; visibility: hidden; transform: translateY(-6px);
     transition: opacity .16s ease, transform .16s ease, visibility .16s;
+    /* transform 애니메이션 후 텍스트가 서브픽셀에 걸려 흐릿해 보이는 브라우저 렌더링 버그 보정 */
+    backface-visibility: hidden;
   }
   .nav-dd.open .nav-dd-panel { opacity: 1; visibility: visible; transform: translateY(0); }
   .nav-dd-group + .nav-dd-group { margin-top: .3rem; padding-top: .5rem; border-top: 1px solid var(--border); }
@@ -168,17 +164,6 @@
 
   /* hero */
   .hero { position: relative; }
-  .hero-svg {
-    position: absolute; top: -3.5rem; right: -2.5rem;
-    width: min(420px, 60vw); height: auto;
-    pointer-events: none; z-index: -1;
-    opacity: .55;
-  }
-  .hero-svg path { animation: waveFlow 5s linear infinite; }
-  .hero-svg path:nth-child(2) { animation-duration: 7s; animation-direction: reverse; }
-  body.modal-open .hero-svg path { animation-play-state: paused; }
-  @keyframes waveFlow { to { stroke-dashoffset: -240; } }
-  @media (max-width: 640px) { .hero-svg { display: none; } }
   .kicker {
     font-family: var(--mono); font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase;
     color: var(--accent-2); margin: 0 0 1.1rem;
@@ -310,7 +295,6 @@
     transition: height .12s linear;
     pointer-events: none;
   }
-  html.low-spec .timeline-progress { transition: none; box-shadow: none; }
   .tl-item {
     position: relative;
     display: flex;
@@ -439,9 +423,7 @@
   }
   .modal-close svg { width: 13px; height: 13px; }
   .modal-close:hover { color: var(--text); border-color: var(--accent); }
-  .modal-frame iframe { flex: 1; width: 100%; border: none; background: #fff; }
-
-  #particles { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+  .modal-frame iframe { flex: 1; width: 100%; border: none; background: var(--surface); }
 
   @keyframes riseIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
   .kicker, h1, .tagline, .skill-strip, .exp-note { animation: riseIn .55s ease both; }
@@ -450,24 +432,20 @@
   .skill-strip { animation-delay: .15s; }
   .exp-note { animation-delay: .2s; }
 
-  /* 저사양 기기: 블러/애니메이션 부하가 큰 효과만 걷어냄 (레이아웃은 그대로) */
-  html.low-spec .mesh::before,
-  html.low-spec .mesh::after { filter: blur(32px); }
-  html.low-spec .topbar {
-    backdrop-filter: none;
-    background: color-mix(in srgb, var(--bg) 94%, transparent);
-  }
-  html.low-spec dialog.modal-frame::backdrop {
-    backdrop-filter: none;
-    background: rgba(6,6,10,.88);
-  }
-  html.low-spec .hero-svg path { animation: none; }
-  html.low-spec #particles { display: none; }
+  /* 리포지토리 카드 / 타임라인 항목도 로드 시 순차적으로 등장 (너무 느리지 않게 짧은 간격) */
+  .repo-card { animation: riseIn .45s ease both; }
+  .repo-card:nth-child(1) { animation-delay: .26s; }
+  .repo-card:nth-child(2) { animation-delay: .32s; }
+  .tl-item { animation: riseIn .45s ease both; }
+  .tl-item:nth-of-type(1) { animation-delay: .38s; }
+  .tl-item:nth-of-type(2) { animation-delay: .44s; }
+  .tl-item:nth-of-type(3) { animation-delay: .5s; }
+  .tl-item:nth-of-type(4) { animation-delay: .56s; }
 </style>
 </head>
 <body>
-  <canvas id="particles"></canvas>
   <div class="mesh"></div>
+  <canvas id="bgCanvas" class="bg-canvas"></canvas>
   <div class="grid-overlay"></div>
   <div class="accent-bar"></div>
   <div class="topbar">
@@ -486,7 +464,7 @@
               <button class="nav-dd-item" onclick="openModal('https://savvy773.github.io/app-yt-subs/','app-yt-subs')"><span class="dot"></span>app-yt-subs</button>
             </div>
             <div class="nav-dd-group">
-              <div class="nav-dd-label">Journey · 발자취</div>
+              <div class="nav-dd-label">Journey</div>
               <button class="nav-dd-item" onclick="openModal('journey/opc-isl-guide.html','OPC-ISL Engine 사용 가이드')"><span class="dot"></span>OPC-ISL Engine 가이드</button>
               <button class="nav-dd-item" onclick="openModal('journey/heis-tool-guide.html','HEIS Tool 통합 사용 가이드')"><span class="dot"></span>HEIS Tool 가이드</button>
               <button class="nav-dd-item" onclick="openModal('journey/handover-report.html','업무 인수인계 보고서')"><span class="dot"></span>인수인계 보고서</button>
@@ -495,29 +473,16 @@
           </div>
         </div>
         <a href="https://github.com/savvy773">GitHub</a>
-        <a href="resume/resume.pdf">Resume</a>
+        <a href="resume/resume.html" onclick="return openModal('resume/resume.html','이력서', event)">Resume</a>
       </nav>
     </div>
   </div>
 
   <div class="wrap" id="top">
     <div class="hero">
-      <svg class="hero-svg" viewBox="0 0 300 220" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs>
-          <linearGradient id="waveG" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#8b6cf7"/>
-            <stop offset="1" stop-color="#29d6d6"/>
-          </linearGradient>
-        </defs>
-        <path d="M10 70 Q 70 10 130 70 T 250 70" stroke="url(#waveG)" stroke-width="2" stroke-linecap="round" stroke-dasharray="6 10"/>
-        <path d="M20 120 Q 90 60 150 120 T 280 120" stroke="url(#waveG)" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 9" opacity=".6"/>
-        <path d="M0 170 Q 60 130 120 170 T 240 170" stroke="url(#waveG)" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 9" opacity=".4"/>
-        <circle cx="250" cy="70" r="3" fill="#29d6d6"/>
-        <circle cx="20" cy="120" r="2.5" fill="#8b6cf7"/>
-      </svg>
       <p class="kicker">Portfolio · 2026</p>
       <h1>Juns<br><span class="hl">AI 풀스택 엔지니어</span></h1>
-      <p class="tagline">AI를 적극 활용하는 소프트웨어 개발자</p>
+      <p class="tagline">AI를 적극 활용하는 소프트웨어 엔지니어</p>
     </div>
     <div class="skill-strip">
       <span>PYTHON</span><span>RUST</span><span>TYPESCRIPT</span><span>SQL</span><span>INFLUXDB</span><span>AUTOMATION</span>
@@ -586,7 +551,7 @@
     </section>
 
     <section>
-      <h2>Journey · 발자취</h2>
+      <h2>Journey</h2>
       <div class="timeline" id="timeline">
         <div class="timeline-progress" id="timelineProgress"></div>
         <a class="tl-item" href="journey/opc-isl-guide.html" onclick="return openModal('journey/opc-isl-guide.html','OPC-ISL Engine 사용 가이드', event)">
@@ -678,8 +643,7 @@
       modalNewTab.href = url;
       dialog.showModal();
       navDd.classList.remove('open');
-      document.body.classList.add('modal-open');
-      document.dispatchEvent(new Event('bg:pause')); // 모달 뒤에 가려진 배경 애니메이션(캔버스) 정지
+      document.dispatchEvent(new Event('bg:pause')); // 모달 뒤에 가려진 배경 캔버스 정지
       return false;
     }
     function closeModal() { dialog.close(); }
@@ -689,9 +653,11 @@
     // (같은 origin의 iframe에 한해서만 접근 가능 — 외부 origin은 브라우저 보안상 우회 불가)
     iframe.addEventListener('load', () => {
       try {
+        // capture 단계에서 잡아서, 내부 메뉴/TOC 클릭 등으로 포커스가 옮겨가거나
+        // 특정 요소가 이벤트 버블링을 막아도(stopPropagation) ESC가 항상 먹히도록 함
         iframe.contentWindow.document.addEventListener('keydown', (e) => {
           if (e.key === 'Escape') closeModal();
-        });
+        }, { capture: true });
       } catch (_) { /* cross-origin iframe: 접근 불가, 무시 */ }
     });
 
@@ -699,7 +665,6 @@
     dialog.addEventListener('click', (e) => { if (e.target === dialog) closeModal(); });
     // native ESC/close cleans up the iframe after the close animation
     dialog.addEventListener('close', () => {
-      document.body.classList.remove('modal-open');
       document.dispatchEvent(new Event('bg:resume'));
       setTimeout(() => { iframe.src = 'about:blank'; }, 200);
     });
@@ -733,18 +698,19 @@
   </script>
 
   <script>
-    // ── lightweight particle background ──
+    // ── 배경 캔버스: 웨이브 선 + 반짝이는 별을 레이어 1개에서 그림 ──
+    // 이전엔 SVG(웨이브) + CSS 레이어 42개(별)로 나뉘어 있었는데, 레이어 개수 자체가
+    // GPU 비용의 큰 축이었음(실측으로 확인). 캔버스 하나로 합치고 15fps로 캡을 걸어
+    // 실제 리페인트/컴포지팅 빈도를 크게 줄임.
     (function () {
-      if (document.documentElement.classList.contains('low-spec')) return; // 저사양: 캔버스 자체를 안 돌림
-
-      const canvas = document.getElementById('particles');
+      const canvas = document.getElementById('bgCanvas');
       const ctx = canvas.getContext('2d');
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      let w, h, dpr, particles, raf, running = true;
-      const COUNT = 46;
-      const LINK_DIST = 120;
-      const accentA = '139,108,247';
-      const accentB = '41,214,214';
+      let w, h, dpr, stars, raf, running = true;
+
+      const STAR_COUNT = 30;
+      const STAR_COLORS = ['#8b6cf7', '#29d6d6', '#f5f5f8'];
+      const WAVE_W = 300, WAVE_H = 220; // 원래 hero-svg의 viewBox와 동일한 논리 좌표계
 
       function resize() {
         dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -753,69 +719,135 @@
         canvas.style.width = innerWidth + 'px';
         canvas.style.height = innerHeight + 'px';
       }
-      function init() {
-        particles = Array.from({ length: COUNT }, () => ({
+      function initStars() {
+        stars = Array.from({ length: STAR_COUNT }, (_, i) => ({
           x: Math.random() * w,
           y: Math.random() * h,
-          vx: (Math.random() - .5) * .18 * dpr,
-          vy: (Math.random() - .5) * .18 * dpr,
-          r: (Math.random() * 1.4 + .6) * dpr,
+          r: (Math.pow(Math.random(), 2) * 2.6 + 1) * dpr, // 조금 더 크게
+          o: Math.random() * .3 + .18, // 색상 더 투명하게
+          // 서로 다른 두 주파수를 섞어서 규칙적인 사인파가 아니라 불규칙하게 반짝이도록 (느리게)
+          freq: Math.random() * .35 + .12,
+          phase: Math.random() * Math.PI * 2,
+          freq2: Math.random() * .8 + .3,
+          phase2: Math.random() * Math.PI * 2,
+          c: STAR_COLORS[i % STAR_COLORS.length],
         }));
       }
-      let lastT = 0;
-      const FRAME_MS = 1000 / 30; // 30fps로 캡 — GPU 합성(compositing) 부담을 절반으로 줄임
 
-      function draw() {
-        ctx.clearRect(0, 0, w, h);
-        for (const p of particles) {
-          p.x += p.vx; p.y += p.vy;
-          if (p.x < 0) p.x = w; if (p.x > w) p.x = 0;
-          if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
+      function drawWave(tSec) {
+        if (innerWidth < 640) return; // 좁은 화면은 원래도 숨겼던 장식 요소
+        // 스크롤/텍스트 위치와 무관하게 화면 상단 우측에 고정
+        const ox = w - WAVE_W * dpr - 60 * dpr;
+        const oy = 70 * dpr;
+        const grad = ctx.createLinearGradient(ox, oy, ox + WAVE_W * dpr, oy + WAVE_H * dpr);
+        grad.addColorStop(0, '#8b6cf7');
+        grad.addColorStop(1, '#29d6d6');
+        ctx.strokeStyle = grad;
+        ctx.lineCap = 'round';
+
+        ctx.globalAlpha = .55;
+        ctx.lineWidth = 2 * dpr;
+        ctx.setLineDash([6 * dpr, 10 * dpr]);
+        ctx.lineDashOffset = -tSec * 18 * dpr;
+        ctx.beginPath();
+        ctx.moveTo(ox + 10 * dpr, oy + 70 * dpr);
+        ctx.quadraticCurveTo(ox + 70 * dpr, oy + 10 * dpr, ox + 130 * dpr, oy + 70 * dpr);
+        ctx.quadraticCurveTo(ox + 190 * dpr, oy + 130 * dpr, ox + 250 * dpr, oy + 70 * dpr);
+        ctx.stroke();
+
+        ctx.globalAlpha = .32;
+        ctx.lineWidth = 1.5 * dpr;
+        ctx.setLineDash([4 * dpr, 9 * dpr]);
+        ctx.lineDashOffset = -tSec * 12 * dpr;
+        ctx.beginPath();
+        ctx.moveTo(ox + 20 * dpr, oy + 120 * dpr);
+        ctx.quadraticCurveTo(ox + 90 * dpr, oy + 60 * dpr, ox + 150 * dpr, oy + 120 * dpr);
+        ctx.quadraticCurveTo(ox + 210 * dpr, oy + 180 * dpr, ox + 280 * dpr, oy + 120 * dpr);
+        ctx.stroke();
+
+        ctx.globalAlpha = .2;
+        ctx.lineWidth = 1.5 * dpr;
+        ctx.setLineDash([4 * dpr, 9 * dpr]);
+        ctx.lineDashOffset = -tSec * 9 * dpr;
+        ctx.beginPath();
+        ctx.moveTo(ox, oy + 170 * dpr);
+        ctx.quadraticCurveTo(ox + 60 * dpr, oy + 130 * dpr, ox + 120 * dpr, oy + 170 * dpr);
+        ctx.quadraticCurveTo(ox + 180 * dpr, oy + 210 * dpr, ox + 240 * dpr, oy + 170 * dpr);
+        ctx.stroke();
+
+        ctx.setLineDash([]);
+      }
+
+      function drawHexagon(tSec) {
+        if (innerWidth < 640) return; // 웨이브와 동일하게 좁은 화면에서는 생략
+        const cx = 130 * dpr;
+        const cy = h - 170 * dpr;
+        const radius = 64 * dpr;
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(tSec * 0.08); // 아주 천천히 회전
+        ctx.strokeStyle = '#29d6d6';
+        ctx.globalAlpha = .16;
+        ctx.lineWidth = 1.5 * dpr;
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 3) * i - Math.PI / 2;
+          const x = Math.cos(angle) * radius;
+          const y = Math.sin(angle) * radius;
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
         }
-        for (let i = 0; i < particles.length; i++) {
-          const a = particles[i];
+        ctx.closePath();
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      function drawStars(tSec) {
+        for (const s of stars) {
+          // 두 사인파를 곱해서 균일한 파동이 아니라 불규칙하게 반짝이는 패턴을 만듦
+          const wave = Math.sin(tSec * s.freq + s.phase) * Math.sin(tSec * s.freq2 + s.phase2);
+          const a = Math.max(0, wave) * s.o;
+          if (a < .03) continue;
+          ctx.globalAlpha = a;
+          ctx.fillStyle = s.c;
           ctx.beginPath();
-          ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${accentA},.5)`;
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
           ctx.fill();
-          for (let j = i + 1; j < particles.length; j++) {
-            const b = particles[j];
-            const dx = a.x - b.x, dy = a.y - b.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            const maxDist = LINK_DIST * dpr;
-            if (dist < maxDist) {
-              ctx.beginPath();
-              ctx.moveTo(a.x, a.y);
-              ctx.lineTo(b.x, b.y);
-              ctx.strokeStyle = `rgba(${accentB},${(1 - dist / maxDist) * .18})`;
-              ctx.lineWidth = 1;
-              ctx.stroke();
-            }
-          }
         }
       }
+
+      function draw(t) {
+        const tSec = t / 1000;
+        ctx.clearRect(0, 0, w, h);
+        drawWave(tSec);
+        drawHexagon(tSec);
+        drawStars(tSec);
+        ctx.globalAlpha = 1;
+      }
+
+      let lastT = 0;
+      const FRAME_MS = 1000 / 15; // 15fps 캡 — 사용자 요청대로 프레임 자체를 낮춤
       function step(t) {
         if (!running) return;
         raf = requestAnimationFrame(step);
         if (t - lastT < FRAME_MS) return;
         lastT = t;
-        draw();
+        draw(t);
       }
       function start() { if (!raf) { running = true; raf = requestAnimationFrame(step); } }
       function stop() { running = false; if (raf) cancelAnimationFrame(raf); raf = null; }
 
-      resize(); init();
-      if (!reduceMotion) start(); else draw(); // reduced-motion: 루프 없이 정적 프레임 한 장만
+      resize(); initStars();
+      if (!reduceMotion) start(); else draw(0);
 
       let resizeT;
       addEventListener('resize', () => {
         clearTimeout(resizeT);
-        resizeT = setTimeout(() => { resize(); init(); }, 200);
+        resizeT = setTimeout(() => { resize(); initStars(); }, 200);
       });
       document.addEventListener('visibilitychange', () => {
         if (document.hidden) stop(); else if (!reduceMotion) start();
       });
-      // 모달이 열려 배경이 가려진 동안은 애니메이션을 완전히 정지
+      // 모달 열림(배경이 가려짐) 동안은 완전히 정지
       document.addEventListener('bg:pause', stop);
       document.addEventListener('bg:resume', () => { if (!reduceMotion && !document.hidden) start(); });
     })();
