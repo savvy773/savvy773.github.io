@@ -23,6 +23,8 @@
     --accent: #8b6cf7;
     --accent-2: #29d6d6;
     --accent-soft: rgba(139,108,247,.14);
+    --pastel-violet: color-mix(in srgb, var(--accent) 55%, white 25%);
+    --pastel-teal: color-mix(in srgb, var(--accent-2) 55%, white 25%);
     --shadow: 0 1px 2px rgba(0,0,0,.5);
     --shadow-lg: 0 16px 40px rgba(0,0,0,.55);
     --r: 14px;
@@ -66,26 +68,25 @@
     overflow-x: hidden;
   }
 
-  /* ambient mesh background — 정적 블러 블롭 (면적이 커서 애니메이션 시 GPU 비용이 컸음, 정적으로 고정) */
-  .mesh { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
-  .mesh::before, .mesh::after {
-    content: ""; position: absolute; border-radius: 50%; filter: blur(64px);
+  /* 배경 셰이더 캔버스. 튜닝 값은 script의 SHADER_CONFIG 참고 */
+  .shader-bg { position: fixed; inset: 0; z-index: -2; pointer-events: none; display: block; width: 100%; height: 100%; }
+  /* 정적 노이즈 텍스처 (필름 그레인) */
+  /* mix-blend-mode는 바로 아래 셰이더 캔버스가 매 프레임 움직이는 탓에 매 프레임 풀뷰포트 재블렌딩이 필요해 비용이 큼 */
+  /* → 일반 알파 블렌딩(opacity만)으로 대체. 값이 워낙 낮아(.05) 시각 차이는 미미함 */
+  .grain {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: .05;
   }
-  .mesh::before { width: 50vw; height: 50vw; top: -18vw; right: -16vw; background: radial-gradient(circle, var(--accent), transparent 70%); opacity: .28; }
-  .mesh::after { width: 42vw; height: 42vw; bottom: -16vw; left: -14vw; background: radial-gradient(circle, var(--accent-2), transparent 70%); opacity: .16; }
 
-  /* 웨이브 선 + 반짝이는 별을 캔버스 1개(레이어 1개)로 통합 렌더링.
-     이전엔 SVG stroke-dasharray 애니메이션 + 별 42개 개별 CSS 레이어로 나뉘어 있었는데,
-     레이어 수 자체가 GPU 비용의 큰 축이었음 — 캔버스로 합치고 JS에서 15fps로 캡. */
-  .bg-canvas { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
   .grid-overlay {
     position: fixed; inset: 0; z-index: -1; pointer-events: none;
     background-image:
-      linear-gradient(color-mix(in srgb, var(--border) 55%, transparent) 1px, transparent 1px),
-      linear-gradient(90deg, color-mix(in srgb, var(--border) 55%, transparent) 1px, transparent 1px);
+      linear-gradient(color-mix(in srgb, var(--border-hi) 85%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--border-hi) 85%, transparent) 1px, transparent 1px);
     background-size: 56px 56px;
-    mask-image: radial-gradient(ellipse 70% 55% at 50% 0%, black 15%, transparent 75%);
-    opacity: .5;
+    mask-image: radial-gradient(ellipse 110% 26% at 14% 0%, black 40%, transparent 95%);
+    opacity: 1;
   }
 
   .accent-bar { position: fixed; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); z-index: 100; }
@@ -96,9 +97,8 @@
     display: flex; align-items: center; justify-content: space-between;
     padding: 14px 1.5rem;
     margin-top: 3px;
-    /* backdrop-filter는 뒤에서 움직이는 배경(별/블롭)을 매 프레임 실시간으로 다시 블러링해야 해서
-       배경 애니메이션 주기에 맞춰 GPU가 같이 출렁이는 원인이 됨 — 불투명도 높은 단색으로 대체 */
-    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    /* backdrop-filter는 뒤에서 계속 움직이는 셰이더 캔버스를 매 프레임 재블러링해야 해서 비용이 큼 */
+    background: color-mix(in srgb, var(--bg) 77%, transparent);
     border-bottom: 1px solid var(--border);
   }
   .topbar-inner { max-width: 840px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: space-between; }
@@ -115,36 +115,41 @@
   .brand-name { font-family: var(--mono); font-size: 12.5px; letter-spacing: .12em; color: var(--text-2); text-transform: uppercase; }
   .topnav { display: flex; align-items: center; gap: 4px; }
   .topnav a {
-    font-size: 13px; color: var(--text-2); text-decoration: none;
+    font-size: 13px; color: var(--pastel-teal); text-decoration: none;
     padding: 6px 12px; border-radius: 7px;
     transition: color .15s, background .15s;
   }
   .topnav a:hover { color: var(--text); background: var(--accent-soft); }
+  /* Resume는 GitHub와 구분되도록 반대쪽 파스텔 톤으로 */
+  .topnav a[href*="resume"] { color: var(--pastel-violet); }
 
   /* dropdown */
   .nav-dd { position: relative; }
   .nav-dd-btn {
-    font: inherit; font-size: 13px; color: var(--text-2); background: transparent; border: none; cursor: pointer;
+    font: inherit; font-size: 13px; color: var(--pastel-violet); background: transparent; border: none; cursor: pointer;
     padding: 6px 12px; border-radius: 7px; display: inline-flex; align-items: center; gap: 4px;
     transition: color .15s, background .15s;
   }
   .nav-dd-btn:hover, .nav-dd.open .nav-dd-btn { color: var(--text); background: var(--accent-soft); }
   .nav-dd-btn .car { font-size: 9px; transition: transform .18s ease; }
-  .nav-dd.open .nav-dd-btn .car { transform: rotate(180deg); }
+  .nav-dd.open .nav-dd-btn .car, .nav-dd:hover .nav-dd-btn .car { transform: rotate(180deg); }
   .nav-dd-panel {
-    position: absolute; top: calc(100% + 8px); right: 0; z-index: 60;
+    position: absolute; top: 100%; right: 0; z-index: 60;
     width: 300px;
+    padding-top: 8px; /* hover 끊김 방지용 히트박스 여백 */
+    opacity: 0; pointer-events: none; transform: translateY(-6px);
+    transition: opacity .16s ease, transform .16s ease;
+  }
+  .nav-dd-card {
     background: var(--surface-2);
     border: 1px solid var(--border-hi);
     border-radius: 12px;
     box-shadow: var(--shadow-lg);
     padding: .6rem;
-    opacity: 0; visibility: hidden; transform: translateY(-6px);
-    transition: opacity .16s ease, transform .16s ease, visibility .16s;
     /* transform 애니메이션 후 텍스트가 서브픽셀에 걸려 흐릿해 보이는 브라우저 렌더링 버그 보정 */
     backface-visibility: hidden;
   }
-  .nav-dd.open .nav-dd-panel { opacity: 1; visibility: visible; transform: translateY(0); }
+  .nav-dd.open .nav-dd-panel, .nav-dd:hover .nav-dd-panel { opacity: 1; pointer-events: auto; transform: translateY(0); }
   .nav-dd-group + .nav-dd-group { margin-top: .3rem; padding-top: .5rem; border-top: 1px solid var(--border); }
   .nav-dd-label {
     font-family: var(--mono); font-size: .64rem; letter-spacing: .1em; text-transform: uppercase;
@@ -178,6 +183,13 @@
     background: linear-gradient(120deg, var(--accent) 15%, var(--accent-2) 100%);
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
+  .hero-flow { width: 190px; height: 60px; margin-left: 16px; vertical-align: middle; overflow: visible; }
+  .flow-path { fill: none; stroke-width: 2.6; stroke-linecap: round; }
+  .flow-path-1 { stroke: var(--accent); opacity: .32; stroke-dasharray: 10 9; animation: flowDash 2.6s linear infinite; }
+  .flow-path-2 { stroke: var(--accent-2); opacity: .24; stroke-dasharray: 8 11; animation: flowDash 3.4s linear infinite reverse; }
+  @keyframes flowDash { to { stroke-dashoffset: -38; } }
+  @media (prefers-reduced-motion: reduce) { .flow-path { animation: none; } }
+  @media (max-width: 560px) { .hero-flow { display: none; } }
   .tagline { color: var(--text-2); font-size: 1.15rem; font-weight: 500; margin-bottom: 1.5rem; }
   .skill-strip { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.8rem; }
   .skill-strip span {
@@ -454,8 +466,8 @@
 </style>
 </head>
 <body>
-  <div class="mesh"></div>
-  <canvas id="bgCanvas" class="bg-canvas"></canvas>
+  <canvas class="shader-bg" id="shaderBg" aria-hidden="true"></canvas>
+  <div class="grain"></div>
   <div class="grid-overlay"></div>
   <div class="accent-bar"></div>
   <div class="topbar">
@@ -468,17 +480,19 @@
         <div class="nav-dd" id="navDd">
           <button class="nav-dd-btn" id="navDdBtn" onclick="toggleDropdown()">Pages <span class="car">▾</span></button>
           <div class="nav-dd-panel" id="navDdPanel">
-            <div class="nav-dd-group">
-              <div class="nav-dd-label">Repositories</div>
-              <button class="nav-dd-item" onclick="openModal('https://savvy773.github.io/web-ai-usage/','web-ai-usage')"><span class="dot"></span>web-ai-usage</button>
-              <button class="nav-dd-item" onclick="openModal('https://savvy773.github.io/app-yt-subs/','app-yt-subs')"><span class="dot"></span>app-yt-subs</button>
-            </div>
-            <div class="nav-dd-group">
-              <div class="nav-dd-label">Journey</div>
-              <button class="nav-dd-item" onclick="openModal('journey/opc-isl-guide.html','OPC-ISL Engine 사용 가이드')"><span class="dot"></span>OPC-ISL Engine 가이드</button>
-              <button class="nav-dd-item" onclick="openModal('journey/heis-tool-guide.html','HEIS Tool 통합 사용 가이드')"><span class="dot"></span>HEIS Tool 가이드</button>
-              <button class="nav-dd-item" onclick="openModal('journey/handover-report.html','업무 인수인계 보고서')"><span class="dot"></span>인수인계 보고서</button>
-              <button class="nav-dd-item" onclick="openModal('journey/ssh-security.html','SSH 보안 & 서버 안정성')"><span class="dot"></span>SSH 보안 고도화</button>
+            <div class="nav-dd-card">
+              <div class="nav-dd-group">
+                <div class="nav-dd-label">Repositories</div>
+                <button class="nav-dd-item" onclick="openModal('https://savvy773.github.io/web-ai-usage/','web-ai-usage')"><span class="dot"></span>web-ai-usage</button>
+                <button class="nav-dd-item" onclick="openModal('https://savvy773.github.io/app-yt-subs/','app-yt-subs')"><span class="dot"></span>app-yt-subs</button>
+              </div>
+              <div class="nav-dd-group">
+                <div class="nav-dd-label">Journey</div>
+                <button class="nav-dd-item" onclick="openModal('journey/opc-isl-guide.html','OPC-ISL Engine 사용 가이드')"><span class="dot"></span>OPC-ISL Engine 가이드</button>
+                <button class="nav-dd-item" onclick="openModal('journey/heis-tool-guide.html','HEIS Tool 통합 사용 가이드')"><span class="dot"></span>HEIS Tool 가이드</button>
+                <button class="nav-dd-item" onclick="openModal('journey/handover-report.html','업무 인수인계 보고서')"><span class="dot"></span>인수인계 보고서</button>
+                <button class="nav-dd-item" onclick="openModal('journey/ssh-security.html','SSH 보안 & 서버 안정성')"><span class="dot"></span>SSH 보안 고도화</button>
+              </div>
             </div>
           </div>
         </div>
@@ -491,7 +505,10 @@
   <div class="wrap" id="top">
     <div class="hero">
       <p class="kicker">Portfolio · 2026</p>
-      <h1>Juns<br><span class="hl">AI 풀스택 엔지니어</span></h1>
+      <h1>Juns<br><span class="hl">AI 풀스택 엔지니어</span><svg class="hero-flow" viewBox="0 0 190 60" aria-hidden="true">
+        <path class="flow-path flow-path-1" d="M2 30 Q 24 8, 46 30 T 90 30 T 134 30 T 178 30"/>
+        <path class="flow-path flow-path-2" d="M2 40 Q 24 24, 46 40 T 90 40 T 134 40 T 178 40"/>
+      </svg></h1>
       <p class="tagline">AI를 적극 활용하는 소프트웨어 엔지니어</p>
     </div>
     <div class="skill-strip">
@@ -710,158 +727,199 @@
   </script>
 
   <script>
-    // ── 배경 캔버스: 웨이브 선 + 반짝이는 별을 레이어 1개에서 그림 ──
-    // 이전엔 SVG(웨이브) + CSS 레이어 42개(별)로 나뉘어 있었는데, 레이어 개수 자체가
-    // GPU 비용의 큰 축이었음(실측으로 확인). 캔버스 하나로 합치고 15fps로 캡을 걸어
-    // 실제 리페인트/컴포지팅 빈도를 크게 줄임.
+    // ── shader-bg: 미니 WebGL 배경 (외부 라이브러리 없음, 행렬도 직접 계산) ──
+    // 1) 풀스크린 삼각형 1장 — 흐르는 성운 색감 (2D fragment shader)
+    // 2) gl.POINTS 점 구름 — 진짜 3D 공간에 흩뿌린 별. 모델/투영 행렬을 직접 곱해서
+    //    카메라에 가까운 별은 크게, 먼 별은 작게 보이는 원근감(parallax)을 냄
     (function () {
-      const canvas = document.getElementById('bgCanvas');
-      const ctx = canvas.getContext('2d');
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      let w, h, dpr, stars, raf, running = true;
+      const SHADER_CONFIG = {
+        speed: 0.06,        // 성운 색이 흐르는 속도
+        alpha: 0.16,        // 성운 밝기(0~1)
+        maxDpr: 1,
+        renderScale: 0.55,  // 렌더 해상도 배율 (낮을수록 가벼움)
+        starCount: 250,     // 별 개수
+        starSpread: 4.5,    // 별들의 좌우/상하 퍼짐
+        depthRange: 14,     // 별이 나타났다 사라지기까지의 깊이 범위
+        near: 1.2,          // 카메라에 가장 가까워졌을 때의 거리
+        flySpeed: 1.1,      // 카메라 쪽으로 다가오는 속도
+        pointBase: 10,      // 별 기본 크기(거리로 나눠져서 원근감이 생김)
+      };
 
-      const STAR_COUNT = 30;
-      const STAR_COLORS = ['#8b6cf7', '#29d6d6', '#f5f5f8'];
-      const WAVE_W = 300, WAVE_H = 220; // 원래 hero-svg의 viewBox와 동일한 논리 좌표계
+      const canvas = document.getElementById('shaderBg');
+      const gl = canvas.getContext('webgl', { alpha: true, antialias: false, powerPreference: 'low-power', premultipliedAlpha: false });
+      if (!gl) { canvas.style.display = 'none'; return; }
+
+      function compile(type, source) {
+        const s = gl.createShader(type);
+        gl.shaderSource(s, source);
+        gl.compileShader(s);
+        return s;
+      }
+      function link(vsSrc, fsSrc) {
+        const p = gl.createProgram();
+        gl.attachShader(p, compile(gl.VERTEX_SHADER, vsSrc));
+        gl.attachShader(p, compile(gl.FRAGMENT_SHADER, fsSrc));
+        gl.linkProgram(p);
+        return p;
+      }
+
+      // ---- 1) 성운(nebula) 풀스크린 셰이더 ----
+      const nebulaProgram = link(
+        `attribute vec2 aPosition;
+         void main() { gl_Position = vec4(aPosition, 0.0, 1.0); }`,
+        `precision mediump float;
+         uniform vec2 uResolution;
+         uniform float uTime;
+         uniform vec3 uColorA;
+         uniform vec3 uColorB;
+         uniform float uAlpha;
+         void main() {
+           vec2 uv = gl_FragCoord.xy / uResolution.xy;
+           float t = uTime;
+           float n = sin(uv.x * 3.0 + t * 0.6) * sin(uv.y * 3.0 - t * 0.5) * 0.5
+                   + sin(uv.x * 5.0 - t * 0.8 + uv.y * 2.0) * 0.3;
+           vec3 nebula = mix(uColorA, uColorB, smoothstep(-0.6, 0.6, n));
+           float vig = smoothstep(1.2, 0.15, length(uv - 0.5));
+           gl_FragColor = vec4(nebula, uAlpha * vig);
+         }`
+      );
+      const nebulaBuf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, nebulaBuf);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+      const nebulaAPos = gl.getAttribLocation(nebulaProgram, 'aPosition');
+      const nebulaU = {
+        res: gl.getUniformLocation(nebulaProgram, 'uResolution'),
+        time: gl.getUniformLocation(nebulaProgram, 'uTime'),
+        colorA: gl.getUniformLocation(nebulaProgram, 'uColorA'),
+        colorB: gl.getUniformLocation(nebulaProgram, 'uColorB'),
+        alpha: gl.getUniformLocation(nebulaProgram, 'uAlpha'),
+      };
+
+      // ---- 2) 3D 별(star) 점 구름 — 카메라 쪽으로 다가오다 멀리서 다시 나타나는 플라이스루 ----
+      const starProgram = link(
+        `attribute vec3 aPos;
+         uniform mat4 uProjection;
+         uniform float uTime;
+         uniform float uFlySpeed;
+         uniform float uDepthRange;
+         uniform float uNear;
+         uniform float uPointBase;
+         varying float vFade;
+         void main() {
+           float dist = mod(aPos.z - uTime * uFlySpeed, uDepthRange) + uNear;
+           gl_Position = uProjection * vec4(aPos.xy, -dist, 1.0);
+           gl_PointSize = clamp(uPointBase / dist, 1.0, 8.0);
+           vFade = clamp(4.0 / dist, 0.1, 1.0);
+         }`,
+        `precision mediump float;
+         varying float vFade;
+         void main() {
+           float d = length(gl_PointCoord - 0.5);
+           if (d > 0.5) discard;
+           gl_FragColor = vec4(vec3(1.0), smoothstep(0.5, 0.0, d) * vFade * 0.6);
+         }`
+      );
+      const starPositions = new Float32Array(SHADER_CONFIG.starCount * 3);
+      for (let i = 0; i < SHADER_CONFIG.starCount; i++) {
+        starPositions[i * 3 + 0] = (Math.random() * 2 - 1) * SHADER_CONFIG.starSpread;
+        starPositions[i * 3 + 1] = (Math.random() * 2 - 1) * SHADER_CONFIG.starSpread;
+        starPositions[i * 3 + 2] = Math.random() * SHADER_CONFIG.depthRange;
+      }
+      const starBuf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, starBuf);
+      gl.bufferData(gl.ARRAY_BUFFER, starPositions, gl.STATIC_DRAW);
+      const starAPos = gl.getAttribLocation(starProgram, 'aPos');
+      const starU = {
+        projection: gl.getUniformLocation(starProgram, 'uProjection'),
+        time: gl.getUniformLocation(starProgram, 'uTime'),
+        flySpeed: gl.getUniformLocation(starProgram, 'uFlySpeed'),
+        depthRange: gl.getUniformLocation(starProgram, 'uDepthRange'),
+        near: gl.getUniformLocation(starProgram, 'uNear'),
+        pointBase: gl.getUniformLocation(starProgram, 'uPointBase'),
+      };
+
+      // ---- 투영 행렬 (열 우선, WebGL 표준 레이아웃) — 별 프로그램 전용으로 한 번만 계산 ----
+      function m4Perspective(fovy, aspect, near, far) {
+        const f = 1 / Math.tan(fovy / 2), nf = 1 / (near - far);
+        return new Float32Array([f / aspect, 0, 0, 0, 0, f, 0, 0, 0, 0, (far + near) * nf, -1, 0, 0, 2 * far * near * nf, 0]);
+      }
+
+      function hexToRgb01(hex) {
+        const m = hex.trim().match(/^#([0-9a-f]{6})$/i);
+        if (!m) return [0.5, 0.5, 0.5];
+        const n = parseInt(m[1], 16);
+        return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
+      }
+      const cs = getComputedStyle(document.documentElement);
+      const colorA = hexToRgb01(cs.getPropertyValue('--accent'));
+      const colorB = hexToRgb01(cs.getPropertyValue('--accent-2'));
+
+      let projection = m4Perspective(Math.PI / 3.2, innerWidth / innerHeight, 0.1, 30);
 
       function resize() {
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
-        w = canvas.width = Math.floor(innerWidth * dpr);
-        h = canvas.height = Math.floor(innerHeight * dpr);
-        canvas.style.width = innerWidth + 'px';
-        canvas.style.height = innerHeight + 'px';
-      }
-      function initStars() {
-        stars = Array.from({ length: STAR_COUNT }, (_, i) => ({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          r: (Math.pow(Math.random(), 2) * 2.6 + 1) * dpr, // 조금 더 크게
-          o: Math.random() * .3 + .18, // 색상 더 투명하게
-          // 서로 다른 두 주파수를 섞어서 규칙적인 사인파가 아니라 불규칙하게 반짝이도록 (느리게)
-          freq: Math.random() * .35 + .12,
-          phase: Math.random() * Math.PI * 2,
-          freq2: Math.random() * .8 + .3,
-          phase2: Math.random() * Math.PI * 2,
-          c: STAR_COLORS[i % STAR_COLORS.length],
-        }));
+        const dpr = Math.min(window.devicePixelRatio || 1, SHADER_CONFIG.maxDpr) * SHADER_CONFIG.renderScale;
+        canvas.width = Math.floor(innerWidth * dpr);
+        canvas.height = Math.floor(innerHeight * dpr);
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        projection = m4Perspective(Math.PI / 3.2, innerWidth / innerHeight, 0.1, 30);
       }
 
-      function drawWave(tSec) {
-        if (innerWidth < 640) return; // 좁은 화면은 원래도 숨겼던 장식 요소
-        // 스크롤/텍스트 위치와 무관하게 화면 상단 우측에 고정
-        const ox = w - WAVE_W * dpr - 60 * dpr;
-        const oy = 70 * dpr;
-        const grad = ctx.createLinearGradient(ox, oy, ox + WAVE_W * dpr, oy + WAVE_H * dpr);
-        grad.addColorStop(0, '#8b6cf7');
-        grad.addColorStop(1, '#29d6d6');
-        ctx.strokeStyle = grad;
-        ctx.lineCap = 'round';
-
-        ctx.globalAlpha = .55;
-        ctx.lineWidth = 2 * dpr;
-        ctx.setLineDash([6 * dpr, 10 * dpr]);
-        ctx.lineDashOffset = -tSec * 18 * dpr;
-        ctx.beginPath();
-        ctx.moveTo(ox + 10 * dpr, oy + 70 * dpr);
-        ctx.quadraticCurveTo(ox + 70 * dpr, oy + 10 * dpr, ox + 130 * dpr, oy + 70 * dpr);
-        ctx.quadraticCurveTo(ox + 190 * dpr, oy + 130 * dpr, ox + 250 * dpr, oy + 70 * dpr);
-        ctx.stroke();
-
-        ctx.globalAlpha = .32;
-        ctx.lineWidth = 1.5 * dpr;
-        ctx.setLineDash([4 * dpr, 9 * dpr]);
-        ctx.lineDashOffset = -tSec * 12 * dpr;
-        ctx.beginPath();
-        ctx.moveTo(ox + 20 * dpr, oy + 120 * dpr);
-        ctx.quadraticCurveTo(ox + 90 * dpr, oy + 60 * dpr, ox + 150 * dpr, oy + 120 * dpr);
-        ctx.quadraticCurveTo(ox + 210 * dpr, oy + 180 * dpr, ox + 280 * dpr, oy + 120 * dpr);
-        ctx.stroke();
-
-        ctx.globalAlpha = .2;
-        ctx.lineWidth = 1.5 * dpr;
-        ctx.setLineDash([4 * dpr, 9 * dpr]);
-        ctx.lineDashOffset = -tSec * 9 * dpr;
-        ctx.beginPath();
-        ctx.moveTo(ox, oy + 170 * dpr);
-        ctx.quadraticCurveTo(ox + 60 * dpr, oy + 130 * dpr, ox + 120 * dpr, oy + 170 * dpr);
-        ctx.quadraticCurveTo(ox + 180 * dpr, oy + 210 * dpr, ox + 240 * dpr, oy + 170 * dpr);
-        ctx.stroke();
-
-        ctx.setLineDash([]);
-      }
-
-      function drawHexagon(tSec) {
-        if (innerWidth < 640) return; // 웨이브와 동일하게 좁은 화면에서는 생략
-        const cx = 130 * dpr;
-        const cy = h - 170 * dpr;
-        const radius = 64 * dpr;
-        ctx.save();
-        ctx.translate(cx, cy);
-        ctx.rotate(tSec * 0.08); // 아주 천천히 회전
-        ctx.strokeStyle = '#29d6d6';
-        ctx.globalAlpha = .16;
-        ctx.lineWidth = 1.5 * dpr;
-        ctx.beginPath();
-        for (let i = 0; i < 6; i++) {
-          const angle = (Math.PI / 3) * i - Math.PI / 2;
-          const x = Math.cos(angle) * radius;
-          const y = Math.sin(angle) * radius;
-          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-        }
-        ctx.closePath();
-        ctx.stroke();
-        ctx.restore();
-      }
-
-      function drawStars(tSec) {
-        for (const s of stars) {
-          // 두 사인파를 곱해서 균일한 파동이 아니라 불규칙하게 반짝이는 패턴을 만듦
-          const wave = Math.sin(tSec * s.freq + s.phase) * Math.sin(tSec * s.freq2 + s.phase2);
-          const a = Math.max(0, wave) * s.o;
-          if (a < .03) continue;
-          ctx.globalAlpha = a;
-          ctx.fillStyle = s.c;
-          ctx.beginPath();
-          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
+      const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let running = true;
+      let raf = null;
+      const startTime = performance.now();
+      // 느리게 흐르는 장식용 배경이라 디스플레이 주사율만큼 그릴 필요가 없음 → 그리기 빈도를 30fps로 제한해 GPU 부하 절감
+      const frameInterval = 1000 / 30;
+      let lastDrawTime = 0;
 
       function draw(t) {
-        const tSec = t / 1000;
-        ctx.clearRect(0, 0, w, h);
-        drawWave(tSec);
-        drawHexagon(tSec);
-        drawStars(tSec);
-        ctx.globalAlpha = 1;
-      }
+        const time = ((t !== undefined ? t : performance.now()) - startTime) / 1000;
 
-      let lastT = 0;
-      const FRAME_MS = 1000 / 15; // 15fps 캡 — 사용자 요청대로 프레임 자체를 낮춤
-      function step(t) {
-        if (!running) return;
-        raf = requestAnimationFrame(step);
-        if (t - lastT < FRAME_MS) return;
-        lastT = t;
+        gl.disable(gl.BLEND);
+        gl.useProgram(nebulaProgram);
+        gl.bindBuffer(gl.ARRAY_BUFFER, nebulaBuf);
+        gl.enableVertexAttribArray(nebulaAPos);
+        gl.vertexAttribPointer(nebulaAPos, 2, gl.FLOAT, false, 0, 0);
+        gl.uniform2f(nebulaU.res, canvas.width, canvas.height);
+        gl.uniform1f(nebulaU.time, time * SHADER_CONFIG.speed * 16.6);
+        gl.uniform3f(nebulaU.colorA, colorA[0], colorA[1], colorA[2]);
+        gl.uniform3f(nebulaU.colorB, colorB[0], colorB[1], colorB[2]);
+        gl.uniform1f(nebulaU.alpha, SHADER_CONFIG.alpha);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+        gl.useProgram(starProgram);
+        gl.bindBuffer(gl.ARRAY_BUFFER, starBuf);
+        gl.enableVertexAttribArray(starAPos);
+        gl.vertexAttribPointer(starAPos, 3, gl.FLOAT, false, 0, 0);
+        gl.uniformMatrix4fv(starU.projection, false, projection);
+        gl.uniform1f(starU.time, time);
+        gl.uniform1f(starU.flySpeed, SHADER_CONFIG.flySpeed);
+        gl.uniform1f(starU.depthRange, SHADER_CONFIG.depthRange);
+        gl.uniform1f(starU.near, SHADER_CONFIG.near);
+        gl.uniform1f(starU.pointBase, SHADER_CONFIG.pointBase);
+        gl.drawArrays(gl.POINTS, 0, SHADER_CONFIG.starCount);
+      }
+      function loop(t) {
+        if (!running) { raf = null; return; }
+        raf = requestAnimationFrame(loop);
+        const now = t !== undefined ? t : performance.now();
+        if (now - lastDrawTime < frameInterval) return;
+        lastDrawTime = now;
         draw(t);
       }
-      function start() { if (!raf) { running = true; raf = requestAnimationFrame(step); } }
+      function start() { if (!raf && !reduceMotion) { running = true; raf = requestAnimationFrame(loop); } }
       function stop() { running = false; if (raf) cancelAnimationFrame(raf); raf = null; }
 
-      resize(); initStars();
-      if (!reduceMotion) start(); else draw(0);
+      resize();
+      if (reduceMotion) draw(0); else start();
 
       let resizeT;
-      addEventListener('resize', () => {
-        clearTimeout(resizeT);
-        resizeT = setTimeout(() => { resize(); initStars(); }, 200);
-      });
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) stop(); else if (!reduceMotion) start();
-      });
-      // 모달 열림(배경이 가려짐) 동안은 완전히 정지
+      addEventListener('resize', () => { clearTimeout(resizeT); resizeT = setTimeout(resize, 200); });
+      document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); else start(); });
       document.addEventListener('bg:pause', stop);
-      document.addEventListener('bg:resume', () => { if (!reduceMotion && !document.hidden) start(); });
+      document.addEventListener('bg:resume', start);
     })();
   </script>
 </body>
