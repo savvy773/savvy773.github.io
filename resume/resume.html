@@ -31,7 +31,7 @@
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Pretendard, sans-serif;
     color: var(--text);
     font-size: 9.6pt;
-    line-height: 1.5;
+    line-height: 1.45;
     -webkit-font-smoothing: antialiased;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
@@ -78,7 +78,7 @@
 
   .summary { margin: 0; color: var(--text-2); }
 
-  .job { position: relative; padding-left: 15px; border-left: 2px solid var(--accent-soft); margin-bottom: 9px; }
+  .job { position: relative; padding-left: 15px; border-left: 2px solid var(--accent-soft); margin-bottom: 10px; }
   .job::before {
     content: ""; position: absolute; left: -4px; top: 2px;
     width: 6px; height: 6px; border-radius: 50%;
@@ -87,9 +87,9 @@
   .job:last-child { margin-bottom: 0; }
   .job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-weight: 700; font-size: 10.1pt; }
   .job-head .period { font-family: var(--mono); font-weight: 500; font-size: 7.8pt; color: var(--text-dim); white-space: nowrap; }
-  .job-sub { font-family: var(--mono); color: var(--text-dim); font-size: 8pt; letter-spacing: .03em; margin: 3px 0 6px; }
+  .job-sub { font-family: var(--mono); color: var(--text-dim); font-size: 8pt; letter-spacing: .03em; margin: 4px 0 7px; }
   ul { margin: 0; padding-left: 15px; }
-  li { margin-bottom: 3px; color: var(--text-2); }
+  li { margin-bottom: 4px; color: var(--text-2); }
   li::marker { color: var(--accent); }
 
   .proj {
@@ -100,7 +100,7 @@
   .proj:hover { border-color: var(--accent-soft); box-shadow: var(--shadow-lg); transform: translateY(-1px); }
   .proj:last-child { margin-bottom: 0; }
   .proj-title { font-weight: 700; font-size: 9.7pt; margin-bottom: 3px; color: var(--text); }
-  .proj-desc { color: var(--text-2); margin: 0 0 6px; }
+  .proj-desc { color: var(--text-2); margin: 0 0 7px; }
   .tag-row { display: flex; flex-wrap: wrap; gap: 4px; }
   .tag {
     font-family: var(--mono); font-size: 7.2pt; font-weight: 500; letter-spacing: .02em;
@@ -113,13 +113,13 @@
   .skill-cat { font-family: var(--mono); font-weight: 500; font-size: 7.9pt; letter-spacing: .02em; color: var(--text-dim); text-transform: uppercase; }
   .skill-val { color: var(--text-2); }
 
-  .bg-note { color: var(--text-2); margin: 0 0 6px; }
-  .bg-row { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 8.6pt; color: var(--text-dim); }
-  .bg-row span b { color: var(--text-2); font-weight: 600; }
+  .bg-note { color: var(--text-2); margin: 0 0 7px; }
+  .bg-table { border-collapse: collapse; font-size: 8.6pt; color: var(--text-dim); }
+  .bg-table td { padding: 2px 0; }
+  .bg-table td:first-child { padding-right: 16px; }
+  .bg-table b { color: var(--text-2); font-weight: 600; }
+  .bg-table .period { font-family: var(--mono); font-size: 7.8pt; color: var(--text-dim); white-space: nowrap; }
 
-  .edu-row { display: flex; justify-content: space-between; gap: 10px; font-size: 9.2pt; }
-  .edu-row .period { font-family: var(--mono); font-size: 7.8pt; color: var(--text-dim); white-space: nowrap; }
-  .edu-row + .edu-row { margin-top: 4px; }
 </style>
 </head>
 <body>
@@ -142,10 +142,9 @@
   <section>
     <h2>Summary</h2>
     <p class="summary">
-      영업관리·고객지원 분야에서 14년 이상 경력을 쌓은 뒤, 한화에너지에서 AI 엔지니어로 직무를 전환했습니다.
-      태양광 발전소 모니터링 시스템과 AI/LLM 기반 업무 자동화를 개발했으며, 기존 약 1주일 소요되던 업무를
-      1일로 단축한 경험이 있습니다. Python·Rust·Java·SQL 기반 백엔드와 Vue·React·TypeScript 기반
-      프론트엔드 개발 경험을 보유하고 있습니다.
+      영업관리·고객지원 분야에서 14년 이상 경력을 쌓은 뒤, 한화에너지에서 AI 엔지니어로 직무를 전환했습니다.<br>
+      태양광 발전소 모니터링 시스템과 AI/LLM 기반 업무 자동화를 개발했으며, 기존 약 1주일 소요되던 업무를 1일로 단축한 경험이 있습니다.<br>
+      Python·Rust·Java·SQL 기반 백엔드와 Vue·React·TypeScript 기반 프론트엔드 개발 경험을 보유하고 있습니다.
     </p>
   </section>
 
@@ -172,9 +171,9 @@
     <div class="proj">
       <div class="proj-title">HEIS Tool — 발전소 데이터 통합 자동화 툴</div>
       <div class="proj-desc">
-        TAG 관리·SQL 등록·QC 검증·Backfill·PVsyst 업로드를 하나로 통합한 GUI 툴. 대용량 CSV를 InfluxDB
-        Line Protocol로 변환·적재하는 Backfill 파이프라인 포함. 서버 통신은 사용자별로 격리된 SSH 터널로
-        처리해 다중 사용자 동시 작업 시 프로세스 충돌을 원천 차단.
+        TAG 관리·SQL 등록·QC 검증·Backfill·PVsyst 업로드를 하나로 통합한 GUI 툴.<br>
+        대용량 CSV를 InfluxDB Line Protocol로 변환·적재하는 Backfill 파이프라인 포함.<br>
+        서버 통신은 사용자별로 격리된 SSH 터널로 처리해 다중 사용자 동시 작업 시 프로세스 충돌을 원천 차단.
       </div>
       <div class="tag-row">
         <span class="tag">PYTHON</span><span class="tag">INFLUXDB</span><span class="tag">SSH TUNNELING</span>
@@ -184,7 +183,7 @@
     <div class="proj">
       <div class="proj-title">OPC-ISL Engine — OPC 태그 → HEIS 표준 포맷 변환 도구</div>
       <div class="proj-desc">
-        발전소마다 다른 OPC 원본 태그 파일을 HEIS Import 표준 포맷으로 변환하는 Windows 데스크톱 툴.
+        발전소마다 다른 OPC 원본 태그 파일을 HEIS Import 표준 포맷으로 변환하는 Windows 데스크톱 툴.<br>
         발전소명·타입·OPC 형식을 파일 내용 기반으로 자동 감지해 수작업 매핑을 최소화.
       </div>
       <div class="tag-row">
@@ -201,29 +200,24 @@
       <div class="skill-cat">Data</div><div class="skill-val">InfluxDB, HEIS TAG 관리, QC, 데이터 백필 자동화</div>
       <div class="skill-cat">AI</div><div class="skill-val">AI/LLM 기반 업무 자동화, 컨텍스트 엔지니어링</div>
       <div class="skill-cat">H/W · S/W</div><div class="skill-val">PC 조립·정비, H/W·S/W 장애 진단, 시스템 트러블슈팅</div>
+      <div class="skill-cat">Language</div><div class="skill-val">한국어(모국어), 영어(가능)</div>
     </div>
   </section>
 
   <section>
     <h2>Career Background</h2>
     <p class="bg-note">
-      개발 직무 전환 전, 다양한 산업군에서 영업관리·채널 운영·고객 기술지원 업무를 14년 이상 수행했습니다.
-      HP 서버 채널 실적 관리, PC H/W 기술지원, 카드사 핫라인 운영 등 현장 커뮤니케이션과 데이터 기반
-      실적 분석 경험을 쌓았습니다.
+      개발 직무 전환 전, 다양한 산업군에서 영업관리·채널 운영·고객 기술지원 업무를 14년 이상 수행했습니다.<br>
+      HP 서버 채널 실적 관리, PC H/W 기술지원, 카드사 핫라인 운영 등 현장 커뮤니케이션과 데이터 기반 실적 분석 경험을 쌓았습니다.
     </p>
-    <div class="bg-row">
-      <span><b>현대카드</b> · 주임 · 2015.11–2017.10</span>
-      <span><b>제이씨현</b> · 주임 · 2014.02–2015.03</span>
-      <span><b>한국네트인</b> · 과장 · 2011.07–2013.04</span>
-      <span><b>HP 휴렛패커드 센터</b> · 대리 · 2000.07–2008.07</span>
-    </div>
+    <table class="bg-table">
+      <tr><td><b>HP 휴렛패커드 센터</b> · 대리</td><td class="period">2000.07 – 2008.07</td></tr>
+      <tr><td><b>한국네트인</b> · 과장</td><td class="period">2011.07 – 2013.04</td></tr>
+      <tr><td><b>제이씨현</b> · 주임</td><td class="period">2014.02 – 2015.03</td></tr>
+      <tr><td><b>현대카드</b> · 주임</td><td class="period">2015.11 – 2017.10</td></tr>
+    </table>
   </section>
 
-  <section>
-    <h2>Education</h2>
-    <div class="edu-row">
-    </div>
-  </section>
 
 </body>
 </html>
