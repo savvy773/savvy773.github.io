@@ -26,13 +26,12 @@
   }
   html, body { background: var(--bg); }
   body {
-    position: relative;
     margin: 0;
-    padding: 13mm 16mm;
+    padding: 4mm;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Pretendard, sans-serif;
     color: var(--text);
     font-size: 9.6pt;
-    line-height: 1.45;
+    line-height: 1.4;
     -webkit-font-smoothing: antialiased;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
@@ -42,12 +41,28 @@
       linear-gradient(90deg, rgba(245,245,248,.025) 1px, transparent 1px);
     background-size: 8mm 8mm;
   }
-  body::before, body::after {
-    content: ""; position: absolute; width: 7mm; height: 7mm; pointer-events: none;
+  .sheet {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 8mm 14mm 9mm;
   }
-  body::before { top: 5mm; left: 6mm; border-top: 1.5px solid var(--accent-soft); border-left: 1.5px solid var(--accent-soft); }
-  body::after { bottom: 5mm; right: 6mm; border-bottom: 1.5px solid var(--accent-soft); border-right: 1.5px solid var(--accent-soft); }
-  .top-accent { height: 3px; border-radius: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); margin-bottom: 7mm; }
+  .sheet::before, .sheet::after, .crop-b::before, .crop-b::after {
+    content: ""; position: absolute; width: 14px; height: 14px; pointer-events: none;
+  }
+  .sheet::before { top: -1px; left: -1px; border-top: 1.5px solid var(--accent); border-left: 1.5px solid var(--accent); }
+  .sheet::after  { top: -1px; right: -1px; border-top: 1.5px solid var(--accent); border-right: 1.5px solid var(--accent); }
+  .crop-b { position: absolute; inset: 0; pointer-events: none; }
+  .crop-b::before { bottom: -1px; left: -1px; border-bottom: 1.5px solid var(--accent); border-left: 1.5px solid var(--accent); }
+  .crop-b::after  { bottom: -1px; right: -1px; border-bottom: 1.5px solid var(--accent); border-right: 1.5px solid var(--accent); }
+
+  .eyebrow {
+    display: inline-block; font-family: var(--mono); font-size: 7.4pt; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--accent-2);
+    border: 1px solid rgba(41,214,214,.4); background: rgba(41,214,214,.08);
+    padding: 2px 8px; margin-bottom: 5px;
+  }
+  .top-accent { height: 3px; border-radius: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); margin-bottom: 5mm; }
 
   header { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-bottom: 11px; }
   .id { display: flex; align-items: center; gap: 12px; }
@@ -66,12 +81,14 @@
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
   .role { color: var(--accent); font-size: 9.5pt; font-weight: 600; margin: 0; }
-  .contact { text-align: right; font-family: var(--mono); font-size: 8pt; color: var(--text-2); line-height: 1.75; }
+  .contact { font-family: var(--mono); font-size: 8pt; color: var(--text-2); }
+  .contact .crow { display: flex; gap: 10px; }
+  .contact .crow + .crow { margin-top: 3px; }
+  .contact .clabel { color: var(--text-dim); width: 42px; flex-shrink: 0; }
   .contact a { color: var(--text-2); text-decoration: none; }
-  .contact .primary { color: var(--accent); }
-  .contact .primary a { color: var(--accent); }
+  .contact .primary .clabel, .contact .primary a { color: var(--accent); }
 
-  section { margin-bottom: 11px; }
+  section { margin-bottom: 9px; }
   h2 {
     font-family: var(--mono);
     font-size: 8.4pt;
@@ -96,7 +113,7 @@
     background: var(--bg); border: 1.5px solid var(--accent);
   }
   .job:last-child { margin-bottom: 0; }
-  .job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-weight: 700; font-size: 10.1pt; }
+  .job-head { display: flex; align-items: baseline; gap: 14px; font-weight: 700; font-size: 10.1pt; }
   .job-head .period { font-family: var(--mono); font-weight: 500; font-size: 7.8pt; color: var(--text-dim); white-space: nowrap; }
   .job-sub { font-family: var(--mono); color: var(--text-dim); font-size: 8pt; letter-spacing: .03em; margin: 4px 0 7px; }
   ul { margin: 0; padding-left: 15px; }
@@ -135,6 +152,9 @@
 </style>
 </head>
 <body>
+  <div class="sheet">
+  <div class="crop-b"></div>
+  <span class="eyebrow">Portfolio · Resume</span>
   <div class="top-accent"></div>
 
   <header>
@@ -146,8 +166,8 @@
       </div>
     </div>
     <div class="contact">
-      <div class="primary"><a href="https://github.com/savvy773">github.com/savvy773</a></div>
-      <div><a href="https://savvy773.github.io">savvy773.github.io</a></div>
+      <div class="crow primary"><span class="clabel">GitHub</span><a href="https://github.com/savvy773">github.com/savvy773</a></div>
+      <div class="crow"><span class="clabel">Web</span><a href="https://savvy773.github.io">savvy773.github.io</a></div>
     </div>
   </header>
 
@@ -229,7 +249,7 @@
       <tr><td><b>현대카드</b></td><td>주임</td><td class="period">2015.11 – 2017.10</td></tr>
     </table>
   </section>
-
+  </div>
 
 </body>
 </html>
