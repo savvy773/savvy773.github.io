@@ -249,7 +249,7 @@
     padding: 1.2rem 1.3rem;
     border: 1px solid var(--border);
     border-radius: var(--r);
-    background: var(--surface);
+    background: color-mix(in srgb, var(--surface) 80%, transparent);
     transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
   }
   .repo-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--border-hi); }
@@ -271,6 +271,7 @@
     background: linear-gradient(155deg, var(--surface-2), color-mix(in srgb, var(--bg) 85%, black));
     border: 1px solid var(--border);
     transition: border-color .18s ease;
+    will-change: transform;
   }
   .repo-card:hover .repo-thumb { border-color: var(--border-hi); }
   .rt-head { display: flex; align-items: center; gap: 4px; padding: 8px 10px 0; }
@@ -469,27 +470,31 @@
   .learning-note { animation-delay: .23s; }
 
   /* 리포지토리 카드 / 타임라인 항목 — 스크롤로 섹션에 진입할 때마다 순차 등장 (다이나믹한 오버슈트 이징) */
+  /* border-radius + overflow:hidden 자식(.repo-thumb)을 가진 요소를 transform으로 움직이면
+     크로미움에서 컴포지팅 레이어 승격 시 한 프레임 흰/검 플래시가 뜨는 경우가 있어
+     scale()은 빼고 will-change로 레이어를 미리 만들어둠 */
   .reveal-section h2,
   .reveal-section .repo-card,
   .reveal-section .tl-item {
+    will-change: opacity, transform;
     opacity: 0;
-    transform: translateY(26px) scale(.94);
+    transform: translateY(26px);
     transition: opacity .55s ease, transform .6s cubic-bezier(.34, 1.56, .64, 1);
   }
   .reveal-section.in-view h2,
   .reveal-section.in-view .repo-card,
   .reveal-section.in-view .tl-item {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
   .reveal-section.in-view h2 { transition-delay: 0s; }
-  .reveal-section.in-view .repo-card:nth-child(1) { transition-delay: .12s; }
-  .reveal-section.in-view .repo-card:nth-child(2) { transition-delay: .2s; }
-  .reveal-section.in-view .repo-card:nth-child(3) { transition-delay: .28s; }
-  .reveal-section.in-view .tl-item:nth-of-type(1) { transition-delay: .12s; }
-  .reveal-section.in-view .tl-item:nth-of-type(2) { transition-delay: .2s; }
-  .reveal-section.in-view .tl-item:nth-of-type(3) { transition-delay: .28s; }
-  .reveal-section.in-view .tl-item:nth-of-type(4) { transition-delay: .36s; }
+  .reveal-section.in-view .repo-card:nth-child(1) { transition-delay: .15s; }
+  .reveal-section.in-view .repo-card:nth-child(2) { transition-delay: .3s; }
+  .reveal-section.in-view .repo-card:nth-child(3) { transition-delay: .45s; }
+  .reveal-section.in-view .tl-item:nth-of-type(1) { transition-delay: .15s; }
+  .reveal-section.in-view .tl-item:nth-of-type(2) { transition-delay: .3s; }
+  .reveal-section.in-view .tl-item:nth-of-type(3) { transition-delay: .45s; }
+  .reveal-section.in-view .tl-item:nth-of-type(4) { transition-delay: .6s; }
 
   @media (prefers-reduced-motion: reduce) {
     .reveal-section h2, .reveal-section .repo-card, .reveal-section .tl-item {
