@@ -220,14 +220,27 @@
   section { margin-bottom: 3.4rem; }
   h2 {
     font-family: var(--mono);
-    font-size: .8rem;
+    font-size: .84rem;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: .12em;
-    color: var(--text-dim);
-    margin: 0 0 1.25rem;
-    display: flex; align-items: center; gap: .75rem;
+    letter-spacing: .14em;
+    color: var(--text-2);
+    margin: 0 0 1.4rem;
+    display: flex; align-items: center; gap: .7rem;
   }
-  h2::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+  h2::before {
+    content: "";
+    width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    box-shadow: 0 0 12px var(--accent-soft);
+  }
+  h2::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--h2-line, var(--border)), transparent); }
+
+  /* 섹션마다 다른 포인트 컬러로 구분 강조 */
+  section:nth-of-type(1) h2 { --h2-line: rgba(139,108,247,.45); color: var(--pastel-violet); }
+  section:nth-of-type(1) h2::before { background: linear-gradient(135deg, var(--accent), var(--pastel-violet)); box-shadow: 0 0 12px rgba(139,108,247,.45); }
+  section:nth-of-type(2) h2 { --h2-line: rgba(41,214,214,.45); color: var(--pastel-teal); }
+  section:nth-of-type(2) h2::before { background: linear-gradient(135deg, var(--accent-2), var(--pastel-teal)); box-shadow: 0 0 12px rgba(41,214,214,.45); }
 
   /* repo cards */
   .repo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: .85rem; }
@@ -448,22 +461,41 @@
   .modal-frame iframe { flex: 1; width: 100%; border: none; background: var(--surface); }
 
   @keyframes riseIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-  .kicker, h1, .tagline, .skill-strip, .exp-note { animation: riseIn .55s ease both; }
+  .kicker, h1, .tagline, .skill-strip, .exp-note, .learning-note { animation: riseIn .55s ease both; }
   h1 { animation-delay: .05s; }
   .tagline { animation-delay: .1s; }
   .skill-strip { animation-delay: .15s; }
   .exp-note { animation-delay: .2s; }
+  .learning-note { animation-delay: .23s; }
 
-  /* 리포지토리 카드 / 타임라인 항목도 로드 시 순차적으로 등장 (너무 느리지 않게 짧은 간격) */
-  .repo-card { animation: riseIn .45s ease both; }
-  .repo-card:nth-child(1) { animation-delay: .26s; }
-  .repo-card:nth-child(2) { animation-delay: .32s; }
-  .repo-card:nth-child(3) { animation-delay: .38s; }
-  .tl-item { animation: riseIn .45s ease both; }
-  .tl-item:nth-of-type(1) { animation-delay: .38s; }
-  .tl-item:nth-of-type(2) { animation-delay: .44s; }
-  .tl-item:nth-of-type(3) { animation-delay: .5s; }
-  .tl-item:nth-of-type(4) { animation-delay: .56s; }
+  /* 리포지토리 카드 / 타임라인 항목 — 스크롤로 섹션에 진입할 때마다 순차 등장 (다이나믹한 오버슈트 이징) */
+  .reveal-section h2,
+  .reveal-section .repo-card,
+  .reveal-section .tl-item {
+    opacity: 0;
+    transform: translateY(26px) scale(.94);
+    transition: opacity .55s ease, transform .6s cubic-bezier(.34, 1.56, .64, 1);
+  }
+  .reveal-section.in-view h2,
+  .reveal-section.in-view .repo-card,
+  .reveal-section.in-view .tl-item {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  .reveal-section.in-view h2 { transition-delay: 0s; }
+  .reveal-section.in-view .repo-card:nth-child(1) { transition-delay: .12s; }
+  .reveal-section.in-view .repo-card:nth-child(2) { transition-delay: .2s; }
+  .reveal-section.in-view .repo-card:nth-child(3) { transition-delay: .28s; }
+  .reveal-section.in-view .tl-item:nth-of-type(1) { transition-delay: .12s; }
+  .reveal-section.in-view .tl-item:nth-of-type(2) { transition-delay: .2s; }
+  .reveal-section.in-view .tl-item:nth-of-type(3) { transition-delay: .28s; }
+  .reveal-section.in-view .tl-item:nth-of-type(4) { transition-delay: .36s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-section h2, .reveal-section .repo-card, .reveal-section .tl-item {
+      opacity: 1; transform: none; transition: none;
+    }
+  }
 </style>
 </head>
 <body>
@@ -539,7 +571,7 @@
       </div>
     </div>
 
-    <section>
+    <section class="reveal-section">
       <h2>Repositories</h2>
       <div class="repo-grid">
         <a class="repo-card" href="https://savvy773.github.io/web-ai-usage/" onclick="return openModal('https://savvy773.github.io/web-ai-usage/','web-ai-usage', event)">
@@ -596,7 +628,7 @@
       </div>
     </section>
 
-    <section>
+    <section class="reveal-section">
       <h2>Journey</h2>
       <div class="timeline" id="timeline">
         <div class="timeline-progress" id="timelineProgress"></div>
@@ -714,6 +746,27 @@
       document.dispatchEvent(new Event('bg:resume'));
       setTimeout(() => { iframe.src = 'about:blank'; }, 200);
     });
+  </script>
+
+  <script>
+    // ── section reveal: 스크롤로 섹션에 진입할 때마다 h2/카드/타임라인 항목을 순차 등장시킴 ──
+    (function () {
+      const sections = document.querySelectorAll('.reveal-section');
+      if (!sections.length) return;
+      if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        sections.forEach((s) => s.classList.add('in-view'));
+        return;
+      }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: .12, rootMargin: '0px 0px -60px 0px' });
+      sections.forEach((s) => io.observe(s));
+    })();
   </script>
 
   <script>
