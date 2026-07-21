@@ -202,11 +202,14 @@ html.fx-paused .aurora-a { animation-play-state: paused; }
   opacity: .9;
 }
 
-/* topbar — backdrop-filter 미사용 (셰이더 재블러 비용) */
+/* topbar — backdrop-filter 미사용 (재블러 비용) */
 .topbar {
   position: sticky; top: 0; z-index: 50;
   display: flex; align-items: center; justify-content: space-between;
   padding: 12px 1.5rem;
+  padding-top: max(12px, env(safe-area-inset-top, 0px));
+  padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
   margin-top: 2px;
   background: color-mix(in srgb, var(--bg) 82%, transparent);
   border-bottom: 1px solid var(--border);
@@ -857,14 +860,45 @@ footer a:hover {
   footer { flex-direction: column; gap: .7rem; text-align: center; }
   .nav-dd-panel { width: 80vw; max-width: 260px; }
   .brand-name { display: none; }
-  .topbar { padding: 10px .9rem; }
+  .topbar {
+    padding: 10px .9rem;
+    padding-top: max(10px, env(safe-area-inset-top, 0px));
+    padding-left: max(.9rem, env(safe-area-inset-left, 0px));
+    padding-right: max(.9rem, env(safe-area-inset-right, 0px));
+  }
   .topnav { gap: 0; }
-  .topnav a, .nav-dd-btn { padding: 6px 10px; font-size: 12px; }
-  .wrap { padding: 3.4rem 1.15rem 3.5rem; }
+  .topnav a, .nav-dd-btn { padding: 8px 11px; font-size: 12px; min-height: 36px; }
+  .wrap {
+    padding: 3.4rem 1.15rem 3.5rem;
+    padding-bottom: max(3.5rem, env(safe-area-inset-bottom, 0px) + 2rem);
+    padding-left: max(1.15rem, env(safe-area-inset-left, 0px));
+    padding-right: max(1.15rem, env(safe-area-inset-right, 0px));
+  }
   .exp-note, .learning-note { margin-bottom: 2.2rem; }
-  .repo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
+  /* 좁은 폰: 카드 1열 (가독성) */
+  .repo-grid { grid-template-columns: 1fr; gap: .55rem; }
   .skill-strip span { font-size: .66rem; padding: .28rem .58rem; }
-  .hero-cta .btn { flex: 1; justify-content: center; }
+  .hero-cta .btn { flex: 1; justify-content: center; min-height: 42px; }
+  h1 { font-size: clamp(1.75rem, 8vw, 2.4rem); }
+  dialog.modal-frame {
+    width: 100vw; height: 100dvh; max-height: 100dvh;
+    border-radius: 0; margin: 0;
+  }
+  dialog.modal-frame::backdrop { backdrop-filter: none; }
+}
+
+/* 터치 기기: hover 스티키 완화 — 실제 포인터 hover만 강조 모션 */
+@media (hover: none) {
+  .repo-card:hover { transform: none; will-change: auto; }
+  .tl-item:hover { transform: none; }
+  .btn-primary:hover { transform: none; }
+  .nav-dd:hover .nav-dd-panel {
+    /* 터치에서는 클릭(open)만 열림 — hover 자동 오픈 비활성 */
+    opacity: 0; pointer-events: none; transform: translateY(-6px);
+  }
+  .nav-dd.open .nav-dd-panel {
+    opacity: 1; pointer-events: auto; transform: translateY(0);
+  }
 }
 
 /* modal viewer */
