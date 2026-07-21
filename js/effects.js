@@ -24,7 +24,10 @@
     moonshot: '문샷',
   };
 
-  const mobile = matchMedia('(max-width: 768px), (pointer: coarse)').matches;
+  function isMobile() {
+    return matchMedia('(max-width: 768px), (pointer: coarse)').matches;
+  }
+  let mobile = isMobile();
 
   /** @type {HTMLCanvasElement|null} */
   let canvas = null;
@@ -46,25 +49,28 @@
   let lastInput = 0;
   let lastTs = 0;
 
-  const CFG = {
-    maxDpr: 1,
-    /* 해상도·FPS 낮춤 → fill 비용 직결 */
-    renderScale: mobile ? 0.4 : 0.48,
-    fpsActive: mobile ? 15 : 18,
-    fpsIdle: 8,
-    idleMs: 2000,
-    freezeMs: 5000,
-    mouseLerp: 0.08,
-    counts: {
-      rain: mobile ? 10 : 14,
-      snow: mobile ? 8 : 12,
-      drops: mobile ? 3 : 4,
-      waves: 0,
-      fire: mobile ? 10 : 14,
-      space: mobile ? 16 : 22,
-      moonshot: mobile ? 6 : 10,
-    },
-  };
+  function buildCfg() {
+    mobile = isMobile();
+    return {
+      maxDpr: 1,
+      renderScale: mobile ? 0.38 : 0.48,
+      fpsActive: mobile ? 14 : 18,
+      fpsIdle: mobile ? 7 : 8,
+      idleMs: 2000,
+      freezeMs: mobile ? 4000 : 5000,
+      mouseLerp: 0.08,
+      counts: {
+        rain: mobile ? 8 : 14,
+        snow: mobile ? 6 : 12,
+        drops: mobile ? 3 : 4,
+        waves: 0,
+        fire: mobile ? 8 : 14,
+        space: mobile ? 12 : 22,
+        moonshot: mobile ? 5 : 10,
+      },
+    };
+  }
+  let CFG = buildCfg();
 
   // ── modes ──────────────────────────────────────────────
 
@@ -452,6 +458,8 @@
 
   function resize() {
     if (!canvas || !ctx) return;
+    // 회전·리사이즈 시 모바일 설정 재평가
+    CFG = buildCfg();
     dpr = Math.min(window.devicePixelRatio || 1, CFG.maxDpr) * CFG.renderScale;
     w = Math.max(1, Math.floor(innerWidth));
     h = Math.max(1, Math.floor(innerHeight));
@@ -460,6 +468,7 @@
     canvas.style.width = w + 'px';
     canvas.style.height = h + 'px';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.imageSmoothingEnabled = false;
     rebuild();
   }
 
