@@ -1,6 +1,6 @@
 # 기술 스택
 
-빌드리스(no build step) 정적 포트폴리오.  
+빌드리스(no build step) 정적 포트폴리오.
 프레임워크·번들러 없이 **순수 HTML / CSS / JS**만 사용합니다.
 
 - **사이트**: https://savvy773.github.io/
@@ -103,9 +103,9 @@ savvy773.github.io/
 
 **왜 Canvas 한 장 + JS 모듈인가**
 
-- 효과마다 HTML 페이지 분리 → 전환·상태 공유 불리  
-- SVG DOM 파티클 → 레이아웃/GC 부담  
-- WebGL 풀스크린 성운 → 이 장면 대비 과함  
+- 효과마다 HTML 페이지 분리 → 전환·상태 공유 불리
+- SVG DOM 파티클 → 레이아웃/GC 부담
+- WebGL 풀스크린 성운 → 이 장면 대비 과함
 → **CSS 분위기 + 얇은 Canvas 2D** 조합이 유지보수·GPU 균형에 유리
 
 ---
@@ -120,7 +120,7 @@ savvy773.github.io/
 | **Reveal** | `IntersectionObserver` + `content-visibility: auto` |
 | **Journey 타임라인** | 스크롤 진행 바 (`rAF` 스로틀) |
 
-상단 메뉴 구성: **Pages · GitHub · Resume**  
+상단 메뉴 구성: **Pages · GitHub · Resume**
 (Effect는 메뉴 바가 아닌 독립 dock)
 
 ---
@@ -137,10 +137,10 @@ savvy773.github.io/
 
 ## 접근성
 
-- `prefers-reduced-motion: reduce` → 오로라 애니 정지, Canvas FX 끔  
-- 키보드: Effect **1–4**, Escape로 드롭다운/모달 닫기  
-- 입력 필드 포커스 중에는 FX 단축키 무시  
-- `aria-expanded` / `aria-hidden` 드롭다운 동기화  
+- `prefers-reduced-motion: reduce` → 오로라 애니 정지, Canvas FX 끔
+- 키보드: Effect **1–4**, Escape로 드롭다운/모달 닫기
+- 입력 필드 포커스 중에는 FX 단축키 무시
+- `aria-expanded` / `aria-hidden` 드롭다운 동기화
 
 ---
 
@@ -151,4 +151,4 @@ savvy773.github.io/
 npx --yes serve .
 ```
 
-브라우저에서 루트 열고 Effect dock 또는 `1`–`4` 로 배경 모드를 바꿔 보면 됩니다.
+브라우저에서 루트 열고 Effect dock 또는 `1`–`7` 로 배경 모드를 바꿔 보면 됩니다.
