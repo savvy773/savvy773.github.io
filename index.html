@@ -414,23 +414,24 @@
     box-shadow: 0 0 14px rgba(45,212,191,.4);
   }
 
-  /* repo cards — compact dense grid (many projects) */
+  /* repo cards — text-first, no fake thumbs */
   .repo-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: .65rem;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: .75rem;
   }
   .repo-card {
     position: relative;
     display: flex; flex-direction: column;
     text-decoration: none; color: inherit;
-    padding: .85rem .9rem .8rem;
+    padding: 1rem 1.05rem .95rem;
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 14px;
     background:
-      linear-gradient(160deg, color-mix(in srgb, var(--surface) 92%, white 2%), color-mix(in srgb, var(--surface) 70%, transparent));
+      linear-gradient(165deg, color-mix(in srgb, var(--surface) 94%, white 2%), color-mix(in srgb, var(--surface) 72%, transparent));
     transition: transform .2s var(--ease), box-shadow .2s var(--ease), border-color .2s;
     overflow: hidden;
+    min-height: 148px;
   }
   .repo-card::before {
     content: "";
@@ -445,38 +446,38 @@
   }
   .repo-card::after {
     content: "";
-    position: absolute; top: 0; left: 14%; right: 14%; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
-    opacity: .45;
+    position: absolute; top: 0; left: 12%; right: 12%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent);
+    opacity: .5;
     pointer-events: none;
   }
   .repo-card:hover {
     will-change: transform;
     transform: translateY(-2px);
     border-color: transparent;
-    box-shadow: 0 10px 28px rgba(0,0,0,.35), 0 0 24px rgba(167,139,250,.06);
+    box-shadow: 0 12px 32px rgba(0,0,0,.38), 0 0 28px rgba(167,139,250,.07);
   }
   .repo-card:hover::before {
     opacity: 1;
     background: linear-gradient(135deg, var(--accent), transparent 45%, transparent 55%, var(--accent-2));
   }
   .repo-card:active { transform: translateY(0); }
-  .repo-head { display: flex; align-items: center; gap: .4rem; margin-bottom: .35rem; }
+  .repo-head { display: flex; align-items: center; gap: .45rem; margin-bottom: .55rem; }
   .repo-head svg, .repo-head .icon-gh {
-    width: 13px; height: 13px; color: var(--text-dim); flex-shrink: 0;
+    width: 14px; height: 14px; color: var(--text-dim); flex-shrink: 0;
     transition: color .18s;
   }
   .repo-card:hover .repo-head svg { color: var(--accent); }
   .repo-head h3 {
-    margin: 0; font-size: .8rem; font-weight: 700; font-family: var(--mono); flex: 1;
-    letter-spacing: -.01em;
+    margin: 0; font-size: .84rem; font-weight: 700; font-family: var(--mono); flex: 1;
+    letter-spacing: -.015em;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .repo-live {
     font-family: var(--mono); font-size: .55rem; font-weight: 600; letter-spacing: .05em;
     color: var(--accent-2);
     display: inline-flex; align-items: center; gap: .22rem;
-    padding: .1rem .35rem; border-radius: 999px;
+    padding: .12rem .38rem; border-radius: 999px;
     background: var(--teal-soft);
     border: 1px solid color-mix(in srgb, var(--accent-2) 22%, transparent);
     flex-shrink: 0;
@@ -488,56 +489,22 @@
     animation: pulseDot 2.2s ease infinite;
   }
 
-  .repo-thumb {
-    height: 44px; overflow: hidden;
-    border-radius: 8px; margin-bottom: .55rem;
-    background:
-      radial-gradient(ellipse 80% 80% at 20% 0%, rgba(167,139,250,.1), transparent 55%),
-      linear-gradient(155deg, var(--surface-2), color-mix(in srgb, var(--bg) 80%, black));
-    border: 1px solid var(--border);
-    transition: border-color .2s;
-  }
-  .repo-card:hover .repo-thumb { border-color: var(--border-hi); }
-  .rt-head { display: flex; align-items: center; gap: 3px; padding: 6px 8px 0; }
-  .rt-dot { width: 4px; height: 4px; border-radius: 50%; opacity: .5; }
-  .rt-dot:nth-child(1) { background: #ff5f57; }
-  .rt-dot:nth-child(2) { background: #febc2e; }
-  .rt-dot:nth-child(3) { background: #28c840; }
-  .rt-body { padding: 5px 8px 8px; display: flex; flex-direction: column; gap: 4px; }
-  .rt-bar {
-    height: 3px; border-radius: 2px;
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    opacity: .5;
-  }
-  .rt-chart {
-    height: 14px; border-radius: 4px;
-    background: repeating-linear-gradient(90deg,
-      var(--accent-soft) 0 8%, transparent 8% 16%,
-      var(--accent-soft) 16% 22%, transparent 22% 32%,
-      var(--accent-soft) 32% 40%, transparent 40% 52%,
-      var(--accent-soft) 52% 60%, transparent 60% 100%);
-  }
-  .rt-row { display: flex; align-items: center; gap: 5px; }
-  .rt-avatar {
-    width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  }
-  .rt-row .rt-bar { flex: 1; }
-  @media (max-width: 640px) { .repo-thumb { display: none; } }
-
   .repo-desc {
-    margin: 0 0 .45rem;
+    margin: 0 0 .75rem;
     color: var(--text-2);
-    font-size: .72rem;
-    line-height: 1.35;
-    white-space: nowrap;
+    font-size: .8rem;
+    line-height: 1.5;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
+    word-break: keep-all;
   }
-  .repo-tags { display: flex; flex-wrap: wrap; gap: .22rem; margin-top: auto; }
+  .repo-tags { display: flex; flex-wrap: wrap; gap: .28rem; margin-top: auto; }
   .repo-tags span {
     font-family: var(--mono); font-size: .62rem; letter-spacing: .03em;
-    padding: .14rem .42rem; border-radius: 999px;
+    padding: .16rem .45rem; border-radius: 999px;
     background: var(--accent-soft); color: var(--pastel-violet); font-weight: 500;
     border: 1px solid color-mix(in srgb, var(--accent) 16%, transparent);
   }
@@ -893,14 +860,7 @@
             <h3>web-ai-usage</h3>
             <span class="repo-live">LIVE</span>
           </div>
-          <div class="repo-thumb" aria-hidden="true">
-            <div class="rt-head"><span class="rt-dot"></span><span class="rt-dot"></span><span class="rt-dot"></span></div>
-            <div class="rt-body">
-              <div class="rt-bar" style="width:62%"></div>
-              <div class="rt-chart"></div>
-            </div>
-          </div>
-          <p class="repo-desc">AI CLI 사용량 로컬 대시보드</p>
+          <p class="repo-desc">Claude·Codex·Gemini CLI 사용량을 한 화면에서 보는 로컬 대시보드. 클라우드 전송·텔레메트리 없음.</p>
           <div class="repo-tags"><span>TS</span><span>Svel</span></div>
         </a>
 
@@ -910,15 +870,7 @@
             <h3>app-yt-subs</h3>
             <span class="repo-live">LIVE</span>
           </div>
-          <div class="repo-thumb" aria-hidden="true">
-            <div class="rt-head"><span class="rt-dot"></span><span class="rt-dot"></span><span class="rt-dot"></span></div>
-            <div class="rt-body">
-              <div class="rt-row"><span class="rt-avatar"></span><div class="rt-bar" style="width:70%"></div></div>
-              <div class="rt-row"><span class="rt-avatar"></span><div class="rt-bar" style="width:50%"></div></div>
-              <div class="rt-row"><span class="rt-avatar"></span><div class="rt-bar" style="width:60%"></div></div>
-            </div>
-          </div>
-          <p class="repo-desc">유튜브 구독 관리 앱</p>
+          <p class="repo-desc">Flet + Playwright 기반 유튜브 구독 정리 앱. 채널 목록·구독 관리를 데스크톱 UI로 처리.</p>
           <div class="repo-tags"><span>Py</span><span>Flet</span><span>PW</span></div>
         </a>
 
@@ -928,14 +880,7 @@
             <h3>dpi-bye</h3>
             <span class="repo-live">LIVE</span>
           </div>
-          <div class="repo-thumb" aria-hidden="true">
-            <div class="rt-head"><span class="rt-dot"></span><span class="rt-dot"></span><span class="rt-dot"></span></div>
-            <div class="rt-body">
-              <div class="rt-row"><span class="rt-avatar"></span><div class="rt-bar" style="width:35%"></div></div>
-              <div class="rt-row"><span class="rt-avatar"></span><div class="rt-bar" style="width:55%"></div></div>
-            </div>
-          </div>
-          <p class="repo-desc">SNI DPI 우회 툴</p>
+          <p class="repo-desc">TLS ClientHello를 분할해 SNI 기반 DPI 차단을 우회하는 WinDivert 툴. KT·SKT·LGU+ 대응.</p>
           <div class="repo-tags"><span>Py</span><span>WinD</span><span>PS</span></div>
         </a>
 
@@ -945,15 +890,7 @@
             <h3>happycomms</h3>
             <span class="repo-live">LIVE</span>
           </div>
-          <div class="repo-thumb" aria-hidden="true">
-            <div class="rt-head"><span class="rt-dot"></span><span class="rt-dot"></span><span class="rt-dot"></span></div>
-            <div class="rt-body">
-              <div class="rt-row"><span class="rt-avatar"></span><div class="rt-bar" style="width:65%"></div></div>
-              <div class="rt-bar" style="width:40%"></div>
-              <div class="rt-chart"></div>
-            </div>
-          </div>
-          <p class="repo-desc">Web marketing demo</p>
+          <p class="repo-desc">웹 마케팅 데모 — 브랜드 랜딩과 서버·인프라 기술 문서 샘플. 정적 HTML 포트폴리오.</p>
           <div class="repo-tags"><span>HTML</span><span>CSS</span></div>
         </a>
       </div>
