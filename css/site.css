@@ -91,8 +91,6 @@ body {
   background: radial-gradient(circle, rgba(94,234,212,.12) 0%, rgba(45,212,191,.05) 40%, transparent 68%);
   /* 정적 — 매 프레임 합성 애니 1개 줄임 */
 }
-.aurora-c,
-.aurora-d { display: none; }
 @keyframes auroraA {
   from { transform: translate3d(0,0,0) scale(1); opacity: .65; }
   to   { transform: translate3d(3%, 2%, 0) scale(1.04); opacity: .85; }
@@ -488,12 +486,11 @@ html.fx-paused .aurora-a { animation-play-state: paused; }
 .kicker::before {
   content: ""; width: 6px; height: 6px; border-radius: 50%;
   background: var(--accent-2);
-  box-shadow: 0 0 0 0 rgba(45,212,191,.55);
   animation: pulseDot 2s ease infinite;
 }
 @keyframes pulseDot {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(45,212,191,.5); }
-  50% { box-shadow: 0 0 0 6px rgba(45,212,191,0); }
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.5; }
 }
 h1 {
   font-size: clamp(2.4rem, 7.5vw, 3.85rem); font-weight: 800; letter-spacing: -0.04em;
@@ -661,7 +658,6 @@ section:nth-of-type(2) h2::before {
   pointer-events: none;
 }
 .repo-card:hover {
-  will-change: transform;
   transform: translateY(-2px);
   border-color: transparent;
   box-shadow: 0 12px 32px rgba(0,0,0,.38), 0 0 28px rgba(167,139,250,.07);
@@ -694,7 +690,6 @@ section:nth-of-type(2) h2::before {
 .repo-live::before {
   content: ""; width: 4px; height: 4px; border-radius: 50%;
   background: var(--accent-2);
-  box-shadow: 0 0 5px var(--accent-2);
   animation: pulseDot 2.2s ease infinite;
 }
 
