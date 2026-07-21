@@ -1070,9 +1070,11 @@
         if (event.metaKey || event.ctrlKey || event.shiftKey || event.button === 1) return true;
         event.preventDefault();
       }
-      iframe.src = url;
+      // iframe/브라우저 캐시 때문에 최신 resume·문서를 못 보는 경우 방지
+      const sep = url.includes('?') ? '&' : '?';
+      iframe.src = url + sep + 'v=' + Date.now();
       modalTitle.textContent = title;
-      modalNewTab.href = url;
+      modalNewTab.href = url; // 새 탭은 클린 URL
       dialog.showModal();
       setDropdownOpen(false);
       document.dispatchEvent(new Event('bg:pause'));
