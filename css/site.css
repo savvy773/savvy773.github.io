@@ -220,56 +220,131 @@ html.is-scrolled .topbar {
   font-weight: 500;
 }
 
-/* 배경 영상 전환 (로고 옆) */
+/* 배경 영상 전환 — 로고 옆 컴팩트 드롭다운 */
 .bg-switch {
+  position: relative;
+  flex-shrink: 0;
+}
+.bg-switch-toggle {
+  appearance: none;
+  font: inherit;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 4px;
+  gap: 5px;
+  height: 32px;
+  padding: 0 10px 0 9px;
   border-radius: 999px;
-  background: linear-gradient(135deg, rgba(167, 139, 250, 0.18), rgba(34, 211, 238, 0.14));
   border: 1px solid rgba(167, 139, 250, 0.45);
+  cursor: pointer;
+  color: var(--text);
+  background: linear-gradient(135deg, rgba(167, 139, 250, 0.2), rgba(34, 211, 238, 0.14));
   box-shadow:
-    0 0 0 1px rgba(34, 211, 238, 0.12),
-    0 0 20px rgba(167, 139, 250, 0.2);
+    0 0 0 1px rgba(34, 211, 238, 0.1),
+    0 0 16px rgba(167, 139, 250, 0.18);
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+.bg-switch-toggle:hover,
+.bg-switch.open .bg-switch-toggle {
+  border-color: rgba(167, 139, 250, 0.7);
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, 0.18),
+    0 0 22px rgba(167, 139, 250, 0.28);
+}
+.bg-switch-toggle:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
 }
 .bg-switch-label {
   font-family: var(--mono);
   font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   color: var(--accent-2);
-  padding: 0 6px 0 8px;
   user-select: none;
 }
-.bg-switch-btn {
+.bg-switch-cur {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 800;
+  min-width: 0.9em;
+  text-align: center;
+  color: var(--text);
+}
+.bg-switch-toggle .car {
+  font-size: 10px;
+  color: var(--text-2);
+  line-height: 1;
+  transition: transform 0.15s;
+}
+.bg-switch.open .bg-switch-toggle .car {
+  transform: rotate(180deg);
+}
+.bg-switch-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 60;
+  min-width: 100%;
+  width: max-content;
+  padding: 5px;
+  border-radius: 12px;
+  border: 1px solid rgba(167, 139, 250, 0.35);
+  background: rgba(14, 14, 24, 0.96);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(34, 211, 238, 0.08);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition: opacity 0.15s, transform 0.15s;
+}
+.bg-switch.open .bg-switch-panel {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.bg-switch-item {
   appearance: none;
   font: inherit;
   font-family: var(--mono);
   font-size: 12px;
   font-weight: 700;
-  width: 30px;
-  height: 28px;
-  padding: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 8px 10px;
   border: none;
-  border-radius: 999px;
+  border-radius: 8px;
   cursor: pointer;
   color: var(--text-2);
-  background: rgba(0, 0, 0, 0.28);
-  transition: color 0.15s, background 0.15s, box-shadow 0.15s, transform 0.15s;
+  background: transparent;
+  text-align: left;
+  transition: color 0.12s, background 0.12s;
 }
-.bg-switch-btn:hover {
+.bg-switch-item kbd {
+  font: inherit;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-3, var(--text-2));
+  opacity: 0.7;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+.bg-switch-item:hover {
   color: var(--text);
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
 }
-.bg-switch-btn.is-active {
+.bg-switch-item.is-active {
   color: #0a0a0f;
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  box-shadow: 0 2px 12px var(--accent-glow);
 }
-.bg-switch-btn:focus-visible {
-  outline: 2px solid var(--accent-2);
-  outline-offset: 2px;
+.bg-switch-item.is-active kbd {
+  color: rgba(10, 10, 15, 0.7);
+  border-color: rgba(10, 10, 15, 0.2);
+  opacity: 1;
 }
 
 .topnav {
@@ -1160,8 +1235,8 @@ footer a:hover {
   }
   .nav-dd-panel { width: 82vw; max-width: 270px; }
   .brand-name { display: none; }
-  .bg-switch-label { padding: 0 4px 0 6px; font-size: 9px; }
-  .bg-switch-btn { width: 28px; height: 26px; font-size: 11px; }
+  .bg-switch-toggle { height: 30px; padding: 0 8px 0 8px; }
+  .bg-switch-label { font-size: 9px; }
   .brand-cluster { gap: 8px; }
   .topbar {
     padding: 10px 0.9rem;
