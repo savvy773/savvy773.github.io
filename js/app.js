@@ -129,11 +129,13 @@
       return;
     }
 
-    // 단축키·UI 1–3 → bg-loop / bg-loop2 / bg-loop3 (mp4 있으면 같은 번호 폴백)
+    // 단축키·UI 1–5 → bg-loop … bg-loop5 (mp4 있으면 같은 번호 폴백)
     const BG_PRESETS = {
       '1': { webm: 'assets/bg-loop.webm', mp4: 'assets/bg-loop.mp4' },
       '2': { webm: 'assets/bg-loop2.webm', mp4: 'assets/bg-loop2.mp4' },
       '3': { webm: 'assets/bg-loop3.webm', mp4: 'assets/bg-loop3.mp4' },
+      '4': { webm: 'assets/bg-loop4.webm', mp4: 'assets/bg-loop4.mp4' },
+      '5': { webm: 'assets/bg-loop5.webm', mp4: 'assets/bg-loop5.mp4' },
     };
     let bgKey = '1';
     const bgItems = bgSwitch
@@ -192,7 +194,7 @@
 
     document.addEventListener('keydown', (e) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
-      if (e.key !== '1' && e.key !== '2' && e.key !== '3') return;
+      if (!/^[1-5]$/.test(e.key)) return;
       const tag = (e.target && e.target.tagName) || '';
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (e.target && e.target.isContentEditable)) return;
       if (dialog && dialog.open) return;
