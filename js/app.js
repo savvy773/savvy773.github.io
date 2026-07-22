@@ -112,10 +112,13 @@
     setTimeout(() => { iframe.src = 'about:blank'; }, 200);
   });
 
-  // ── background video: 탭 숨김 시 pause, reduced-motion 시 제거, 1/2 소스 전환 ──
+  // ── background video: 탭 숨김 시 pause, reduced-motion 시 제거, 1–3 소스 전환 ──
   (function () {
     const v = document.getElementById('bgVideo');
     const bgSwitch = document.getElementById('bgSwitch');
+    const bgBtn = document.getElementById('bgSwitchBtn');
+    const bgPanel = document.getElementById('bgSwitchPanel');
+    const bgCur = document.getElementById('bgSwitchCur');
     if (!v) return;
     if (reduced) {
       v.removeAttribute('autoplay');
@@ -126,27 +129,36 @@
       return;
     }
 
-    // 단축키·UI 1 / 2 → bg-loop.webm / bg-loop2.webm (mp4 있으면 같은 번호 폴백)
+    // 단축키·UI 1–3 → bg-loop / bg-loop2 / bg-loop3 (mp4 있으면 같은 번호 폴백)
     const BG_PRESETS = {
       '1': { webm: 'assets/bg-loop.webm', mp4: 'assets/bg-loop.mp4' },
       '2': { webm: 'assets/bg-loop2.webm', mp4: 'assets/bg-loop2.mp4' },
+      '3': { webm: 'assets/bg-loop3.webm', mp4: 'assets/bg-loop3.mp4' },
     };
     let bgKey = '1';
-    const bgBtns = bgSwitch
+    const bgItems = bgSwitch
       ? Array.from(bgSwitch.querySelectorAll('[data-bg]'))
       : [];
 
+    function setBgMenuOpen(open) {
+      if (!bgSwitch || !bgBtn || !bgPanel) return;
+      bgSwitch.classList.toggle('open', open);
+      bgBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      bgPanel.setAttribute('aria-hidden', open ? 'false' : 'true');
+    }
+
     function syncBgSwitchUi(key) {
-      bgBtns.forEach((btn) => {
-        const on = btn.getAttribute('data-bg') === key;
-        btn.classList.toggle('is-active', on);
-        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      if (bgCur) bgCur.textContent = key;
+      bgItems.forEach((btn) => {
+        btn.classList.toggle('is-active', btn.getAttribute('data-bg') === key);
       });
     }
 
     function setBgPreset(key) {
       const preset = BG_PRESETS[key];
-      if (!preset || key === bgKey) return;
+      if (!preset) return;
+      setBgMenuOpen(false);
+      if (key === bgKey) return;
       bgKey = key;
       syncBgSwitchUi(key);
       v.querySelectorAll('source').forEach((s) => {
@@ -158,17 +170,29 @@
       if (!dialog.open && !document.hidden) bgVideoResume();
     }
 
-    if (bgSwitch) {
+    if (bgSwitch && bgBtn) {
+      bgBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setDropdownOpen('navDd', false);
+        setBgMenuOpen(!bgSwitch.classList.contains('open'));
+      });
       bgSwitch.addEventListener('click', (e) => {
-        const btn = e.target.closest('[data-bg]');
-        if (!btn || !bgSwitch.contains(btn)) return;
-        setBgPreset(btn.getAttribute('data-bg'));
+        const item = e.target.closest('[data-bg]');
+        if (!item || !bgSwitch.contains(item)) return;
+        setBgPreset(item.getAttribute('data-bg'));
       });
     }
 
+    document.addEventListener('click', (e) => {
+      if (bgSwitch && !bgSwitch.contains(e.target)) setBgMenuOpen(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setBgMenuOpen(false);
+    });
+
     document.addEventListener('keydown', (e) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
-      if (e.key !== '1' && e.key !== '2') return;
+      if (e.key !== '1' && e.key !== '2' && e.key !== '3') return;
       const tag = (e.target && e.target.tagName) || '';
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (e.target && e.target.isContentEditable)) return;
       if (dialog && dialog.open) return;
