@@ -53,10 +53,17 @@
           <span class="brand-mark">J</span>
           <span class="brand-name">Savvy773</span>
         </a>
-        <div class="bg-switch" id="bgSwitch" role="group" aria-label="배경 영상 선택">
-          <span class="bg-switch-label" aria-hidden="true">BG</span>
-          <button type="button" class="bg-switch-btn is-active" data-bg="1" aria-pressed="true" title="배경 1 (단축키 1)">1</button>
-          <button type="button" class="bg-switch-btn" data-bg="2" aria-pressed="false" title="배경 2 (단축키 2)">2</button>
+        <div class="bg-switch" id="bgSwitch">
+          <button type="button" class="bg-switch-toggle" id="bgSwitchBtn" aria-haspopup="true" aria-expanded="false" aria-controls="bgSwitchPanel" title="배경 영상 (단축키 1–3)">
+            <span class="bg-switch-label">BG</span>
+            <span class="bg-switch-cur" id="bgSwitchCur">1</span>
+            <span class="car" aria-hidden="true">▾</span>
+          </button>
+          <div class="bg-switch-panel" id="bgSwitchPanel" role="menu" aria-label="배경 영상 선택" aria-hidden="true">
+            <button type="button" role="menuitem" class="bg-switch-item is-active" data-bg="1">1 <kbd>1</kbd></button>
+            <button type="button" role="menuitem" class="bg-switch-item" data-bg="2">2 <kbd>2</kbd></button>
+            <button type="button" role="menuitem" class="bg-switch-item" data-bg="3">3 <kbd>3</kbd></button>
+          </div>
         </div>
       </div>
       <nav class="topnav" aria-label="주요 메뉴">
