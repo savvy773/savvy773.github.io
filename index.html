@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Juns — Portfolio</title>
 <meta name="description" content="AI 풀스택 엔지니어 Juns의 포트폴리오. 발전소 데이터 연동 자동화 툴 개발 여정과 오픈소스 프로젝트.">
-<meta name="theme-color" content="#18162a">
+<meta name="theme-color" content="#0a0a12">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://savvy773.github.io/">
 <meta property="og:title" content="Juns — Portfolio">
@@ -15,57 +15,48 @@
 <meta name="twitter:title" content="Juns — Portfolio">
 <meta name="twitter:description" content="AI 풀스택 엔지니어 Juns의 포트폴리오. 발전소 데이터 연동 자동화와 오픈소스 프로젝트.">
 <link rel="canonical" href="https://savvy773.github.io/">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-weight='800' font-size='16' fill='%230b0b10' text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23a78bfa'/%3E%3Cstop offset='1' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-weight='800' font-size='16' fill='%230b0b10' text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="css/site.css">
 </head>
 <body>
-  <!-- 아이콘 스프라이트 (repo 카드 등에서 재사용) -->
   <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
     <symbol id="icon-github" viewBox="0 0 16 16">
       <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/>
     </symbol>
   </svg>
+
   <div class="bg-stack" aria-hidden="true">
-    <div class="aurora aurora-a"></div>
-    <div class="aurora aurora-b"></div>
-    <div class="cyber-grid"></div>
+    <video
+      class="bg-video"
+      id="bgVideo"
+      poster="assets/bg-poster.jpg"
+      muted
+      playsinline
+      loop
+      autoplay
+      preload="metadata"
+      disablepictureinpicture
+    >
+      <source src="assets/bg-loop.mp4" type="video/mp4">
+    </video>
+    <div class="bg-veil"></div>
   </div>
-  <canvas class="rain-canvas" id="rainCanvas" aria-hidden="true"></canvas>
   <div class="accent-bar" aria-hidden="true"></div>
+
   <header class="topbar">
     <div class="topbar-inner">
-      <div class="topbar-left">
-        <a class="brand" href="#top">
-          <span class="brand-mark">J</span>
-          <span class="brand-name">Savvy773</span>
-        </a>
-        <!-- Effect: 로고 우측, 메인 topnav와 분리 -->
-        <div class="fx-dock" id="fxDd">
-          <button type="button" class="fx-dock-btn" id="fxDdBtn" aria-haspopup="listbox" aria-expanded="false" aria-controls="fxDdPanel" onclick="toggleDropdown('fxDd')">
-            <span class="fx-dock-title">Effect</span>
-            <span id="fxModeLabel" class="fx-dock-mode">빗방울</span>
-            <span class="car" aria-hidden="true">▾</span>
-          </button>
-          <div class="fx-dock-panel" id="fxDdPanel" role="listbox" aria-label="배경 이펙트" aria-hidden="true">
-            <div class="fx-dock-card">
-              <div class="fx-dock-label">Background · keys 1–7</div>
-              <button type="button" role="option" class="fx-dock-item" data-fx-mode="rain" onclick="selectFx('rain')"><kbd class="fx-key">1</kbd> 비</button>
-              <button type="button" role="option" class="fx-dock-item" data-fx-mode="snow" onclick="selectFx('snow')"><kbd class="fx-key">2</kbd> 눈</button>
-              <button type="button" role="option" class="fx-dock-item is-active" data-fx-mode="drops" onclick="selectFx('drops')"><kbd class="fx-key">3</kbd> 빗방울</button>
-              <button type="button" role="option" class="fx-dock-item" data-fx-mode="waves" onclick="selectFx('waves')"><kbd class="fx-key">4</kbd> 물결</button>
-              <button type="button" role="option" class="fx-dock-item" data-fx-mode="fire" onclick="selectFx('fire')"><kbd class="fx-key">5</kbd> 불꽃</button>
-              <button type="button" role="option" class="fx-dock-item" data-fx-mode="space" onclick="selectFx('space')"><kbd class="fx-key">6</kbd> 우주</button>
-              <button type="button" role="option" class="fx-dock-item" data-fx-mode="moonshot" onclick="selectFx('moonshot')"><kbd class="fx-key">7</kbd> 문샷</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <a class="brand" href="#top">
+        <span class="brand-mark">J</span>
+        <span class="brand-name">Savvy773</span>
+      </a>
       <nav class="topnav" aria-label="주요 메뉴">
         <div class="nav-dd" id="navDd">
-          <button type="button" class="nav-dd-btn" id="navDdBtn" aria-haspopup="true" aria-expanded="false" aria-controls="navDdPanel" onclick="toggleDropdown('navDd')">Pages <span class="car" aria-hidden="true">▾</span></button>
+          <button type="button" class="nav-dd-btn" id="navDdBtn" aria-haspopup="true" aria-expanded="false" aria-controls="navDdPanel" onclick="toggleDropdown('navDd')">
+            Pages <span class="car" aria-hidden="true">▾</span>
+          </button>
           <div class="nav-dd-panel" id="navDdPanel" role="menu" aria-hidden="true">
             <div class="nav-dd-card">
               <div class="nav-dd-group">
@@ -87,38 +78,59 @@
           </div>
         </div>
         <a href="https://github.com/savvy773" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a href="resume/resume.html" onclick="return openModal('resume/resume.html','이력서', event)">Resume</a>
+        <a class="nav-cta" href="resume/resume.html" onclick="return openModal('resume/resume.html','이력서', event)">Resume</a>
       </nav>
     </div>
   </header>
 
   <div class="wrap" id="top">
-    <div class="hero">
-      <div class="hero-top">
-        <p class="kicker">Portfolio · 2026</p>
+    <section class="hero">
+      <div class="hero-badge">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span>Portfolio · 2026</span>
       </div>
       <h1>
         <span class="name-line">Juns</span>
-        <span class="hl">AI 풀스택 엔지니어</span><svg class="hero-flow" viewBox="0 0 190 60" aria-hidden="true">
-          <path class="flow-path flow-path-1" d="M2 30 Q 24 8, 46 30 T 90 30 T 134 30 T 178 30"/>
-          <path class="flow-path flow-path-2" d="M2 40 Q 24 24, 46 40 T 90 40 T 134 40 T 178 40"/>
-        </svg>
+        <span class="hl">AI 풀스택 엔지니어</span>
       </h1>
       <p class="tagline">AI를 적극 활용하는 소프트웨어 엔지니어 · 자동화·데이터 연동·풀스택</p>
       <div class="hero-cta">
-        <a class="btn btn-primary" href="#repos">Projects ↓</a>
-        <a class="btn btn-ghost" href="#journey">Journey ↓</a>
+        <a class="btn btn-primary" href="#repos">
+          <span>Projects</span>
+          <span class="btn-arrow" aria-hidden="true">↓</span>
+        </a>
+        <a class="btn btn-ghost" href="#journey">
+          <span>Journey</span>
+          <span class="btn-arrow" aria-hidden="true">↓</span>
+        </a>
       </div>
-    </div>
-    <div class="skill-strip">
+
+      <div class="hero-stats">
+        <div class="stat-card">
+          <span class="stat-num">5+</span>
+          <span class="stat-label">Open Projects</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">3</span>
+          <span class="stat-label">Automation Tools</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">AI</span>
+          <span class="stat-label">First Workflow</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="skill-strip" aria-label="기술 스택">
       <span>PYTHON</span><span>RUST</span><span>TYPESCRIPT</span><span>SQL</span><span>INFLUXDB</span><span>AUTOMATION</span>
     </div>
-    <p class="exp-note">
+
+    <p class="exp-note glass">
       한화에너지 GEP 개발팀에서 발전소 데이터 연동 업무를 담당하며 HEIS 플랫폼의 TAG 관리·QC 검증·Backfill·OPC 연동 업무 전반을 자동화 툴로 전환했습니다.
       Report 수동 취합 프로세스를 자동화해 해외 발전소 사이트 운영 효율을 개선했고, HEIS–SCADA 연동 QC 검증 체계를 확립했습니다.
     </p>
 
-    <div class="learning-note">
+    <div class="learning-note glass">
       <span class="li-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M3 7.5 20 7.5"/>
@@ -137,9 +149,12 @@
     </div>
 
     <section class="reveal-section" id="repos">
-      <h2>Repositories</h2>
+      <div class="section-head">
+        <h2>Repositories</h2>
+        <p class="section-sub">Live demos · open work</p>
+      </div>
       <div class="repo-grid">
-        <a class="repo-card" href="https://savvy773.github.io/web-ai-usage/" onclick="return openModal('https://savvy773.github.io/web-ai-usage/','web-ai-usage', event)">
+        <a class="repo-card glass" href="https://savvy773.github.io/web-ai-usage/" onclick="return openModal('https://savvy773.github.io/web-ai-usage/','web-ai-usage', event)">
           <div class="repo-head">
             <svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg>
             <h3>web-ai-usage</h3>
@@ -149,7 +164,7 @@
           <div class="repo-tags"><span>TS</span><span>Svel</span></div>
         </a>
 
-        <a class="repo-card" href="https://savvy773.github.io/app-yt-subs/" onclick="return openModal('https://savvy773.github.io/app-yt-subs/','app-yt-subs', event)">
+        <a class="repo-card glass" href="https://savvy773.github.io/app-yt-subs/" onclick="return openModal('https://savvy773.github.io/app-yt-subs/','app-yt-subs', event)">
           <div class="repo-head">
             <svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg>
             <h3>app-yt-subs</h3>
@@ -159,7 +174,7 @@
           <div class="repo-tags"><span>Py</span><span>Flet</span><span>PW</span></div>
         </a>
 
-        <a class="repo-card" href="https://savvy773.github.io/dpi-bye/" onclick="return openModal('https://savvy773.github.io/dpi-bye/','dpi-bye', event)">
+        <a class="repo-card glass" href="https://savvy773.github.io/dpi-bye/" onclick="return openModal('https://savvy773.github.io/dpi-bye/','dpi-bye', event)">
           <div class="repo-head">
             <svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg>
             <h3>dpi-bye</h3>
@@ -169,7 +184,7 @@
           <div class="repo-tags"><span>Py</span><span>WinD</span><span>PS</span></div>
         </a>
 
-        <a class="repo-card" href="https://savvy773.github.io/happycomms/" onclick="return openModal('https://savvy773.github.io/happycomms/','happycomms · Service', event)">
+        <a class="repo-card glass" href="https://savvy773.github.io/happycomms/" onclick="return openModal('https://savvy773.github.io/happycomms/','happycomms · Service', event)">
           <div class="repo-head">
             <svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg>
             <h3>happycomms</h3>
@@ -179,7 +194,7 @@
           <div class="repo-tags"><span>HTML</span><span>CSS</span><span>Landing</span></div>
         </a>
 
-        <a class="repo-card" href="https://savvy773.github.io/happycomms/docs/server-infrastructure-plan.html" onclick="return openModal('https://savvy773.github.io/happycomms/docs/server-infrastructure-plan.html','happycomms · Tech', event)">
+        <a class="repo-card glass" href="https://savvy773.github.io/happycomms/docs/server-infrastructure-plan.html" onclick="return openModal('https://savvy773.github.io/happycomms/docs/server-infrastructure-plan.html','happycomms · Tech', event)">
           <div class="repo-head">
             <svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg>
             <h3>happycomms-tech</h3>
@@ -192,10 +207,13 @@
     </section>
 
     <section class="reveal-section" id="journey">
-      <h2>Journey</h2>
+      <div class="section-head">
+        <h2>Journey</h2>
+        <p class="section-sub">Power plant data · automation</p>
+      </div>
       <div class="timeline" id="timeline">
         <div class="timeline-progress" id="timelineProgress"></div>
-        <a class="tl-item" href="journey/opc-isl-guide.html" onclick="return openModal('journey/opc-isl-guide.html','OPC-ISL Engine 사용 가이드', event)">
+        <a class="tl-item glass" href="journey/opc-isl-guide.html" onclick="return openModal('journey/opc-isl-guide.html','OPC-ISL Engine 사용 가이드', event)">
           <span class="tl-meta">
             <span class="tl-date">2026-03</span>
             <span class="tl-ver">v0.1.0</span>
@@ -206,7 +224,7 @@
           </span>
         </a>
 
-        <a class="tl-item" href="journey/heis-tool-guide.html" onclick="return openModal('journey/heis-tool-guide.html','HEIS Tool 통합 사용 가이드', event)">
+        <a class="tl-item glass" href="journey/heis-tool-guide.html" onclick="return openModal('journey/heis-tool-guide.html','HEIS Tool 통합 사용 가이드', event)">
           <span class="tl-meta">
             <span class="tl-date">2026-04-10</span>
             <span class="tl-ver">v1.5.2</span>
@@ -217,7 +235,7 @@
           </span>
         </a>
 
-        <a class="tl-item" href="journey/handover-report.html" onclick="return openModal('journey/handover-report.html','업무 인수인계 보고서', event)">
+        <a class="tl-item glass" href="journey/handover-report.html" onclick="return openModal('journey/handover-report.html','업무 인수인계 보고서', event)">
           <span class="tl-meta">
             <span class="tl-date">2026-04-24</span>
           </span>
@@ -227,7 +245,7 @@
           </span>
         </a>
 
-        <a class="tl-item" href="journey/ssh-security.html" onclick="return openModal('journey/ssh-security.html','SSH 보안 & 서버 안정성', event)">
+        <a class="tl-item glass" href="journey/ssh-security.html" onclick="return openModal('journey/ssh-security.html','SSH 보안 & 서버 안정성', event)">
           <span class="tl-meta">
             <span class="tl-date">2026-04-27</span>
           </span>
@@ -243,7 +261,6 @@
       <span>&copy; 2026 Juns</span>
       <span class="flinks">
         <a href="https://github.com/savvy773" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a href="resume/resume.html" onclick="return openModal('resume/resume.html','이력서', event)">Resume</a>
       </span>
     </footer>
   </div>
@@ -260,7 +277,6 @@
     </div>
     <iframe id="modalIframe" src="about:blank" title="문서 미리보기" loading="lazy"></iframe>
   </dialog>
-  <script src="js/effects.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

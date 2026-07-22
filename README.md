@@ -27,11 +27,10 @@
 
 - 프레임워크·빌드 도구 없이 **순수 HTML / CSS / JS** (빌드리스)
 - 네이티브 **`<dialog>` + iframe** 모달 — 문서·데모를 페이지 이탈 없이 미리보기
-- **파스텔 다크** UI + CSS 오로라·원근 격자 배경
-- **Canvas 2D Effect** (로고 옆 Effect 독 · 단축키 `1`–`7`)
-  - 비 · 눈 · 빗방울 · 물결 · 불꽃 · 우주 · 문샷
-- GPU 절약: 낮은 해상도·FPS, 소량 파티클, idle freeze, `prefers-reduced-motion` 대응
-- 모바일: safe-area, 터치 hover 완화, 모달 풀스크린, FX 설정 축소
+- **글래스모피즘 + 메시 그라데이션** 다크 UI, 커서 스포트라이트·카드 틸트
+- **Canvas ambient FX** — 플로팅 오브 + 소프트 파티클 (단일 모드, 전환 UI 없음)
+- GPU 절약: 낮은 해상도·FPS, idle freeze, `prefers-reduced-motion` 대응
+- 모바일: safe-area, 터치 hover 완화, 모달 풀스크린
 
 ## Currently Learning
 
@@ -52,7 +51,7 @@
 ├── index.html          # 마크업·메타
 ├── css/site.css        # 테마·레이아웃·배경
 ├── js/
-│   ├── effects.js      # Canvas FX 엔진
+│   ├── effects.js      # Canvas ambient 배경
 │   └── app.js          # 네비·모달·reveal·타임라인
 ├── journey/            # Journey HTML 문서
 ├── resume/             # 이력서
@@ -65,7 +64,7 @@
 npx --yes serve .
 ```
 
-브라우저에서 루트를 열고, Effect 독 또는 숫자 키 `1`–`7`로 배경 모드를 바꿀 수 있습니다.
+브라우저에서 루트를 열면 됩니다.
 
 ## Docs
 
