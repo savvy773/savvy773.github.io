@@ -112,17 +112,71 @@
     setTimeout(() => { iframe.src = 'about:blank'; }, 200);
   });
 
-  // ── background video: 탭 숨김 시 pause, reduced-motion 시 제거 ──
+  // ── background video: 탭 숨김 시 pause, reduced-motion 시 제거, 1/2 소스 전환 ──
   (function () {
     const v = document.getElementById('bgVideo');
+    const bgSwitch = document.getElementById('bgSwitch');
     if (!v) return;
     if (reduced) {
       v.removeAttribute('autoplay');
       v.pause();
       while (v.firstChild) v.removeChild(v.firstChild);
       v.load();
+      if (bgSwitch) bgSwitch.hidden = true;
       return;
     }
+
+    // 단축키·UI 1 / 2 → bg-loop.webm / bg-loop2.webm (mp4 있으면 같은 번호 폴백)
+    const BG_PRESETS = {
+      '1': { webm: 'assets/bg-loop.webm', mp4: 'assets/bg-loop.mp4' },
+      '2': { webm: 'assets/bg-loop2.webm', mp4: 'assets/bg-loop2.mp4' },
+    };
+    let bgKey = '1';
+    const bgBtns = bgSwitch
+      ? Array.from(bgSwitch.querySelectorAll('[data-bg]'))
+      : [];
+
+    function syncBgSwitchUi(key) {
+      bgBtns.forEach((btn) => {
+        const on = btn.getAttribute('data-bg') === key;
+        btn.classList.toggle('is-active', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+    }
+
+    function setBgPreset(key) {
+      const preset = BG_PRESETS[key];
+      if (!preset || key === bgKey) return;
+      bgKey = key;
+      syncBgSwitchUi(key);
+      v.querySelectorAll('source').forEach((s) => {
+        const t = (s.getAttribute('type') || '').toLowerCase();
+        if (t.includes('webm')) s.src = preset.webm;
+        else if (t.includes('mp4')) s.src = preset.mp4;
+      });
+      v.load();
+      if (!dialog.open && !document.hidden) bgVideoResume();
+    }
+
+    if (bgSwitch) {
+      bgSwitch.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-bg]');
+        if (!btn || !bgSwitch.contains(btn)) return;
+        setBgPreset(btn.getAttribute('data-bg'));
+      });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.key !== '1' && e.key !== '2') return;
+      const tag = (e.target && e.target.tagName) || '';
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (e.target && e.target.isContentEditable)) return;
+      if (dialog && dialog.open) return;
+      e.preventDefault();
+      setBgPreset(e.key);
+    });
+
+    syncBgSwitchUi(bgKey);
     bgVideoResume();
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) bgVideoPause();

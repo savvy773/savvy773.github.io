@@ -48,10 +48,17 @@
 
   <header class="topbar">
     <div class="topbar-inner">
-      <a class="brand" href="#top">
-        <span class="brand-mark">J</span>
-        <span class="brand-name">Savvy773</span>
-      </a>
+      <div class="brand-cluster">
+        <a class="brand" href="#top">
+          <span class="brand-mark">J</span>
+          <span class="brand-name">Savvy773</span>
+        </a>
+        <div class="bg-switch" id="bgSwitch" role="group" aria-label="배경 영상 선택">
+          <span class="bg-switch-label" aria-hidden="true">BG</span>
+          <button type="button" class="bg-switch-btn is-active" data-bg="1" aria-pressed="true" title="배경 1 (단축키 1)">1</button>
+          <button type="button" class="bg-switch-btn" data-bg="2" aria-pressed="false" title="배경 2 (단축키 2)">2</button>
+        </div>
+      </div>
       <nav class="topnav" aria-label="주요 메뉴">
         <div class="nav-dd" id="navDd">
           <button type="button" class="nav-dd-btn" id="navDdBtn" aria-haspopup="true" aria-expanded="false" aria-controls="navDdPanel" onclick="toggleDropdown('navDd')">

@@ -175,6 +175,13 @@ html.is-scrolled .topbar {
   justify-content: space-between;
   gap: 12px;
 }
+.brand-cluster {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  min-width: 0;
+}
 .brand {
   display: flex;
   align-items: center;
@@ -211,6 +218,58 @@ html.is-scrolled .topbar {
   letter-spacing: 0.16em;
   color: var(--text-2);
   font-weight: 500;
+}
+
+/* 배경 영상 전환 (로고 옆) */
+.bg-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(167, 139, 250, 0.18), rgba(34, 211, 238, 0.14));
+  border: 1px solid rgba(167, 139, 250, 0.45);
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, 0.12),
+    0 0 20px rgba(167, 139, 250, 0.2);
+}
+.bg-switch-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--accent-2);
+  padding: 0 6px 0 8px;
+  user-select: none;
+}
+.bg-switch-btn {
+  appearance: none;
+  font: inherit;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  width: 30px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  color: var(--text-2);
+  background: rgba(0, 0, 0, 0.28);
+  transition: color 0.15s, background 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+.bg-switch-btn:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.1);
+}
+.bg-switch-btn.is-active {
+  color: #0a0a0f;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 2px 12px var(--accent-glow);
+}
+.bg-switch-btn:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
 }
 
 .topnav {
@@ -1101,6 +1160,9 @@ footer a:hover {
   }
   .nav-dd-panel { width: 82vw; max-width: 270px; }
   .brand-name { display: none; }
+  .bg-switch-label { padding: 0 4px 0 6px; font-size: 9px; }
+  .bg-switch-btn { width: 28px; height: 26px; font-size: 11px; }
+  .brand-cluster { gap: 8px; }
   .topbar {
     padding: 10px 0.9rem;
     padding-top: max(10px, env(safe-area-inset-top, 0px));
