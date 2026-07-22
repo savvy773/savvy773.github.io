@@ -12,13 +12,16 @@
 
 ```text
 savvy773.github.io/
-├── index.html              # 마크업·메타만 (슬림)
+├── index.html              # 마크업·메타 (인라인 CSS/JS 없음)
+├── assets/
+│   ├── bg-loop.mp4         # 배경 10초 루프 (~0.9MB)
+│   └── bg-poster.jpg       # 포스터·reduced-motion 폴백
 ├── css/
-│   └── site.css            # 디자인 토큰·메시·글래스·UI·반응형
+│   └── site.css            # 토큰·배경 비디오·글래스·호버·반응형
 ├── js/
-│   ├── effects.js          # Canvas 2D ambient 배경 (단일 모드)
-│   └── app.js              # Pages 드롭다운·모달·reveal·타임라인·FX 부트
-├── journey/                # Journey 문서 (HTML)
+│   ├── app.js              # 네비·모달·비디오 제어·reveal·타임라인
+│   └── effects.js          # no-op (구 Canvas FX 자리, 로드하지 않음)
+├── journey/                # Journey HTML 문서
 ├── resume/
 │   └── resume.html
 ├── docs/
@@ -28,10 +31,12 @@ savvy773.github.io/
 
 | 경로 | 역할 |
 |------|------|
-| `index.html` | 구조·콘텐츠. 인라인 CSS/JS 없음 |
-| `css/site.css` | 전역 스타일, 글래스 다크 테마 |
-| `js/effects.js` | ambient 배경 (app.js보다 먼저 로드) |
-| `js/app.js` | UI 상호작용 |
+| `index.html` | 구조·콘텐츠·배경 `<video>` |
+| `assets/bg-loop.mp4` | muted / loop / playsinline 배경 영상 |
+| `assets/bg-poster.jpg` | 로딩·모션 감소 시 정지 배경 |
+| `css/site.css` | 전역 스타일, 저GPU 글래스 다크 테마 |
+| `js/app.js` | UI 상호작용 + 배경 비디오 pause/play |
+| `js/effects.js` | 비활성 stub (호환용, `index.html`에서 미로드) |
 
 ---
 
@@ -59,34 +64,47 @@ savvy773.github.io/
 
 ## 배경 레이어
 
-### 1) CSS (`css/site.css`)
-
-| 레이어 | 설명 |
-|--------|------|
-| `.bg-stack` | 딥 다크 베이스 + 방사 그라데이션 |
-| `.mesh-a/b/c` | 블러 메시 블롭 3개 (느린 float 애니) |
-| `.noise` | 미세 노이즈 오버레이 |
-| `.spotlight` | 커서 추적 soft 스포트라이트 (데스크톱) |
-
-### 2) Canvas 2D (`js/effects.js` · `#fxCanvas`)
-
-**단일 ambient 모드** — 모드 전환 UI / 단축키 없음.
-
-| 요소 | 설명 |
-|------|------|
-| Soft orbs | 큰 반투명 그라데이션 원, 천천히 표류 |
-| Particles | 바이올렛·시안 톤 점 파티클, 위로 부유 |
-| Pointer | 마우스 위치에 약한 패럴랙스 |
-
-**성능 가드**
+### 1) 비디오 (`#bgVideo` · `assets/bg-loop.mp4`)
 
 | 항목 | 내용 |
 |------|------|
-| 해상도 | `renderScale` ~0.42–0.55, `maxDpr: 1` |
-| FPS | 활성 ~20–28 / 유휴 ~8–12 |
-| Idle freeze | 수 초 무입력 시 루프 정지 |
-| 모달/탭 | `bg:pause` + `html.fx-paused`로 CSS 메시 애니 정지 |
-| 모션 감소 | `prefers-reduced-motion` → canvas·스포트라이트 비표시 |
+| 길이 | **10초** 루프 |
+| 용량 | ~0.9MB (Ken Burns 스타일 pan/zoom, H.264) |
+| 속성 | `muted` `playsinline` `loop` `autoplay` `preload="metadata"` |
+| 포스터 | `assets/bg-poster.jpg` |
+| 불투명도 | 데스크톱 ~0.55 / 모바일 ~0.42 + `.bg-veil` 오버레이 |
+
+**수명 주기 (`js/app.js`)**
+
+| 이벤트 | 동작 |
+|--------|------|
+| 로드 | `play()` (차단 시 포스터만 표시) |
+| 탭 숨김 | `pause()` |
+| 탭 복귀 | `play()` (모달 열려 있으면 제외) |
+| 모달 open | `pause()` |
+| 모달 close | `play()` |
+| `prefers-reduced-motion` | 소스 제거·재생 안 함 → 포스터/CSS 배경만 |
+
+### 2) CSS 폴백 (`.bg-stack`)
+
+- 비디오 미지원·로딩 전: `bg-poster.jpg` + 다크 베이스 컬러
+- `.bg-veil`: 가독용 그라데이션 딤
+- **Canvas 파티클 / 메시 애니 / 커서 스포트라이트 없음** (GPU 절약)
+
+---
+
+## 성능 원칙
+
+| 원칙 | 구현 |
+|------|------|
+| Idle 비용 최소화 | JS rAF 루프·무한 CSS 애니 없음 (배경은 하드웨어 비디오 디코드) |
+| 마우스 추적 없음 | pointermove 패럴랙스·틸트·spotlight 제거 |
+| 호버만 모션 | `@media (hover: hover)` + transform/box-shadow (요소 단위) |
+| 블러 회피 | `backdrop-filter` 미사용 → 반투명 불투명 패널(`.glass`) |
+| 스크롤 | 탑바 `is-scrolled` 토글 + 타임라인 진행 높이만 (`rAF` 스로틀) |
+| Reveal | opacity 페이드만 (translate 애니 없음) |
+
+목표: 유휴·스크롤 시 GPU **수 % 이하** (실측 ~3% 미만 구간).
 
 ---
 
@@ -94,32 +112,39 @@ savvy773.github.io/
 
 | 컴포넌트 | 구현 |
 |----------|------|
-| **Pages 드롭다운** | 상단 topnav 내 `#navDd` — Repos / Journey 모달 진입 |
-| **모달** | 네이티브 `<dialog>` + iframe 미리보기 (`?v=timestamp` 캐시 무효화) |
-| **Spotlight** | 커서 추적 radial glow |
-| **Card tilt** | repo/stat 카드 포인터 틸트 + 글로우 |
+| **Pages 드롭다운** | `#navDd` — Repos / Journey → 모달 |
+| **모달** | 네이티브 `<dialog>` + iframe (`?v=timestamp` 캐시 무효화) |
+| **배경 비디오** | pause/resume (탭·모달·reduced-motion) |
 | **Reveal** | `IntersectionObserver` + `content-visibility: auto` |
-| **Journey 타임라인** | 스크롤 진행 바 (`rAF` 스로틀) |
+| **Journey 타임라인** | 스크롤 진행 바 (`#timelineProgress`) |
+| **탑바** | 스크롤 시 `.is-scrolled` |
 
-상단 메뉴 구성: **Pages · GitHub · Resume**
+상단 메뉴: **Pages · GitHub · Resume**  
+하단 푸터: **GitHub** 만 (Resume 없음)
 
 ---
 
-## CSS 설계
+## CSS 설계 (`css/site.css`)
 
-- **디자인 토큰**: `:root` 색상·여백·그림자·`--display` / `--mono` / `--ease`
-- **글래스**: `.glass` + `backdrop-filter`, 라이트 보더·inset 하이라이트
-- **상단바**: sticky glass blur
+- **토큰**: `:root` 색상·여백·`--display` / `--mono` / `--ease`
+- **글래스**: `.glass` — gradient 패널 + 보더, **backdrop-filter 없음**
+- **호버** (`@media (hover: hover)`):
+  - repo 카드: lift / scale / 그라데이션 보더 / shine
+  - stat 카드: lift + 하이라이트 스윕
+  - timeline: 가로 이동 + 노드 발광
+  - 버튼·스킬 칩: lift / scale
+- **상단바**: sticky, 반투명 solid (blur 없음)
 - **포커스**: `:focus-visible` accent 링
-- **반응형**: 좁은 화면에서 marquee → skill chips, 틸트/스포트라이트 비활성
+- **반응형**: 좁은 화면 1열 카드, 모달 풀스크린
 
 ---
 
 ## 접근성
 
-- `prefers-reduced-motion: reduce` → 메시 애니 정지, Canvas/spotlight 끔, reveal 즉시 표시
+- `prefers-reduced-motion: reduce` → 배경 비디오 끔, 호버 transform 끔, reveal 즉시 표시
 - Escape로 드롭다운/모달 닫기
 - `aria-expanded` / `aria-hidden` 드롭다운 동기화
+- 배경 비디오 `aria-hidden` (장식용)
 
 ---
 
