@@ -156,3 +156,20 @@ npx --yes serve .
 ```
 
 브라우저에서 루트를 열면 됩니다.
+
+---
+
+## README 미리보기 스샷 (CLI)
+
+Playwright CLI로 `.github/preview.png`를 갱신합니다.
+
+```bash
+# 저장소 루트 — 내장 정적 서버 + 캡처
+node scripts/screenshot.mjs
+
+# 옵션
+node scripts/screenshot.mjs --viewport 1440,900 --wait 2500
+node scripts/screenshot.mjs --url http://localhost:4173 --out .github/preview.png
+```
+
+필요: Node.js, `npx playwright` (브라우저 미설치 시 `npx playwright install chromium`).
