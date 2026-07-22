@@ -85,7 +85,7 @@ body {
   pointer-events: none;
   contain: strict;
   overflow: hidden;
-  background: #07070d url("../assets/bg-poster.jpg") center / cover no-repeat;
+  background: #07070d;
   transform: translateZ(0);
 }
 
