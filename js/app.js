@@ -90,10 +90,13 @@
   })();
 
   // ── card tilt: hover/pointer-only, no idle GPU cost — resets on leave ──
+  // .tl-item is excluded: it sits in a straight timeline row, so a 3D tilt
+  // reads as crooked/misaligned against the guide line — it gets a plain
+  // vertical hover lift from CSS instead (see .tl-item:hover).
   (function () {
     if (reduced || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
     const TILT = 6; // deg
-    const els = document.querySelectorAll('.repo-card, .tl-item');
+    const els = document.querySelectorAll('.repo-card');
     els.forEach((el) => {
       let raf = null;
       // transform's own transition lives in CSS (short, ~0.18s) so this glides
