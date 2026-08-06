@@ -691,7 +691,9 @@ h2::before {
   z-index: 1;
 }
 .tl-item {
+  /* above .timeline-progress (z-index: 1) so the dot never gets painted over by the fill line */
   position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -733,6 +735,7 @@ h2::before {
     border-color: var(--border-hi);
     background: var(--paper);
     box-shadow: var(--shadow);
+    transform: translateY(-2px);
   }
   .tl-item:hover::before {
     background: var(--accent);
@@ -845,6 +848,10 @@ footer a:hover {
     padding: 0.7rem 1rem 0.7rem 2.2rem;
   }
   .tl-thumb { width: 100%; }
+  /* stacked layout makes the thumb tall and variable-height, so centering
+     the dot on the whole card (like the desktop row) leaves it floating
+     mid-image — pin it near the top of the card instead */
+  .tl-item::before { top: 1.5rem; }
   .tl-body h3, .tl-body p { white-space: normal; }
   footer {
     flex-direction: column;
@@ -1069,6 +1076,14 @@ h1 { animation-delay: 0.06s; }
 .reveal-section.in-view .repo-card,
 .reveal-section.in-view .tl-item {
   transition-delay: calc(0.05s + var(--reveal-i, 0) * 0.04s);
+}
+/* .reveal-section.in-view .tl-item (0,3,0) out-specifies plain .tl-item:hover
+   (0,2,0), so the hover lift needs to be pinned at equal-or-higher specificity
+   here or it silently gets reset by the rest-state transform above. */
+@media (hover: hover) {
+  .reveal-section.in-view .tl-item:hover {
+    transform: translateY(-2px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
