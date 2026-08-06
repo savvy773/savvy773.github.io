@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<title>Juns — 이력서</title>
+<meta name="description" content="AI 풀스택 엔지니어 Juns 이력서. 한화에너지 발전소 데이터 자동화·풀스택 개발 경력.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'">
+<style>
+  @page { size: A4; margin: 12mm; }
+
+  :root {
+    color-scheme: light;
+    /* warm paper tone — matches the portfolio landing page */
+    --bg: #efe6d3;
+    --bg-soft: #e9dfc7;
+    --sheet: #fbf7ec;
+    --surface: #f3ecdd;
+    --border: rgba(38, 31, 22, .13);
+    --border-hi: rgba(38, 31, 22, .24);
+    --text: #262019;
+    --text-2: #5c5344;
+    --text-dim: #6f6450;
+    --accent: #a63d24;      /* rust */
+    --accent-2: #3c6b5e;    /* forest */
+    --accent-soft: rgba(166, 61, 36, .09);
+    --teal-soft: rgba(60, 107, 94, .1);
+    --glow: rgba(166, 61, 36, .22);
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Pretendard, "Malgun Gothic", sans-serif;
+    --r: 12px;
+    --shadow: 0 1px 2px rgba(38, 31, 22, .06), 0 16px 40px rgba(38, 31, 22, .1);
+  }
+
+  body.dark-theme {
+    color-scheme: dark;
+    /* deep navy — alt reading mode */
+    --bg: #07101f;
+    --bg-soft: #0a1628;
+    --sheet: #0d1a2e;
+    --surface: #12233a;
+    --border: rgba(148, 180, 220, .12);
+    --border-hi: rgba(148, 180, 220, .22);
+    --text: #eef4fc;
+    --text-2: #9eb4d0;
+    --text-dim: #6b84a3;
+    --accent: #5b9fff;
+    --accent-2: #38bdf8;
+    --accent-soft: rgba(91, 159, 255, .14);
+    --teal-soft: rgba(56, 189, 248, .12);
+    --glow: rgba(59, 130, 246, .22);
+    --shadow: 0 1px 0 rgba(255,255,255,.04) inset, 0 20px 50px rgba(2, 10, 28, .55);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  /* modern scrollbar */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--accent) 55%, transparent) transparent;
+  }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--accent) 40%, var(--surface));
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--accent), var(--accent-2));
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-corner { background: transparent; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text);
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 70% 42% at 18% 0%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 58%),
+      radial-gradient(ellipse 55% 36% at 88% 8%, color-mix(in srgb, var(--accent-2) 10%, transparent), transparent 55%),
+      linear-gradient(color-mix(in srgb, var(--accent) 16%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--accent) 16%, transparent) 1px, transparent 1px);
+    background-size: auto, auto, 52px 52px, 52px 52px;
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  /* 시트 주변 격자가 은은하게 보이도록, 중앙은 살짝 페이드 */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    /* 가장자리만 살짝 페이드 — 격자 가시성 유지 */
+    background:
+      radial-gradient(ellipse 95% 85% at 50% 42%, transparent 55%, color-mix(in srgb, var(--bg) 75%, transparent) 100%);
+  }
+  .toolbar, .page { position: relative; z-index: 1; }
+
+  .toolbar {
+    position: fixed;
+    top: 14px; right: 14px;
+    z-index: 50;
+    display: flex; gap: 8px;
+  }
+  .tool-btn {
+    width: 40px; height: 40px;
+    border-radius: 999px;
+    border: 1px solid var(--border-hi);
+    background: color-mix(in srgb, var(--sheet) 90%, transparent);
+    color: var(--text);
+    cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 15px;
+    box-shadow: var(--shadow);
+    transition: transform .15s ease, border-color .15s, background .15s;
+  }
+  .tool-btn:hover {
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border-hi));
+    background: var(--accent-soft);
+  }
+  .tool-btn:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+
+  .page {
+    width: min(900px, calc(100% - 32px));
+    margin: 28px auto 48px;
+    background: var(--sheet);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  /* ── header ── */
+  .resume-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 20px;
+    align-items: center;
+    padding: 28px 32px 24px;
+    border-bottom: 1px solid var(--border);
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--accent) 10%, transparent), transparent 50%),
+      linear-gradient(225deg, color-mix(in srgb, var(--accent-2) 8%, transparent), transparent 45%);
+  }
+  .identity { display: flex; align-items: center; gap: 16px; min-width: 0; }
+  .avatar {
+    width: 56px; height: 56px; flex-shrink: 0;
+    border-radius: 14px;
+    display: grid; place-items: center;
+    font-weight: 800; font-size: 1.25rem;
+    color: #0c0b10;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    box-shadow: 0 0 0 1px rgba(255,255,255,.14), 0 8px 28px var(--glow);
+  }
+  .name { margin: 0; font-size: clamp(1.55rem, 3vw, 1.9rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.1; }
+  .role {
+    margin: 6px 0 0;
+    font-size: .9rem; font-weight: 500;
+    color: var(--text-2);
+  }
+  .role strong {
+    color: transparent;
+    background: linear-gradient(115deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text;
+    font-weight: 700;
+  }
+  .badge-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .badge {
+    font-family: var(--mono);
+    font-size: .65rem; font-weight: 500; letter-spacing: .04em;
+    padding: .22rem .55rem; border-radius: 999px;
+    color: var(--accent-2);
+    background: var(--teal-soft);
+    border: 1px solid color-mix(in srgb, var(--accent-2) 28%, transparent);
+  }
+  .badge.alt {
+    color: color-mix(in srgb, var(--accent) 80%, white);
+    background: var(--accent-soft);
+    border-color: color-mix(in srgb, var(--accent) 28%, transparent);
+  }
+
+  .links { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+  .links a {
+    display: inline-flex; align-items: center; gap: 8px;
+    text-decoration: none;
+    color: var(--text-2);
+    font-size: .8rem; font-weight: 500;
+    padding: .45rem .75rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--surface) 80%, transparent);
+    transition: color .15s, border-color .15s, background .15s, transform .15s;
+  }
+  .links a:hover {
+    color: var(--text);
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+    background: var(--accent-soft);
+    transform: translateY(-1px);
+  }
+  .links svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; opacity: .85; }
+
+  /* ── body ── */
+  .resume-body { padding: 22px 32px 30px; }
+  .summary {
+    margin: 0 0 22px;
+    padding: 14px 16px 14px 18px;
+    border-radius: var(--r);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-2);
+    font-size: .9rem;
+    line-height: 1.7;
+    word-break: keep-all;
+    position: relative;
+  }
+  .summary::before {
+    content: "";
+    position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 250px;
+    gap: 28px;
+    align-items: start;
+  }
+
+  section { margin-bottom: 22px; }
+  section:last-child { margin-bottom: 0; }
+
+  h2 {
+    margin: 0 0 12px;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--text-2);
+    display: flex; align-items: center; gap: .55rem;
+  }
+  h2::before {
+    content: "";
+    width: 7px; height: 7px; border-radius: 2px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    box-shadow: 0 0 10px var(--glow);
+  }
+  h2::after {
+    content: "";
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, var(--border-hi), transparent);
+  }
+
+  /* experience */
+  .timeline { position: relative; display: flex; flex-direction: column; gap: 0; }
+  .job {
+    position: relative;
+    padding: 0 0 4px 16px;
+    border-left: 2px solid color-mix(in srgb, var(--accent) 35%, var(--border));
+  }
+  .job::before {
+    content: "";
+    position: absolute; left: -5px; top: 8px;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--sheet);
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--sheet) 90%, transparent);
+  }
+  .job-head {
+    display: flex; flex-wrap: wrap; align-items: baseline;
+    justify-content: space-between; gap: 8px 12px;
+    margin-bottom: 4px;
+  }
+  .job-title { font-size: .98rem; font-weight: 700; letter-spacing: -.015em; }
+  .job-title em {
+    font-style: normal;
+    background: linear-gradient(115deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent; font-weight: 800;
+  }
+  .period {
+    font-family: var(--mono);
+    font-size: .68rem; font-weight: 500;
+    color: var(--accent-2);
+    padding: .18rem .5rem;
+    border-radius: 6px;
+    background: var(--teal-soft);
+    border: 1px solid color-mix(in srgb, var(--accent-2) 22%, transparent);
+    white-space: nowrap;
+  }
+  .job-note {
+    display: inline-block;
+    margin: 0 0 8px;
+    font-size: .78rem; font-weight: 500;
+    color: var(--text-2);
+    padding: .2rem .55rem;
+    border-radius: 6px;
+    background: var(--accent-soft);
+    border-left: 2px solid var(--accent);
+  }
+  .job ul { margin: 0; padding-left: 1.05rem; }
+  .job li {
+    margin-bottom: 5px;
+    color: var(--text-2);
+    font-size: .86rem;
+    line-height: 1.5;
+  }
+  .job li::marker { color: var(--accent); }
+  .job li strong { color: var(--text); font-weight: 600; }
+
+  /* projects */
+  .proj {
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    transition: border-color .15s, transform .15s, box-shadow .15s;
+  }
+  .proj:last-child { margin-bottom: 0; }
+  .proj:hover {
+    border-color: var(--border-hi);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 22px rgba(0,0,0,.18);
+  }
+  .proj-title {
+    margin: 0 0 6px;
+    font-size: .92rem; font-weight: 700;
+    letter-spacing: -.01em;
+  }
+  .proj-desc {
+    margin: 0 0 10px;
+    color: var(--text-2);
+    font-size: .82rem;
+    line-height: 1.55;
+    word-break: keep-all;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tags span {
+    font-family: var(--mono);
+    font-size: .62rem; font-weight: 500; letter-spacing: .03em;
+    padding: .16rem .45rem; border-radius: 999px;
+    color: color-mix(in srgb, var(--accent) 75%, white);
+    background: var(--accent-soft);
+    border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  }
+
+  /* sidebar */
+  .side-col {
+    padding-left: 20px;
+    border-left: 1px solid var(--border);
+  }
+  .skill-group { margin-bottom: 12px; }
+  .skill-group:last-child { margin-bottom: 0; }
+  .skill-label {
+    margin: 0 0 5px;
+    font-family: var(--mono);
+    font-size: .62rem; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .skill-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+  .skill-chips span {
+    font-size: .72rem; font-weight: 500;
+    padding: .2rem .45rem; border-radius: 6px;
+    color: var(--text-2);
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+
+  .bg-note {
+    margin: 0 0 10px;
+    font-size: .78rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+    word-break: keep-all;
+  }
+  .bg-list { display: flex; flex-direction: column; gap: 8px; }
+  .bg-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    font-size: .8rem;
+  }
+  .bg-row b { font-weight: 600; color: var(--text); }
+  .bg-row .period {
+    font-size: .6rem;
+    padding: .12rem .4rem;
+  }
+
+  /* responsive */
+  @media (max-width: 760px) {
+    .page { width: calc(100% - 16px); margin: 56px auto 32px; border-radius: 14px; }
+    .resume-header {
+      grid-template-columns: 1fr;
+      padding: 22px 18px 18px;
+    }
+    .links { align-items: stretch; }
+    .links a { justify-content: center; }
+    .resume-body { padding: 16px 18px 22px; }
+    .layout { grid-template-columns: 1fr; gap: 20px; }
+    .side-col { padding-left: 0; border-left: none; border-top: 1px solid var(--border); padding-top: 18px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tool-btn, .links a, .proj { transition: none; }
+  }
+
+  /* print — clean A4 resume */
+  @media print {
+    body {
+      background: #fff !important;
+      background-image: none !important;
+      color: #111;
+    }
+    body::before { display: none !important; }
+    .toolbar { display: none !important; }
+    .page {
+      width: 100%; margin: 0;
+      border: none; border-radius: 0; box-shadow: none;
+      background: #fff;
+    }
+    .resume-header {
+      background: none;
+      border-bottom: 1.5px solid #ddd;
+      padding: 0 0 12px;
+    }
+    .resume-body { padding: 14px 0 0; }
+    .avatar {
+      box-shadow: none;
+      background: #222;
+      color: #fff;
+    }
+    .role strong, .job-title em {
+      -webkit-text-fill-color: #111;
+      color: #111;
+      background: none;
+    }
+    .summary, .proj, .skill-chips span, .job-note, .period, .badge {
+      box-shadow: none;
+      background: #f7f7f9 !important;
+      border-color: #e5e5ea !important;
+      color: #333 !important;
+    }
+    .summary { color: #333 !important; }
+    .job li, .proj-desc, .bg-note, .role, .links a { color: #444 !important; }
+    .job-title, .proj-title, .name, .bg-row b, .job li strong { color: #111 !important; }
+    .links a { border-color: #ddd !important; background: transparent !important; }
+    .side-col { border-left-color: #e5e5ea; }
+    .job { border-left-color: #ccc; }
+    .job::before { background: #fff; border-color: #666; box-shadow: none; }
+    h2 { color: #333; }
+    h2::before { background: #333; box-shadow: none; }
+    .proj:hover { transform: none; box-shadow: none; }
+    .proj { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+  <div class="toolbar">
+    <button type="button" class="tool-btn" id="themeToggle" aria-label="테마 전환" title="테마 전환">◐</button>
+    <button type="button" class="tool-btn" id="printBtn" aria-label="인쇄" title="인쇄">⎙</button>
+  </div>
+
+  <article class="page">
+    <header class="resume-header">
+      <div class="identity">
+        <div class="avatar" aria-hidden="true">J</div>
+        <div>
+          <h1 class="name">Juns</h1>
+          <p class="role"><strong>AI 풀스택 엔지니어</strong> · AI Engineer</p>
+          <div class="badge-row">
+            <span class="badge">Automation</span>
+            <span class="badge alt">Data Pipeline</span>
+            <span class="badge">Full-stack</span>
+          </div>
+        </div>
+      </div>
+      <nav class="links" aria-label="연락처">
+        <a href="https://github.com/savvy773" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.11.82-.26.82-.577v-2.234c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.43.372.82 1.102.82 2.222v3.293c0 .319.22.694.825.576C20.565 21.795 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          github.com/savvy773
+        </a>
+        <a href="https://savvy773.github.io" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+          savvy773.github.io
+        </a>
+      </nav>
+    </header>
+
+    <div class="resume-body">
+      <p class="summary">
+        영업관리·고객지원 분야에서 14년 이상 경력을 쌓은 뒤, 한화에너지에서 AI 엔지니어로 직무를 전환했습니다.
+        태양광 발전소 모니터링 시스템과 AI/LLM 기반 업무 자동화를 개발했으며, 기존 약 1주일 소요되던 업무를 1일로 단축한 경험이 있습니다.
+        Python·Rust·Java·SQL 기반 백엔드와 Vue·React·TypeScript 기반 프론트엔드 개발 경험을 보유하고 있습니다.
+      </p>
+
+      <div class="layout">
+        <div class="main-col">
+          <section>
+            <h2>Experience</h2>
+            <div class="timeline">
+              <div class="job">
+                <div class="job-head">
+                  <div class="job-title"><em>한화에너지</em> — AI 풀스택 엔지니어 (프로)</div>
+                  <span class="period">2024.11 – 2026.05</span>
+                </div>
+                <div class="job-note">영업관리 경력에서 개발 직무로 전환한 첫 포지션</div>
+                <ul>
+                  <li><strong>태양광 O&amp;M(운영·유지보수)</strong> 웹 서비스 개발 및 운영</li>
+                  <li><strong>HEIS TAG 관리·QC·SQL</strong> 데이터 관리 및 TCS 트래커 연동 모니터링 자동화</li>
+                  <li>누락 데이터 복구를 위한 <strong>InfluxDB Backfill 자동화</strong> (PySide5, Tauri GUI)</li>
+                  <li>백엔드(Python·Rust) &amp; 프론트엔드(Vue·TS) <strong>풀스택 개발</strong></li>
+                  <li><strong>업무 자동화</strong>로 기존 1주일 소요 업무를 <strong>1일로 단축</strong></li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>Projects</h2>
+            <article class="proj">
+              <h3 class="proj-title">HEIS Tool — 발전소 데이터 통합 자동화 툴</h3>
+              <p class="proj-desc">
+                TAG 관리·SQL 등록·QC 검증·Backfill·PVsyst 업로드를 통합한 GUI 툴.
+                대용량 CSV를 InfluxDB Line Protocol로 변환·적재하는 Backfill 파이프라인 포함.
+                사용자별 격리 SSH 터널로 다중 사용자 동시 작업 시 프로세스 충돌을 차단.
+              </p>
+              <div class="tags">
+                <span>Python</span><span>InfluxDB</span><span>SSH</span><span>SQL</span><span>PySide5</span><span>Tauri</span>
+              </div>
+            </article>
+            <article class="proj">
+              <h3 class="proj-title">OPC-ISL Engine — OPC 태그 → HEIS 표준 변환</h3>
+              <p class="proj-desc">
+                발전소마다 다른 OPC 원본 태그 파일을 HEIS Import 표준 포맷으로 변환하는 Windows 데스크톱 툴.
+                발전소명·타입·OPC 형식을 파일 내용 기반으로 자동 감지해 수작업 매핑을 최소화.
+              </p>
+              <div class="tags">
+                <span>Python</span><span>OPC UA</span><span>XLSX</span>
+              </div>
+            </article>
+          </section>
+        </div>
+
+        <aside class="side-col">
+          <section>
+            <h2>Skills</h2>
+            <div class="skill-group">
+              <p class="skill-label">Backend</p>
+              <div class="skill-chips">
+                <span>Python</span><span>Rust</span><span>Java</span><span>Go</span><span>SQL</span><span>C++</span>
+              </div>
+            </div>
+            <div class="skill-group">
+              <p class="skill-label">Frontend</p>
+              <div class="skill-chips">
+                <span>Vue</span><span>React</span><span>TypeScript</span><span>Vite</span>
+              </div>
+            </div>
+            <div class="skill-group">
+              <p class="skill-label">Data</p>
+              <div class="skill-chips">
+                <span>InfluxDB</span><span>Backfill</span><span>ETL</span><span>Time-series</span>
+              </div>
+            </div>
+            <div class="skill-group">
+              <p class="skill-label">AI</p>
+              <div class="skill-chips">
+                <span>LLM 자동화</span><span>Context Eng.</span>
+              </div>
+            </div>
+            <div class="skill-group">
+              <p class="skill-label">H/W · S/W</p>
+              <div class="skill-chips">
+                <span>PC 조립</span><span>장애 진단</span><span>트러블슈팅</span>
+              </div>
+            </div>
+            <div class="skill-group">
+              <p class="skill-label">Language</p>
+              <div class="skill-chips">
+                <span>한국어</span><span>영어</span>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>Background</h2>
+            <p class="bg-note">
+              개발 전환 전 영업관리·채널 운영·고객 기술지원 14년+.
+              HP 파트너사 실적 전년 대비 30% 성장, 콜센터 프로세스 개선 경험.
+            </p>
+            <div class="bg-list">
+              <div class="bg-row"><b>현대카드</b><span class="period">2015.11 – 2017.10</span></div>
+              <div class="bg-row"><b>제이씨현</b><span class="period">2014.02 – 2015.03</span></div>
+              <div class="bg-row"><b>한국네트인</b><span class="period">2011.07 – 2013.04</span></div>
+              <div class="bg-row"><b>HP 센터</b><span class="period">2000.07 – 2008.07</span></div>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </div>
+  </article>
+
+  <script>
+    const root = document.body;
+    const themeBtn = document.getElementById('themeToggle');
+    const printBtn = document.getElementById('printBtn');
+    const stored = localStorage.getItem('resume-theme');
+    if (stored === 'dark') root.classList.add('dark-theme');
+
+    themeBtn.addEventListener('click', () => {
+      root.classList.toggle('dark-theme');
+      localStorage.setItem('resume-theme', root.classList.contains('dark-theme') ? 'dark' : 'light');
+    });
+    printBtn.addEventListener('click', () => window.print());
+  </script>
+</body>
+</html>
