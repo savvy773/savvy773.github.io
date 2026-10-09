@@ -32,6 +32,7 @@
 - 경력 요약(exp-note)·현재 학습 중(learning-note) 카드, 스킬 스트립, Repositories/Journey 리빌 애니메이션
 - GPU 절약: idle 시 JS 루프·무한 애니메이션 없음, `prefers-reduced-motion` 전면 대응
 - 모바일: safe-area, 터치 hover 완화, 모달 풀스크린
+- 분야별 프로젝트 맵: AI 도구·업무 자동화·개발 유틸리티 분포와 필터, 실제 프로젝트 화면 미리보기
 
 ## Currently Learning
 

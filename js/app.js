@@ -4,6 +4,26 @@
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Project map: each field reveals the tools that belong to it.
+  const projectMap = document.querySelector('.project-map');
+  const projectResult = document.querySelector('.project-result');
+  if (projectMap && projectResult) {
+    const cards = [...document.querySelectorAll('.repo-card[data-category]')];
+    projectMap.hidden = false;
+    projectResult.hidden = false;
+    projectMap.addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-filter]');
+      if (!button) return;
+      const filter = button.dataset.filter;
+      projectMap.querySelectorAll('button').forEach((item) => {
+        item.setAttribute('aria-pressed', String(item === button));
+      });
+      cards.forEach((card) => { card.hidden = filter !== 'all' && card.dataset.category !== filter; });
+      const label = { all: '전체', ai: 'AI 도구', automation: '업무 자동화', utility: '개발 유틸리티' }[filter];
+      projectResult.textContent = `${label} 프로젝트 ${cards.filter((card) => !card.hidden).length}개`;
+    });
+  }
+
   // ── modal ──
   const dialog = document.getElementById('modalDialog');
   const iframe = document.getElementById('modalIframe');

@@ -123,19 +123,26 @@
         <h2>Repositories</h2>
         <p class="section-sub">7 projects · updated 2026-10-10 · <a href="https://github.com/savvy773?tab=repositories" target="_blank" rel="noopener noreferrer">All repositories ↗</a></p>
       </div>
+      <div class="project-map" role="group" aria-label="프로젝트 분야별 보기" hidden>
+        <button class="map-all" type="button" data-filter="all" aria-pressed="true">전체 <strong>7</strong></button>
+        <button type="button" data-filter="ai" aria-pressed="false"><span class="map-label">AI 도구 <strong>3</strong></span><span class="map-track" aria-hidden="true"><span style="--share: 43%"></span></span><span class="map-flow">음성·모델·사용량 → 입력과 비교</span></button>
+        <button type="button" data-filter="automation" aria-pressed="false"><span class="map-label">업무 자동화 <strong>2</strong></span><span class="map-track" aria-hidden="true"><span style="--share: 29%"></span></span><span class="map-flow">반복 작업·대본 → 관리와 영상</span></button>
+        <button type="button" data-filter="utility" aria-pressed="false"><span class="map-label">개발 유틸리티 <strong>2</strong></span><span class="map-track" aria-hidden="true"><span style="--share: 29%"></span></span><span class="map-flow">시스템·네트워크 → 모니터링과 연결</span></button>
+      </div>
+      <p class="project-result" role="status" aria-live="polite" hidden>전체 프로젝트 7개</p>
       <div class="repo-grid">
-        <article class="repo-card glass" data-project="ai-analysis">
-          <div class="repo-cover"><span>AI MODEL COMPARISON</span><strong>01</strong><span>AI tools</span></div>
+        <article class="repo-card glass" data-project="ai-analysis" data-category="ai">
+          <img class="repo-thumb" src="assets/thumbs/ai-analysis.png" alt="AI 모델 점수·비용·응답 시간 비교 화면" loading="lazy">
           <div class="repo-body">
             <div class="repo-head"><svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg><h3><a href="https://github.com/savvy773/ai-analysis" target="_blank" rel="noopener noreferrer">ai-analysis</a></h3><span class="repo-live">SOURCE</span></div>
             <p class="repo-desc">AI 모델의 성능·코딩 점수·응답 시간·비용을 비교하는 로컬 브라우저 리포트. 필터와 즐겨찾기로 모델 선택을 돕습니다.</p>
             <div class="repo-tags"><span>Python</span><span>AI</span><span>Data</span></div>
           </div>
-          <div class="repo-actions"><a href="https://github.com/savvy773/ai-analysis" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
+          <div class="repo-actions"><a href="https://github.com/savvy773/ai-analysis" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="assets/thumbs/ai-analysis.png" onclick="return openModal('assets/thumbs/ai-analysis.png','ai-analysis 화면', event)">화면 보기 ↗</a></div>
         </article>
 
-        <article class="repo-card glass" data-project="prism-platform-site">
-          <div class="repo-cover"><span>WORKSPACE + ERP</span><strong>02</strong><span>Platform</span></div>
+        <article class="repo-card glass" data-project="prism-platform-site" data-category="automation">
+          <img class="repo-thumb" src="assets/thumbs/prism-platform-site.png" alt="PRISM 업무 플랫폼 공개 소개 페이지" loading="lazy">
           <div class="repo-body">
             <div class="repo-head"><svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg><h3><a href="https://github.com/savvy773/prism-platform-site" target="_blank" rel="noopener noreferrer">prism-platform-site</a></h3><span class="repo-live">LIVE</span></div>
             <p class="repo-desc">PRISM 사내 플랫폼의 공개 소개 사이트와 한국어 영상 제작 도구. 대본에서 음성·영상·자막까지 제작합니다.</p>
@@ -144,17 +151,17 @@
           <div class="repo-actions"><a href="https://github.com/savvy773/prism-platform-site" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/prism-platform-site/" onclick="return openModal('https://savvy773.github.io/prism-platform-site/','prism-platform-site', event)">미리보기 ↗</a></div>
         </article>
 
-        <article class="repo-card glass" data-project="ubuntu-scr-saver">
-          <div class="repo-cover"><span>UBUNTU SYSTEM MONITOR</span><strong>03</strong><span>Dev utility</span></div>
+        <article class="repo-card glass" data-project="ubuntu-scr-saver" data-category="utility">
+          <img class="repo-thumb" src="assets/thumbs/ubuntu-scr-saver.png" alt="Ubuntu 화면 보호기의 시계와 시스템 리소스 모니터" loading="lazy">
           <div class="repo-body">
             <div class="repo-head"><svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg><h3><a href="https://github.com/savvy773/ubuntu-scr-saver" target="_blank" rel="noopener noreferrer">ubuntu-scr-saver</a></h3><span class="repo-live">SOURCE</span></div>
             <p class="repo-desc">CPU·메모리·디스크 사용량, 시계와 영어 문구를 표시하는 Ubuntu 화면 보호기. 시스템 상태를 한눈에 확인합니다.</p>
             <div class="repo-tags"><span>TypeScript</span><span>Ubuntu</span><span>Monitoring</span></div>
           </div>
-          <div class="repo-actions"><a href="https://github.com/savvy773/ubuntu-scr-saver" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
+          <div class="repo-actions"><a href="https://github.com/savvy773/ubuntu-scr-saver" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="assets/thumbs/ubuntu-scr-saver.png" onclick="return openModal('assets/thumbs/ubuntu-scr-saver.png','Ubuntu 화면 보호기', event)">화면 보기 ↗</a></div>
         </article>
 
-        <article class="repo-card glass" data-project="web-ai-usage">
+        <article class="repo-card glass" data-project="web-ai-usage" data-category="ai">
           <img class="repo-thumb" src="assets/thumbs/web-ai-usage.webp" width="640" height="400" alt="" loading="lazy">
           <div class="repo-body">
             <div class="repo-head">
@@ -168,7 +175,7 @@
         <div class="repo-actions"><a href="https://github.com/savvy773/web-ai-usage" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/web-ai-usage/" onclick="return openModal('https://savvy773.github.io/web-ai-usage/','web-ai-usage', event)">미리보기 ↗</a></div>
         </article>
 
-        <article class="repo-card glass" data-project="app-yt-subs">
+        <article class="repo-card glass" data-project="app-yt-subs" data-category="automation">
           <img class="repo-thumb" src="assets/thumbs/app-yt-subs.webp" width="640" height="400" alt="" loading="lazy">
           <div class="repo-body">
             <div class="repo-head">
@@ -182,7 +189,7 @@
         <div class="repo-actions"><a href="https://github.com/savvy773/app-yt-subs" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/app-yt-subs/" onclick="return openModal('https://savvy773.github.io/app-yt-subs/','app-yt-subs', event)">미리보기 ↗</a></div>
         </article>
 
-        <article class="repo-card glass" data-project="dpi-bye">
+        <article class="repo-card glass" data-project="dpi-bye" data-category="utility">
           <img class="repo-thumb" src="assets/thumbs/dpi-bye.webp" width="640" height="400" alt="" loading="lazy">
           <div class="repo-body">
             <div class="repo-head">
@@ -196,7 +203,7 @@
         <div class="repo-actions"><a href="https://github.com/savvy773/dpi-bye" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/dpi-bye/" onclick="return openModal('https://savvy773.github.io/dpi-bye/','dpi-bye', event)">미리보기 ↗</a></div>
         </article>
 
-        <article class="repo-card glass" data-project="stt-whisper">
+        <article class="repo-card glass" data-project="stt-whisper" data-category="ai">
           <img class="repo-thumb" src="assets/thumbs/stt-whisper.webp" width="640" height="400" alt="" loading="lazy">
           <div class="repo-body">
             <div class="repo-head">
