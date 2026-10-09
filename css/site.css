@@ -227,7 +227,7 @@ html.is-scrolled .topbar {
   z-index: 1;
   max-width: 1320px;
   margin: 0 auto;
-  padding: 2.75rem 1.5rem 4rem;
+  padding: 2rem 1.5rem 3rem;
 }
 
 /* ── Hero ── */
@@ -485,7 +485,7 @@ h1 .hl {
 }
 
 /* sections */
-section { margin-bottom: 3.8rem; }
+section { margin-bottom: 2.5rem; }
 .section-head {
   display: flex;
   flex-wrap: wrap;
@@ -1103,7 +1103,7 @@ h1 { animation-delay: 0.06s; }
 
 /* Project overview: use the desktop width, keep narrow screens readable. */
 .hero { display: grid; grid-template-columns: minmax(0, 1fr) 290px; gap: 0 3rem; align-items: center; }
-.hero-badge { grid-column: 1 / -1; justify-self: start; }
+.hero-badge { grid-column: 1 / -1; justify-self: start; margin-bottom: 1rem; }
 .hero-cta { margin-bottom: 0; }
 .hero-stats { grid-template-columns: 1fr; margin: 0; }
 .context-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 2.5rem; }
@@ -1116,9 +1116,18 @@ h1 { animation-delay: 0.06s; }
 .repo-cover strong { font: 600 4rem var(--display); line-height: 1; }
 .repo-card[data-project="prism-platform-site"] .repo-cover { background: var(--accent-2); color: var(--paper); }
 .repo-card[data-project="ubuntu-scr-saver"] .repo-cover { background: var(--text); color: var(--paper); }
+.repo-thumb, .repo-cover { height: 160px; aspect-ratio: auto; }
+.repo-cover { padding: 1rem 1.15rem; }
+.repo-cover strong { font-size: 2.8rem; }
+.repo-desc { display: block; overflow: visible; }
+.repo-actions { margin-top: auto; }
 .repo-actions { display: flex; justify-content: space-between; gap: 1rem; padding: 0.8rem 1.15rem; border-top: 1px solid var(--border); }
 .repo-actions a { color: var(--accent); font-size: 0.8rem; font-weight: 600; text-decoration: none; padding: 0.25rem 0; }
 .repo-actions a:hover { text-decoration: underline; }
+@media (min-width: 1200px) {
+  .repo-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  h1 { font-size: 3.8rem; }
+}
 @media (max-width: 1000px) {
   .hero { grid-template-columns: minmax(0, 1fr) 230px; gap: 0 1.5rem; }
   .repo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
