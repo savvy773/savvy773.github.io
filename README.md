@@ -44,7 +44,7 @@ PRISM Workspace + ERP의 설계·React/TypeScript 프론트엔드·FastAPI 백�
 |---|---|
 | **Hero** | 소개·경력 요약·PRISM ERP 개발, 스킬 스트립 |
 | **Repositories** | 공개 프로젝트 7개 (ai-analysis, prism-platform-site, ubuntu-scr-saver, web-ai-usage, app-yt-subs, dpi-bye, stt-whisper), GitHub 소스·미리보기 링크 |
-| **Journey** | PRISM ERP 개발 범위 시각화, 최근 GitHub 업데이트와 HEIS Tool·OPC-ISL 등 업무 기록 |
+| **Journey** | PRISM ERP 초기 구축 사례·개발 범위 시각화, HEIS Tool·OPC-ISL 등 업무 기록 |
 | **Resume** | 모달로 바로 보는 이력서 (`resume/resume.html`) |
 
 ## Structure
