@@ -6,6 +6,7 @@
 - `journey/`: individual career documents.
 - `resume/resume.html`: resume displayed from the navigation.
 - `assets/thumbs/`: existing project and Journey thumbnails.
+- `scripts/version-assets.mjs`: run with Node after changing CSS or JavaScript and before publishing. Adds content hashes to asset URLs so returning visitors receive the matching styles and behavior.
 
 Project descriptions were checked against the public `savvy773` GitHub repositories on 2026-10-10. The seven project cards exclude the profile repository, this portfolio repository, and shared GitHub Actions workflows. Update the card count and date in `index.html` when changing the selection.
 

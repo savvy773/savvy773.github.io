@@ -1,31 +1,31 @@
 :root {
   color-scheme: light;
-  --bg: #f2ebdc;
-  --paper: #faf6ec;
-  --paper-2: #eee4cf;
-  --surface-solid: #faf6ec;
-  --border: rgba(38, 31, 22, 0.13);
-  --border-hi: rgba(38, 31, 22, 0.26);
-  --text: #262019;
-  --text-2: #5c5344;
-  --text-dim: #726752;
-  --accent: #a63d24;
-  --accent-2: #3c6b5e;
-  --accent-soft: rgba(166, 61, 36, 0.09);
-  --accent-glow: rgba(166, 61, 36, 0.22);
-  --teal-soft: rgba(60, 107, 94, 0.1);
-  --shadow: 0 1px 2px rgba(38, 31, 22, 0.06), 0 10px 24px rgba(38, 31, 22, 0.08);
-  --shadow-lg: 0 24px 56px rgba(38, 31, 22, 0.18), 0 2px 8px rgba(38, 31, 22, 0.1);
+  --bg: #f5f7fb;
+  --paper: #ffffff;
+  --paper-2: #edf2f8;
+  --surface-solid: #ffffff;
+  --border: rgba(24, 39, 64, 0.1);
+  --border-hi: rgba(24, 39, 64, 0.2);
+  --text: #182740;
+  --text-2: #485970;
+  --text-dim: #5e6e83;
+  --accent: #2459d3;
+  --accent-2: #08786c;
+  --accent-soft: rgba(36, 89, 211, 0.07);
+  --accent-glow: rgba(36, 89, 211, 0.15);
+  --teal-soft: rgba(8, 120, 108, 0.07);
+  --shadow: 0 2px 8px rgba(24, 39, 64, 0.04);
+  --shadow-lg: 0 12px 28px rgba(24, 39, 64, 0.12);
   --r: 12px;
   --r-lg: 16px;
   --mono: 'IBM Plex Mono', ui-monospace, monospace;
-  --display: 'Fraunces', 'Source Serif 4', Georgia, serif;
+  --display: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --topbar-h: 64px;
 
   /* paper card surface — flat warm panel, no blur */
-  --glass-bg: linear-gradient(160deg, var(--paper) 0%, #f6f0e2 100%);
+  --glass-bg: var(--paper);
   --glass-border: 1px solid var(--border);
 }
 
@@ -80,8 +80,8 @@ body {
   z-index: -3;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 90% 70% at 8% -15%, rgba(166, 61, 36, 0.32), transparent 62%),
-    radial-gradient(ellipse 85% 75% at 108% 55%, rgba(60, 107, 94, 0.34), transparent 68%);
+    radial-gradient(ellipse 80% 50% at 0% 0%, rgba(36, 89, 211, 0.08), transparent 65%),
+    radial-gradient(ellipse 70% 60% at 100% 30%, rgba(8, 120, 108, 0.05), transparent 65%);
 }
 
 /* ── paper grain: fixed noise layer, replaces the old video background ── */
@@ -129,7 +129,7 @@ body {
   padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
   padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
   margin-top: 3px;
-  background: rgba(250, 246, 236, 0.86);
+  background: rgba(255, 255, 255, 0.97);
   border-bottom: 1px solid var(--border);
   transition: border-color 0.25s, box-shadow 0.25s;
 }
@@ -250,7 +250,7 @@ html.is-scrolled .topbar {
   border-radius: 999px;
   background: var(--paper);
   border: 1px dashed var(--border-hi);
-  transform: rotate(-1.2deg);
+  transform: none;
 }
 .live-dot {
   width: 7px;
@@ -275,7 +275,7 @@ h1 .name-line {
 h1 .hl {
   display: block;
   color: var(--accent);
-  font-style: italic;
+  font-style: normal;
 }
 
 .tagline {
@@ -311,7 +311,7 @@ h1 .hl {
   transition: transform 0.25s var(--ease);
 }
 .btn-primary {
-  color: #fbf5e9;
+  color: #ffffff;
   background: var(--accent);
   box-shadow: 0 3px 14px var(--accent-glow);
 }
@@ -1109,6 +1109,10 @@ h1 { animation-delay: 0.06s; }
 .context-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 2.5rem; }
 .context-grid > * { margin: 0; min-width: 0; }
 .section-sub a, .repo-head a { color: inherit; text-decoration: none; }
+.repo-card { cursor: pointer; }
+.repo-head a::after { content: ""; position: absolute; inset: 0; cursor: pointer; }
+.repo-card:focus-within { outline: 2px solid var(--accent); outline-offset: 3px; }
+.repo-actions { position: relative; z-index: 1; }
 .section-sub a:hover, .repo-head a:hover { color: var(--accent); text-decoration: underline; }
 .repo-head h3 { white-space: normal; overflow-wrap: anywhere; }
 .repo-thumb { height: 160px; aspect-ratio: auto; }
@@ -1128,7 +1132,7 @@ h1 { animation-delay: 0.06s; }
 .map-flow { display: block; font-size: 0.72rem; word-break: keep-all; }
 .project-result { color: var(--text-dim); font-size: 0.75rem; margin: 0.7rem 0 1rem; }
 [hidden] { display: none !important; }
-@media (min-width: 1200px) {
+@media (min-width: 1050px) {
   .repo-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   h1 { font-size: 3.8rem; }
 }

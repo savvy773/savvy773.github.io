@@ -27,8 +27,8 @@
 
 - 프레임워크·빌드 도구 없이 **순수 HTML / CSS / JS** (빌드리스)
 - 네이티브 **`<dialog>` + iframe** 모달 — 문서·데모를 페이지 이탈 없이 미리보기
-- **페이퍼 그레인** 라이트 테마 — 배경 비디오/Canvas FX 없이 SVG 노이즈 텍스처만 사용
-- 불투명 **글래스 카드**(`backdrop-filter` 미사용) + 호버 시 포인터 기반 카드 틸트
+- 화이트·블루 라이트 테마와 간결한 산세리프 타이포그래피
+- 카드 전체 클릭으로 GitHub 이동, 별도의 화면·문서 미리보기 링크
 - 경력 요약(exp-note)·현재 학습 중(learning-note) 카드, 스킬 스트립, Repositories/Journey 리빌 애니메이션
 - GPU 절약: idle 시 JS 루프·무한 애니메이션 없음, `prefers-reduced-motion` 전면 대응
 - 모바일: safe-area, 터치 hover 완화, 모달 풀스크린
@@ -53,7 +53,7 @@
 ```text
 ├── content.md          # 콘텐츠 수정 경로 안내
 ├── index.html          # 마크업·메타
-├── css/site.css        # 토큰·페이퍼 그레인·글래스 카드·반응형
+├── css/site.css        # 토큰·카드·반응형
 ├── js/
 │   ├── app.js          # 모달·스크롤·reveal·카드 틸트·타임라인
 │   └── effects.js      # 비활성 stub (구 Canvas FX 자리, 미로드)
@@ -71,6 +71,8 @@ npx --yes serve .
 ```
 
 브라우저에서 루트를 열면 됩니다.
+
+CSS·JavaScript 수정 후 게시 전에 `node scripts/version-assets.mjs`를 실행하세요. 파일 내용에 따른 버전을 URL에 붙여 이전 캐시와 새 페이지가 섞이지 않게 합니다.
 
 ## Docs
 
