@@ -29,23 +29,22 @@
 - 네이티브 **`<dialog>` + iframe** 모달 — 문서·데모를 페이지 이탈 없이 미리보기
 - 화이트·블루 라이트 테마와 간결한 산세리프 타이포그래피
 - 카드 전체 클릭으로 GitHub 이동, 별도의 화면·문서 미리보기 링크
-- 경력 요약(exp-note)·현재 학습 중(learning-note) 카드, 스킬 스트립, Repositories/Journey 리빌 애니메이션
+- 경력 요약·PRISM ERP 개발 소개, 스킬 스트립, Repositories/Journey 리빌 애니메이션
 - GPU 절약: idle 시 JS 루프·무한 애니메이션 없음, `prefers-reduced-motion` 전면 대응
 - 모바일: safe-area, 터치 hover 완화, 모달 풀스크린
 - 분야별 프로젝트 맵: AI 도구·업무 자동화·개발 유틸리티 분포와 필터, 실제 프로젝트 화면 미리보기
 
-## Currently Learning
+## Featured Work
 
-- **Godot / Unity** — 게임 엔진 기초 및 인터랙티브 콘텐츠
-- **DaVinci Resolve** — 영상 편집·컬러 그레이딩
+PRISM Workspace + ERP의 설계·React/TypeScript 프론트엔드·FastAPI 백엔드·PostgreSQL 데이터베이스·Docker/Caddy 배포를 직접 개발하고 있습니다. 공개 소개 페이지로 연결하며 원본 소스는 비공개입니다.
 
 ## Sections
 
 | | |
 |---|---|
-| **Hero** | 소개·경력 요약·현재 학습 중, 스킬 스트립 |
+| **Hero** | 소개·경력 요약·PRISM ERP 개발, 스킬 스트립 |
 | **Repositories** | 공개 프로젝트 7개 (ai-analysis, prism-platform-site, ubuntu-scr-saver, web-ai-usage, app-yt-subs, dpi-bye, stt-whisper), GitHub 소스·미리보기 링크 |
-| **Journey** | HEIS Tool, OPC-ISL, 인수인계, SSH 보안 등 개발 여정 문서 |
+| **Journey** | PRISM ERP 개발 범위 시각화, 최근 GitHub 업데이트와 HEIS Tool·OPC-ISL 등 업무 기록 |
 | **Resume** | 모달로 바로 보는 이력서 (`resume/resume.html`) |
 
 ## Structure

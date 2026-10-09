@@ -1036,15 +1036,13 @@ h1 { animation-delay: 0.06s; }
 .learning-note { animation-delay: 0.42s; }
 
 .reveal-section {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 720px;
   padding: 0 12px;
   margin-left: -12px;
   margin-right: -12px;
 }
 .reveal-section h2,
 .reveal-section .section-sub {
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.45s ease;
 }
 /* card reveal: settles into place like a photo being set down — one-shot, not continuous.
@@ -1053,8 +1051,8 @@ h1 { animation-delay: 0.06s; }
    property that needs to ease on hover must be listed here, or it silently snaps instead. */
 .reveal-section .repo-card,
 .reveal-section .tl-item {
-  opacity: 0;
-  transform: translateY(16px) rotate(-1deg);
+  opacity: 1;
+  transform: none;
   transition:
     opacity 0.5s var(--ease-out),
     transform 0.18s var(--ease-out),
@@ -1131,6 +1129,21 @@ h1 { animation-delay: 0.06s; }
 .map-track > span { display: block; height: 100%; width: var(--share); background: var(--accent-2); border-radius: inherit; }
 .map-flow { display: block; font-size: 0.72rem; word-break: keep-all; }
 .project-result { color: var(--text-dim); font-size: 0.75rem; margin: 0.7rem 0 1rem; }
+.prism-feature { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 2rem; padding: 1.5rem; border-radius: var(--r-lg); border-top: 3px solid var(--accent); }
+.feature-label { color: var(--accent); font: 600 0.7rem var(--mono); }
+.prism-feature h3 { margin: 0.65rem 0; font-size: clamp(1.15rem, 2.5vw, 1.55rem); letter-spacing: -0.03em; }
+.prism-feature p { font-size: 0.88rem; color: var(--text-2); line-height: 1.8; margin: 0 0 1rem; word-break: keep-all; }
+.feature-link { display: inline-block; color: var(--accent); font-size: 0.85rem; font-weight: 600; text-decoration: none; padding: 0.4rem 0; }
+.feature-link:hover { text-decoration: underline; }
+.feature-source { margin-left: 1rem; color: var(--text-2); }
+.prism-flow { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem; }
+.prism-flow li { display: flex; align-items: center; gap: 0.9rem; padding: 0.7rem 0.9rem; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); }
+.flow-number { font: 500 0.8rem var(--mono); color: var(--accent); }
+.prism-flow strong { display: block; font-size: 0.85rem; }
+.prism-flow div > span { display: block; font-size: 0.75rem; color: var(--text-dim); }
+.journey-note { font-size: 0.75rem; color: var(--text-dim); margin: 1.25rem 0 0.9rem; }
+.tl-body h3 { white-space: normal; }
+.tl-meta { flex-wrap: wrap; }
 [hidden] { display: none !important; }
 @media (min-width: 1050px) {
   .repo-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -1145,5 +1158,6 @@ h1 { animation-delay: 0.06s; }
   .hero-cta { margin-bottom: 1.5rem; }
   .context-grid { grid-template-columns: 1fr; }
   .project-map { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .prism-feature { grid-template-columns: 1fr; gap: 1rem; padding: 1.15rem; }
 }
 @media (max-width: 560px) { .repo-grid { grid-template-columns: 1fr; } }
