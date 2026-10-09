@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Juns — Portfolio</title>
-<meta name="description" content="AI 풀스택 엔지니어 Juns의 포트폴리오. 발전소 데이터 연동 자동화 툴 개발 여정과 오픈소스 프로젝트.">
+<meta name="description" content="Juns의 포트폴리오. 로컬 AI 도구, Windows·Ubuntu 유틸리티, 업무 자동화와 공개 GitHub 프로젝트.">
 <meta name="theme-color" content="#f3ede1">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://savvy773.github.io/">
 <meta property="og:title" content="Juns — Portfolio">
-<meta property="og:description" content="AI 풀스택 엔지니어 Juns의 포트폴리오. 발전소 데이터 연동 자동화와 오픈소스 프로젝트.">
+<meta property="og:description" content="Juns의 포트폴리오. 로컬 AI 도구, Windows·Ubuntu 유틸리티, 업무 자동화와 공개 GitHub 프로젝트.">
 <meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Juns — Portfolio">
-<meta name="twitter:description" content="AI 풀스택 엔지니어 Juns의 포트폴리오. 발전소 데이터 연동 자동화와 오픈소스 프로젝트.">
+<meta name="twitter:description" content="Juns의 포트폴리오. 로컬 AI 도구, Windows·Ubuntu 유틸리티, 업무 자동화와 공개 GitHub 프로젝트.">
 <link rel="canonical" href="https://savvy773.github.io/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23f3ede1'/%3E%3Crect x='0.75' y='0.75' width='30.5' height='30.5' rx='6.25' fill='none' stroke='%23a63d24' stroke-width='1.5'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-weight='700' font-size='16' fill='%23a63d24' text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -55,11 +55,12 @@
         <span class="live-dot" aria-hidden="true"></span>
         <span>Portfolio · 2026</span>
       </div>
+      <div class="hero-copy">
       <h1>
         <span class="name-line">Juns</span>
         <span class="hl">AI 풀스택 엔지니어</span>
       </h1>
-      <p class="tagline">AI를 적극 활용하는 소프트웨어 엔지니어 · 자동화·데이터 연동·풀스택</p>
+      <p class="tagline">로컬 AI 도구부터 업무 자동화까지. 직접 쓰는 소프트웨어를 만들고 GitHub에 공개합니다.</p>
       <div class="hero-cta">
         <a class="btn btn-primary" href="#repos">
           <span>Projects</span>
@@ -71,14 +72,15 @@
         </a>
       </div>
 
+      </div>
       <div class="hero-stats">
         <div class="stat-card">
-          <span class="stat-num">4</span>
+          <span class="stat-num">7</span>
           <span class="stat-label">Open Projects</span>
         </div>
         <div class="stat-card">
-          <span class="stat-num">3</span>
-          <span class="stat-label">Automation Tools</span>
+          <span class="stat-num">Local</span>
+          <span class="stat-label">AI &amp; Developer Tools</span>
         </div>
         <div class="stat-card">
           <span class="stat-num">AI</span>
@@ -88,9 +90,10 @@
     </section>
 
     <div class="skill-strip" aria-label="기술 스택">
-      <span>PYTHON</span><span>RUST</span><span>TYPESCRIPT</span><span>SQL</span><span>INFLUXDB</span><span>AUTOMATION</span>
+      <span>PYTHON</span><span>TYPESCRIPT</span><span>CUDA</span><span>PYSIDE6</span><span>WINDOWS / UBUNTU</span><span>AUTOMATION</span>
     </div>
 
+    <div class="context-grid">
     <p class="exp-note glass">
       한화에너지 GEP 개발팀에서 발전소 데이터 연동 업무를 담당하며 HEIS 플랫폼의 TAG 관리·QC 검증·Backfill·OPC 연동 업무 전반을 자동화 툴로 전환했습니다.
       Report 수동 취합 프로세스를 자동화해 해외 발전소 사이트 운영 효율을 개선했고, HEIS–SCADA 연동 QC 검증 체계를 확립했습니다.
@@ -114,63 +117,98 @@
       </div>
     </div>
 
+    </div>
     <section class="reveal-section" id="repos">
       <div class="section-head">
         <h2>Repositories</h2>
-        <p class="section-sub">Live demos · open work</p>
+        <p class="section-sub">7 projects · updated 2026-10-10 · <a href="https://github.com/savvy773?tab=repositories" target="_blank" rel="noopener noreferrer">All repositories ↗</a></p>
       </div>
       <div class="repo-grid">
-        <a class="repo-card glass" href="https://savvy773.github.io/web-ai-usage/" onclick="return openModal('https://savvy773.github.io/web-ai-usage/','web-ai-usage', event)">
+        <article class="repo-card glass" data-project="ai-analysis">
+          <div class="repo-cover"><span>AI MODEL COMPARISON</span><strong>01</strong><span>AI tools</span></div>
+          <div class="repo-body">
+            <div class="repo-head"><svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg><h3><a href="https://github.com/savvy773/ai-analysis" target="_blank" rel="noopener noreferrer">ai-analysis</a></h3><span class="repo-live">SOURCE</span></div>
+            <p class="repo-desc">AI 모델의 성능·코딩 점수·응답 시간·비용을 비교하는 로컬 브라우저 리포트. 필터와 즐겨찾기로 모델 선택을 돕습니다.</p>
+            <div class="repo-tags"><span>Python</span><span>AI</span><span>Data</span></div>
+          </div>
+          <div class="repo-actions"><a href="https://github.com/savvy773/ai-analysis" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
+        </article>
+
+        <article class="repo-card glass" data-project="prism-platform-site">
+          <div class="repo-cover"><span>WORKSPACE + ERP</span><strong>02</strong><span>Platform</span></div>
+          <div class="repo-body">
+            <div class="repo-head"><svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg><h3><a href="https://github.com/savvy773/prism-platform-site" target="_blank" rel="noopener noreferrer">prism-platform-site</a></h3><span class="repo-live">LIVE</span></div>
+            <p class="repo-desc">PRISM 사내 플랫폼의 공개 소개 사이트와 한국어 영상 제작 도구. 대본에서 음성·영상·자막까지 제작합니다.</p>
+            <div class="repo-tags"><span>TypeScript</span><span>Automation</span><span>Video</span></div>
+          </div>
+          <div class="repo-actions"><a href="https://github.com/savvy773/prism-platform-site" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/prism-platform-site/" onclick="return openModal('https://savvy773.github.io/prism-platform-site/','prism-platform-site', event)">미리보기 ↗</a></div>
+        </article>
+
+        <article class="repo-card glass" data-project="ubuntu-scr-saver">
+          <div class="repo-cover"><span>UBUNTU SYSTEM MONITOR</span><strong>03</strong><span>Dev utility</span></div>
+          <div class="repo-body">
+            <div class="repo-head"><svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg><h3><a href="https://github.com/savvy773/ubuntu-scr-saver" target="_blank" rel="noopener noreferrer">ubuntu-scr-saver</a></h3><span class="repo-live">SOURCE</span></div>
+            <p class="repo-desc">CPU·메모리·디스크 사용량, 시계와 영어 문구를 표시하는 Ubuntu 화면 보호기. 시스템 상태를 한눈에 확인합니다.</p>
+            <div class="repo-tags"><span>TypeScript</span><span>Ubuntu</span><span>Monitoring</span></div>
+          </div>
+          <div class="repo-actions"><a href="https://github.com/savvy773/ubuntu-scr-saver" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
+        </article>
+
+        <article class="repo-card glass" data-project="web-ai-usage">
           <img class="repo-thumb" src="assets/thumbs/web-ai-usage.webp" width="640" height="400" alt="" loading="lazy">
           <div class="repo-body">
             <div class="repo-head">
               <svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg>
-              <h3>web-ai-usage</h3>
+              <h3><a href="https://github.com/savvy773/web-ai-usage" target="_blank" rel="noopener noreferrer">web-ai-usage</a></h3>
               <span class="repo-live">LIVE</span>
             </div>
             <p class="repo-desc">Claude·Codex·Gemini CLI 사용량을 한 화면에서 보는 로컬 대시보드. 클라우드 전송·텔레메트리 없음.</p>
             <div class="repo-tags"><span>TS</span><span>Svel</span></div>
           </div>
-        </a>
+        <div class="repo-actions"><a href="https://github.com/savvy773/web-ai-usage" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/web-ai-usage/" onclick="return openModal('https://savvy773.github.io/web-ai-usage/','web-ai-usage', event)">미리보기 ↗</a></div>
+        </article>
 
-        <a class="repo-card glass" href="https://savvy773.github.io/app-yt-subs/" onclick="return openModal('https://savvy773.github.io/app-yt-subs/','app-yt-subs', event)">
+        <article class="repo-card glass" data-project="app-yt-subs">
           <img class="repo-thumb" src="assets/thumbs/app-yt-subs.webp" width="640" height="400" alt="" loading="lazy">
           <div class="repo-body">
             <div class="repo-head">
               <svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg>
-              <h3>app-yt-subs</h3>
+              <h3><a href="https://github.com/savvy773/app-yt-subs" target="_blank" rel="noopener noreferrer">app-yt-subs</a></h3>
               <span class="repo-live">LIVE</span>
             </div>
             <p class="repo-desc">Flet + Playwright 기반 유튜브 구독 정리 앱. 채널 목록·구독 관리를 데스크톱 UI로 처리.</p>
             <div class="repo-tags"><span>Py</span><span>Flet</span><span>PW</span></div>
           </div>
-        </a>
+        <div class="repo-actions"><a href="https://github.com/savvy773/app-yt-subs" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/app-yt-subs/" onclick="return openModal('https://savvy773.github.io/app-yt-subs/','app-yt-subs', event)">미리보기 ↗</a></div>
+        </article>
 
-        <a class="repo-card glass" href="https://savvy773.github.io/dpi-bye/" onclick="return openModal('https://savvy773.github.io/dpi-bye/','dpi-bye', event)">
+        <article class="repo-card glass" data-project="dpi-bye">
           <img class="repo-thumb" src="assets/thumbs/dpi-bye.webp" width="640" height="400" alt="" loading="lazy">
           <div class="repo-body">
             <div class="repo-head">
               <svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg>
-              <h3>dpi-bye</h3>
+              <h3><a href="https://github.com/savvy773/dpi-bye" target="_blank" rel="noopener noreferrer">dpi-bye</a></h3>
               <span class="repo-live">LIVE</span>
             </div>
             <p class="repo-desc">TLS ClientHello를 분할해 SNI 기반 DPI 차단을 우회하는 WinDivert 툴. KT·SKT·LGU+ 대응.</p>
             <div class="repo-tags"><span>Py</span><span>WinD</span><span>PS</span></div>
           </div>
-        </a>
+        <div class="repo-actions"><a href="https://github.com/savvy773/dpi-bye" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/dpi-bye/" onclick="return openModal('https://savvy773.github.io/dpi-bye/','dpi-bye', event)">미리보기 ↗</a></div>
+        </article>
 
-        <a class="repo-card glass" href="https://savvy773.github.io/stt-whisper/" onclick="return openModal('https://savvy773.github.io/stt-whisper/','stt-whisper', event)">
+        <article class="repo-card glass" data-project="stt-whisper">
           <img class="repo-thumb" src="assets/thumbs/stt-whisper.webp" width="640" height="400" alt="" loading="lazy">
           <div class="repo-body">
             <div class="repo-head">
               <svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg>
-              <h3>stt-whisper</h3>
+              <h3><a href="https://github.com/savvy773/stt-whisper" target="_blank" rel="noopener noreferrer">stt-whisper</a></h3>
               <span class="repo-live">LIVE</span>
             </div>
             <p class="repo-desc">단축키로 어디서든 실시간 받아쓰기하는 온디바이스 STT 유틸. faster-whisper 기반 GPU 추론, 클라우드 전송 없음.</p>
             <div class="repo-tags"><span>Py</span><span>Qt</span><span>CUDA</span></div>
           </div>
-        </a>
+        <div class="repo-actions"><a href="https://github.com/savvy773/stt-whisper" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/stt-whisper/" onclick="return openModal('https://savvy773.github.io/stt-whisper/','stt-whisper', event)">미리보기 ↗</a></div>
+        </article>
       </div>
     </section>
 

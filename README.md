@@ -43,13 +43,14 @@
 | | |
 |---|---|
 | **Hero** | 소개·경력 요약·현재 학습 중, 스킬 스트립 |
-| **Repositories** | 오픈소스·데모 (web-ai-usage, app-yt-subs, dpi-bye, stt-whisper) |
+| **Repositories** | 공개 프로젝트 7개 (ai-analysis, prism-platform-site, ubuntu-scr-saver, web-ai-usage, app-yt-subs, dpi-bye, stt-whisper), GitHub 소스·미리보기 링크 |
 | **Journey** | HEIS Tool, OPC-ISL, 인수인계, SSH 보안 등 개발 여정 문서 |
 | **Resume** | 모달로 바로 보는 이력서 (`resume/resume.html`) |
 
 ## Structure
 
 ```text
+├── content.md          # 콘텐츠 수정 경로 안내
 ├── index.html          # 마크업·메타
 ├── css/site.css        # 토큰·페이퍼 그레인·글래스 카드·반응형
 ├── js/
