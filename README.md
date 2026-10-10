@@ -54,7 +54,7 @@ PRISM Workspace + ERP의 설계·React/TypeScript 프론트엔드·FastAPI 백�
 ├── index.html          # 마크업·메타
 ├── css/site.css        # 토큰·카드·반응형
 ├── js/
-│   ├── app.js          # 모달·스크롤·reveal·카드 틸트·타임라인
+│   ├── app.js          # 모달·스크롤·reveal·카드 틸트·업무 기록
 │   └── effects.js      # 비활성 stub (구 Canvas FX 자리, 미로드)
 ├── assets/thumbs/      # 리포·저니 카드 썸네일 (webp)
 ├── journey/            # Journey HTML 문서

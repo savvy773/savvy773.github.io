@@ -18,7 +18,7 @@ savvy773.github.io/
 ├── css/
 │   └── site.css            # 토큰·페이퍼 그레인·글래스 카드·호버·반응형
 ├── js/
-│   ├── app.js              # 모달·스크롤·reveal·카드 틸트·타임라인 진행
+│   ├── app.js              # 모달·스크롤·reveal·카드 틸트·업무 기록 그리드
 │   └── effects.js          # no-op (구 Canvas FX 자리, 로드하지 않음)
 ├── journey/                # Journey HTML 문서
 ├── resume/
@@ -34,7 +34,7 @@ savvy773.github.io/
 |------|------|
 | `index.html` | 구조·콘텐츠, 배경은 CSS `.paper-grain`만 사용 |
 | `css/site.css` | 전역 스타일, 페이퍼 그레인 라이트 테마 (블러 없는 불투명 글래스) |
-| `js/app.js` | 모달, 스크롤 topbar 상태, reveal, 카드 틸트, 타임라인 진행 바 |
+| `js/app.js` | 모달, 스크롤 topbar 상태, reveal, 카드 틸트, 프로젝트 필터 |
 | `js/effects.js` | 비활성 stub (호환용, `index.html`에서 미로드) |
 
 ---
@@ -86,7 +86,7 @@ savvy773.github.io/
 | 커서 추적 최소화 | pointermove는 `repo-card`/`tl-item` 호버 틸트에만 사용, 페이지 전역 스포트라이트 없음 |
 | 호버만 모션 | `@media (hover: hover)` + transform/box-shadow (요소 단위) |
 | 블러 회피 | `backdrop-filter` 미사용 → 반투명 불투명 패널(`.glass`) |
-| 스크롤 | 탑바 `is-scrolled` 토글 + 타임라인 진행 높이만 (`rAF` 스로틀) |
+| 스크롤 | 탑바 `is-scrolled` 토글 (`rAF` 스로틀) |
 | Reveal | opacity + translateY 1회성 페이드 (연속 애니 없음) |
 
 목표: 유휴·스크롤 시 GPU **수 % 이하** (실측 ~3% 미만 구간).
@@ -100,7 +100,7 @@ savvy773.github.io/
 | **모달** | 네이티브 `<dialog>` + iframe (`?v=timestamp` 캐시 무효화) |
 | **Reveal** | `IntersectionObserver` + `content-visibility: auto`, 섹션 1회 등장 |
 | **카드 틸트** | `repo-card` / `tl-item`에 `mousemove` 기반 3D 틸트 (hover + fine pointer 전용, `reduced-motion` 제외) |
-| **Journey 타임라인** | 스크롤 진행 바 (`#timelineProgress`) |
+| **Journey 업무 기록** | PC 3열·태블릿 2열·모바일 1열의 간결한 문서 카드 |
 | **탑바** | 스크롤 시 `.is-scrolled` |
 
 상단 메뉴: **Projects · Journey · GitHub · Resume**  

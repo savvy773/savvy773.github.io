@@ -1,4 +1,4 @@
-/* site app: modal preview, reveal, timeline progress */
+/* site app: modal preview, project filters and reveal */
 (function () {
   'use strict';
 
@@ -110,9 +110,6 @@
   })();
 
   // ── card tilt: hover/pointer-only, no idle GPU cost — resets on leave ──
-  // .tl-item is excluded: it sits in a straight timeline row, so a 3D tilt
-  // reads as crooked/misaligned against the guide line — it gets a plain
-  // vertical hover lift from CSS instead (see .tl-item:hover).
   (function () {
     if (reduced || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
     const TILT = 6; // deg
@@ -138,31 +135,6 @@
         el.style.transform = '';
       });
     });
-  })();
-
-  // ── timeline progress (height 1개만) ──
-  (function () {
-    const track = document.getElementById('timeline');
-    const fill = document.getElementById('timelineProgress');
-    if (!track || !fill) return;
-    const inset = 6;
-    let ticking = false;
-
-    function update() {
-      ticking = false;
-      const rect = track.getBoundingClientRect();
-      const atBottom = Math.ceil(scrollY + innerHeight) >= document.documentElement.scrollHeight - 1;
-      const rawProgress = (innerHeight - rect.top) / (innerHeight + rect.height);
-      const progress = atBottom ? 1 : Math.min(1, Math.max(0, rawProgress));
-      const total = Math.max(0, track.clientHeight - inset * 2);
-      fill.style.height = (total * progress) + 'px';
-    }
-    function onScroll() {
-      if (!ticking) { ticking = true; requestAnimationFrame(update); }
-    }
-    addEventListener('scroll', onScroll, { passive: true });
-    addEventListener('resize', onScroll, { passive: true });
-    update();
   })();
 
   window.openModal = openModal;
