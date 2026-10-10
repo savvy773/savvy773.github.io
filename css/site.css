@@ -10,21 +10,21 @@
   --text-2: #485970;
   --text-dim: #5e6e83;
   --accent: #2459d3;
-  --accent-2: #08786c;
+  --accent-2: #365a96;
   --accent-soft: rgba(36, 89, 211, 0.07);
   --accent-glow: rgba(36, 89, 211, 0.15);
-  --teal-soft: rgba(8, 120, 108, 0.07);
+  --accent-muted: rgba(36, 89, 211, 0.06);
   --shadow: 0 2px 8px rgba(24, 39, 64, 0.04);
   --shadow-lg: 0 12px 28px rgba(24, 39, 64, 0.12);
   --r: 12px;
   --r-lg: 16px;
   --mono: 'IBM Plex Mono', ui-monospace, monospace;
-  --display: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --display: 'Inter', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --topbar-h: 64px;
 
-  /* paper card surface — flat warm panel, no blur */
+  /* Shared white card surface, no blur. */
   --glass-bg: var(--paper);
   --glass-border: 1px solid var(--border);
 }
@@ -63,7 +63,7 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
 
 body {
   margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Pretendard, sans-serif;
+  font-family: 'Inter', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, "Segoe UI", Pretendard, sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.65;
@@ -81,7 +81,7 @@ body {
   pointer-events: none;
   background:
     radial-gradient(ellipse 80% 50% at 0% 0%, rgba(36, 89, 211, 0.08), transparent 65%),
-    radial-gradient(ellipse 70% 60% at 100% 30%, rgba(8, 120, 108, 0.05), transparent 65%);
+    radial-gradient(ellipse 70% 60% at 100% 30%, rgba(36, 89, 211, 0.04), transparent 65%);
 }
 
 /* ── paper grain: fixed noise layer, replaces the old video background ── */
@@ -110,7 +110,7 @@ body {
   opacity: 0.9;
 }
 
-/* ── paper card utility (opaque warm panel) ── */
+/* Shared opaque card surface. */
 .glass {
   background: var(--glass-bg);
   border: var(--glass-border);
@@ -135,7 +135,7 @@ body {
 }
 html.is-scrolled .topbar {
   border-bottom-color: var(--border-hi);
-  box-shadow: 0 8px 24px rgba(38, 31, 22, 0.08);
+  box-shadow: 0 8px 24px rgba(24, 39, 64, 0.08);
 }
 .topbar-inner {
   max-width: 1320px;
@@ -194,7 +194,7 @@ html.is-scrolled .topbar {
   gap: 4px;
   padding: 5px;
   border-radius: 999px;
-  background: rgba(38, 31, 22, 0.03);
+  background: rgba(24, 39, 64, 0.03);
   border: 1px solid var(--border);
   min-width: 0;
   flex-shrink: 1;
@@ -210,10 +210,10 @@ html.is-scrolled .topbar {
 }
 .topnav a:hover {
   color: var(--text);
-  background: rgba(38, 31, 22, 0.06);
+  background: rgba(24, 39, 64, 0.06);
 }
 .topnav a.nav-cta {
-  color: #fbf5e9;
+  color: #ffffff;
   font-weight: 600;
   background: var(--accent);
 }
@@ -398,7 +398,7 @@ h1 .hl {
   .skill-strip span:hover {
     color: var(--accent-2);
     border-color: var(--accent-2);
-    background: var(--teal-soft);
+    background: var(--accent-muted);
     transform: translateY(-2px);
   }
 }
@@ -441,7 +441,7 @@ h1 .hl {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--teal-soft);
+  background: var(--accent-muted);
   border: 1px solid var(--border);
 }
 .learning-note .li-icon svg {
@@ -479,7 +479,7 @@ h1 .hl {
   .learning-tags span:hover {
     color: var(--accent-2);
     border-color: var(--accent-2);
-    background: var(--teal-soft);
+    background: var(--accent-muted);
     transform: translateY(-2px);
   }
 }
@@ -530,7 +530,7 @@ h2::before {
 .repo-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.9rem;
+  gap: 0.75rem;
 }
 .repo-card {
   position: relative;
@@ -557,7 +557,7 @@ h2::before {
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 1rem 1.15rem 1.05rem;
+  padding: 0.7rem 0.85rem;
 }
 .repo-card:focus,
 .repo-card:focus-visible,
@@ -585,8 +585,8 @@ h2::before {
 .repo-head {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.6rem;
+  gap: 0.4rem;
+  margin-bottom: 0.4rem;
 }
 .repo-head svg,
 .repo-head .icon-gh {
@@ -598,7 +598,7 @@ h2::before {
 }
 .repo-head h3 {
   margin: 0;
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   font-weight: 700;
   font-family: var(--mono);
   flex: 1;
@@ -618,7 +618,7 @@ h2::before {
   gap: 0.25rem;
   padding: 0.15rem 0.42rem;
   border-radius: 999px;
-  background: var(--teal-soft);
+  background: var(--accent-muted);
   border: 1px solid var(--border);
   flex-shrink: 0;
   transition: border-color 0.25s;
@@ -631,11 +631,11 @@ h2::before {
   background: var(--accent-2);
 }
 .repo-desc {
-  margin: 0 0 0.85rem;
+  margin: 0 0 0.55rem;
   color: var(--text-2);
-  font-size: 0.82rem;
-  line-height: 1.52;
-  min-height: 3.75rem;
+  font-size: 0.79rem;
+  line-height: 1.5;
+  min-height: 0;
   flex: 1;
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -765,7 +765,7 @@ h2::before {
   font-size: 0.58rem;
   color: var(--accent-2);
   padding: 0.06rem 0.4rem;
-  background: var(--teal-soft);
+  background: var(--accent-muted);
   border: 1px solid var(--border);
   border-radius: 6px;
 }
@@ -830,7 +830,7 @@ footer a {
 footer a:hover {
   color: var(--accent-2);
   border-color: var(--border);
-  background: var(--teal-soft);
+  background: var(--accent-muted);
 }
 
 /* ── Responsive ── */
@@ -931,7 +931,7 @@ dialog.modal-frame {
   color: var(--text);
   border: 1px solid var(--border-hi);
   border-radius: var(--r-lg);
-  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(38, 31, 22, 0.04);
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(24, 39, 64, 0.04);
   flex-direction: column;
   overflow: hidden;
 }
@@ -940,7 +940,7 @@ dialog.modal-frame[open] {
   animation: modalIn 0.25s var(--ease);
 }
 dialog.modal-frame::backdrop {
-  background: rgba(38, 31, 22, 0.35);
+  background: rgba(24, 39, 64, 0.35);
 }
 @keyframes modalIn {
   from { opacity: 0; transform: scale(0.97) translateY(8px); }
@@ -983,7 +983,7 @@ dialog.modal-frame::backdrop {
   transition: background 0.15s, border-color 0.15s;
 }
 .modal-actions a:hover {
-  background: var(--teal-soft);
+  background: var(--accent-muted);
   border-color: var(--accent-2);
 }
 .modal-close {
@@ -1113,11 +1113,11 @@ h1 { animation-delay: 0.06s; }
 .repo-actions { position: relative; z-index: 1; }
 .section-sub a:hover, .repo-head a:hover { color: var(--accent); text-decoration: underline; }
 .repo-head h3 { white-space: normal; overflow-wrap: anywhere; }
-.repo-thumb { height: 160px; aspect-ratio: auto; }
+.repo-thumb { height: 104px; aspect-ratio: auto; }
 .repo-desc { display: block; overflow: visible; }
 .repo-actions { margin-top: auto; }
-.repo-actions { display: flex; justify-content: space-between; gap: 1rem; padding: 0.8rem 1.15rem; border-top: 1px solid var(--border); }
-.repo-actions a { color: var(--accent); font-size: 0.8rem; font-weight: 600; text-decoration: none; padding: 0.25rem 0; }
+.repo-actions { display: flex; justify-content: space-between; gap: 0.75rem; padding: 0.35rem 0.85rem; border-top: 1px solid var(--border); }
+.repo-actions a { color: var(--accent); font-size: 0.75rem; font-weight: 600; text-decoration: none; padding: 0.25rem 0; }
 .repo-actions a:hover { text-decoration: underline; }
 .project-map { display: grid; grid-template-columns: 100px repeat(3, minmax(0, 1fr)); gap: 0.7rem; }
 .project-map button { font: inherit; text-align: left; color: var(--text-2); background: var(--paper); border: 1px solid var(--border-hi); border-radius: var(--r); padding: 0.9rem 1rem; cursor: pointer; }
@@ -1159,4 +1159,10 @@ h1 { animation-delay: 0.06s; }
   .project-map { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .prism-feature { grid-template-columns: 1fr; gap: 1rem; padding: 1.15rem; }
 }
-@media (max-width: 560px) { .repo-grid { grid-template-columns: 1fr; } }
+@media (max-width: 560px) {
+  .repo-grid { grid-template-columns: 1fr; }
+  .repo-card { display: grid; grid-template-columns: 96px minmax(0, 1fr); grid-template-rows: 1fr auto; }
+  .repo-thumb { grid-row: 1 / -1; width: 96px; height: 100%; min-height: 140px; object-fit: contain; object-position: center; border-bottom: 0; border-right: 1px solid var(--border); }
+  .repo-body { min-width: 0; }
+  .repo-actions { grid-column: 2; gap: 0.5rem; }
+}

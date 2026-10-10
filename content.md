@@ -13,3 +13,5 @@ Project descriptions were checked against the public `savvy773` GitHub repositor
 The project map groups three AI tools, two automation projects, and two developer utilities. When moving or adding a card, update its `data-category` and the corresponding map count and bar share in `index.html`. Screenshots for the three latest projects come from their public README images or deployed introduction page.
 
 PRISM is the featured initial ERP setup case study in the introduction and Journey. Its original repository is private; link visitors only to the public introduction site. Keep its in-development status explicit. List public tools in Repositories; Journey contains the ERP case study and historical work documents without repeating the project cards.
+
+Project cards use compact previews and spacing on desktop, and a thumbnail beside the content on narrow screens. Keep descriptions fully visible and project links available. The page shares white surfaces and blue accents across Projects, Journey, navigation, and dialogs.

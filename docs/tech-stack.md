@@ -53,8 +53,8 @@ savvy773.github.io/
 
 | 용도 | 패밀리 |
 |------|--------|
-| 본문·UI | **Inter** (Google Fonts) |
-| 디스플레이 헤드라인 | **Fraunces** (`--display`, 세리프) |
+| 본문·UI | **Inter · Noto Sans KR** (Google Fonts, 영문·한글) |
+| 디스플레이 헤드라인 | **Inter · Noto Sans KR** (`--display`, 산세리프) |
 | 모노·라벨 | **IBM Plex Mono** (`--mono`) |
 
 - `preconnect` + `display=swap`
@@ -67,7 +67,7 @@ savvy773.github.io/
 
 | 레이어 | 역할 | 구현 |
 |--------|------|------|
-| `.mesh-tint` (z-index -3) | 코너 컬러 워시 (좌상단 accent, 우측 accent-2) | 라디얼 그라데이션 2겹, 자체 `opacity: 1` |
+| `.mesh-tint` (z-index -3) | 좌상단·우측의 블루 컬러 워시 | 라디얼 그라데이션 2겹, 자체 `opacity: 1` |
 | `.paper-grain` (z-index -2) | 종이 질감 노이즈 | `feTurbulence` 기반 인라인 SVG data URI, `mix-blend-mode: multiply`, `opacity: 0.34` (모바일·`reduced-motion` 0.22) |
 | 상단 | `.accent-bar` — 3px 고정 accent 컬러 바 |
 
