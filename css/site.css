@@ -22,7 +22,7 @@
   --display: 'Inter', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --topbar-h: 64px;
+  --topbar-h: 56px;
 
   /* Shared ivory card surface, no blur. */
   --glass-bg: var(--paper);
@@ -124,8 +124,8 @@ body {
   z-index: 50;
   display: flex;
   align-items: center;
-  padding: 10px 1.5rem;
-  padding-top: max(10px, env(safe-area-inset-top, 0px));
+  padding: 6px 1.5rem;
+  padding-top: max(6px, env(safe-area-inset-top, 0px));
   padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
   padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
   margin-top: 3px;
@@ -138,7 +138,7 @@ html.is-scrolled .topbar {
   box-shadow: 0 8px 24px rgba(38, 31, 22, 0.08);
 }
 .topbar-inner {
-  max-width: 1040px;
+  max-width: 960px;
   margin: 0 auto;
   width: 100%;
   display: flex;
@@ -156,15 +156,15 @@ html.is-scrolled .topbar {
 .brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   text-decoration: none;
   color: inherit;
   flex-shrink: 0;
 }
 .brand-mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
   background: var(--paper);
   border: 1.5px solid var(--accent);
   display: flex;
@@ -172,7 +172,7 @@ html.is-scrolled .topbar {
   justify-content: center;
   color: var(--accent);
   font-weight: 700;
-  font-size: 15px;
+  font-size: 14px;
   font-family: var(--display);
   transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
 }
@@ -182,8 +182,8 @@ html.is-scrolled .topbar {
 }
 .brand-name {
   font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.14em;
+  font-size: 11px;
+  letter-spacing: 0.1em;
   color: var(--text-2);
   font-weight: 500;
 }
@@ -191,8 +191,8 @@ html.is-scrolled .topbar {
 .topnav {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 5px;
+  gap: 3px;
+  padding: 3px;
   border-radius: 999px;
   background: rgba(38, 31, 22, 0.03);
   border: 1px solid var(--border);
@@ -200,11 +200,14 @@ html.is-scrolled .topbar {
   flex-shrink: 1;
 }
 .topnav a {
-  font-size: 13px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  line-height: 1.4;
   font-weight: 500;
   color: var(--text-2);
   text-decoration: none;
-  padding: 8px 14px;
+  padding: 6px 10px;
   border-radius: 999px;
   transition: color 0.2s, background 0.2s, transform 0.2s;
 }
@@ -812,19 +815,19 @@ footer a:hover {
   .brand-name { display: none; }
   .brand-cluster { gap: 8px; }
   .topbar {
-    padding: 10px 0.9rem;
-    padding-top: max(10px, env(safe-area-inset-top, 0px));
+    padding: 6px 0.9rem;
+    padding-top: max(6px, env(safe-area-inset-top, 0px));
     padding-left: max(0.9rem, env(safe-area-inset-left, 0px));
     padding-right: max(0.9rem, env(safe-area-inset-right, 0px));
   }
   .topnav a {
-    padding: 8px 11px;
+    padding: 6px 9px;
     font-size: 12px;
     min-height: 36px;
   }
   /* Projects/Journey duplicate the hero CTAs right below the fold —
      drop them here so GitHub + Resume stay visible in the pill */
-  .topnav-anchor { display: none; }
+  .topnav .topnav-anchor { display: none; }
   .wrap {
     padding: 3rem 1.15rem 3.5rem;
     padding-bottom: max(3.5rem, env(safe-area-inset-bottom, 0px) + 2rem);
