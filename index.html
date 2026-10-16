@@ -120,16 +120,26 @@
     <section class="reveal-section" id="repos">
       <div class="section-head">
         <h2>Repositories</h2>
-        <p class="section-sub">7 projects · updated 2026-10-10 · <a href="https://github.com/savvy773?tab=repositories" target="_blank" rel="noopener noreferrer">All repositories ↗</a></p>
+        <p class="section-sub">7 projects · 1 private · updated 2026-10-17 · <a href="https://github.com/savvy773?tab=repositories" target="_blank" rel="noopener noreferrer">All repositories ↗</a></p>
       </div>
       <div class="project-map" role="group" aria-label="프로젝트 분야별 보기" hidden>
         <button class="map-all" type="button" data-filter="all" aria-pressed="true">전체 <strong>7</strong></button>
         <button type="button" data-filter="ai" aria-pressed="false"><span class="map-label">AI 도구 <strong>3</strong></span><span class="map-track" aria-hidden="true"><span style="--share: 43%"></span></span><span class="map-flow">음성·모델·사용량 → 입력과 비교</span></button>
-        <button type="button" data-filter="automation" aria-pressed="false"><span class="map-label">업무 자동화 <strong>2</strong></span><span class="map-track" aria-hidden="true"><span style="--share: 29%"></span></span><span class="map-flow">반복 작업·대본 → 관리와 영상</span></button>
+        <button type="button" data-filter="automation" aria-pressed="false"><span class="map-label">업무 자동화 <strong>2</strong></span><span class="map-track" aria-hidden="true"><span style="--share: 29%"></span></span><span class="map-flow">업무 데이터·반복 작업 → ERP와 구독 관리</span></button>
         <button type="button" data-filter="utility" aria-pressed="false"><span class="map-label">개발 유틸리티 <strong>2</strong></span><span class="map-track" aria-hidden="true"><span style="--share: 29%"></span></span><span class="map-flow">시스템·네트워크 → 모니터링과 연결</span></button>
       </div>
       <p class="project-result" role="status" aria-live="polite" hidden>전체 프로젝트 7개</p>
       <div class="repo-grid">
+        <article class="repo-card glass" data-project="prism-erp" data-category="automation">
+          <img class="repo-thumb" src="assets/thumbs/prism-erp.svg" alt="PRISM Workspace + ERP 업무 모듈 구성" loading="lazy">
+          <div class="repo-body">
+            <div class="repo-head"><svg class="icon-gh" aria-hidden="true" viewBox="0 0 16 16"><path fill="currentColor" d="M4 7V5a4 4 0 0 1 8 0v2h.5A1.5 1.5 0 0 1 14 8.5v5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5v-5A1.5 1.5 0 0 1 3.5 7H4zm1.5 0h5V5a2.5 2.5 0 0 0-5 0v2z"/></svg><h3><a href="#journey">PRISM Workspace + ERP</a></h3><span class="repo-live">PRIVATE</span></div>
+            <p class="repo-desc">혼자서 처음부터 설계·개발·배포한 사내 업무 플랫폼. 문서·주간업무·프로젝트와 매출·구매·재고·생산·재무·인사·보고를 하나로 연결합니다.</p>
+            <div class="repo-tags"><span>React</span><span>FastAPI</span><span>PostgreSQL</span></div>
+          </div>
+          <div class="repo-actions"><a href="#journey">개발 사례 보기 ↓</a></div>
+        </article>
+
         <article class="repo-card glass" data-project="ai-analysis" data-category="ai">
           <img class="repo-thumb" src="assets/thumbs/ai-analysis.png" alt="AI 모델 점수·비용·응답 시간 비교 화면" loading="lazy">
           <div class="repo-body">
@@ -140,15 +150,6 @@
           <div class="repo-actions"><a href="https://github.com/savvy773/ai-analysis" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="assets/thumbs/ai-analysis.png" onclick="return openModal('assets/thumbs/ai-analysis.png','ai-analysis 화면', event)">화면 보기 ↗</a></div>
         </article>
 
-        <article class="repo-card glass" data-project="prism-platform-site" data-category="automation">
-          <img class="repo-thumb" src="assets/thumbs/prism-platform-site.png" alt="PRISM 업무 플랫폼 공개 소개 페이지" loading="lazy">
-          <div class="repo-body">
-            <div class="repo-head"><svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg><h3><a href="https://github.com/savvy773/prism-platform-site" target="_blank" rel="noopener noreferrer">prism-platform-site</a></h3><span class="repo-live">LIVE</span></div>
-            <p class="repo-desc">PRISM 사내 플랫폼의 공개 소개 사이트와 한국어 영상 제작 도구. 대본에서 음성·영상·자막까지 제작합니다.</p>
-            <div class="repo-tags"><span>TypeScript</span><span>Automation</span><span>Video</span></div>
-          </div>
-          <div class="repo-actions"><a href="https://github.com/savvy773/prism-platform-site" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/prism-platform-site/" onclick="return openModal('https://savvy773.github.io/prism-platform-site/','prism-platform-site', event)">미리보기 ↗</a></div>
-        </article>
 
         <article class="repo-card glass" data-project="ubuntu-scr-saver" data-category="utility">
           <img class="repo-thumb" src="assets/thumbs/ubuntu-scr-saver.png" alt="Ubuntu 화면 보호기의 시계와 시스템 리소스 모니터" loading="lazy">
@@ -171,7 +172,7 @@
             <p class="repo-desc">Claude·Codex·Gemini CLI 사용량을 한 화면에서 보는 로컬 대시보드. 클라우드 전송·텔레메트리 없음.</p>
             <div class="repo-tags"><span>TS</span><span>Svel</span></div>
           </div>
-        <div class="repo-actions"><a href="https://github.com/savvy773/web-ai-usage" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/web-ai-usage/" onclick="return openModal('https://savvy773.github.io/web-ai-usage/','web-ai-usage', event)">미리보기 ↗</a></div>
+        <div class="repo-actions"><a href="https://github.com/savvy773/web-ai-usage" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/web-ai-usage/" target="_blank" rel="noopener noreferrer">미리보기 ↗</a></div>
         </article>
 
         <article class="repo-card glass" data-project="app-yt-subs" data-category="automation">
@@ -185,7 +186,7 @@
             <p class="repo-desc">Flet + Playwright 기반 유튜브 구독 정리 앱. 채널 목록·구독 관리를 데스크톱 UI로 처리.</p>
             <div class="repo-tags"><span>Py</span><span>Flet</span><span>PW</span></div>
           </div>
-        <div class="repo-actions"><a href="https://github.com/savvy773/app-yt-subs" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/app-yt-subs/" onclick="return openModal('https://savvy773.github.io/app-yt-subs/','app-yt-subs', event)">미리보기 ↗</a></div>
+        <div class="repo-actions"><a href="https://github.com/savvy773/app-yt-subs" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/app-yt-subs/" target="_blank" rel="noopener noreferrer">미리보기 ↗</a></div>
         </article>
 
         <article class="repo-card glass" data-project="dpi-bye" data-category="utility">
@@ -199,7 +200,7 @@
             <p class="repo-desc">TLS ClientHello를 분할해 SNI 기반 DPI 차단을 우회하는 WinDivert 툴. KT·SKT·LGU+ 대응.</p>
             <div class="repo-tags"><span>Py</span><span>WinD</span><span>PS</span></div>
           </div>
-        <div class="repo-actions"><a href="https://github.com/savvy773/dpi-bye" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/dpi-bye/" onclick="return openModal('https://savvy773.github.io/dpi-bye/','dpi-bye', event)">미리보기 ↗</a></div>
+        <div class="repo-actions"><a href="https://github.com/savvy773/dpi-bye" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/dpi-bye/" target="_blank" rel="noopener noreferrer">미리보기 ↗</a></div>
         </article>
 
         <article class="repo-card glass" data-project="stt-whisper" data-category="ai">
@@ -213,7 +214,7 @@
             <p class="repo-desc">단축키로 어디서든 실시간 받아쓰기하는 온디바이스 STT 유틸. faster-whisper 기반 GPU 추론, 클라우드 전송 없음.</p>
             <div class="repo-tags"><span>Py</span><span>Qt</span><span>CUDA</span></div>
           </div>
-        <div class="repo-actions"><a href="https://github.com/savvy773/stt-whisper" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/stt-whisper/" onclick="return openModal('https://savvy773.github.io/stt-whisper/','stt-whisper', event)">미리보기 ↗</a></div>
+        <div class="repo-actions"><a href="https://github.com/savvy773/stt-whisper" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/stt-whisper/" target="_blank" rel="noopener noreferrer">미리보기 ↗</a></div>
         </article>
       </div>
     </section>
@@ -227,8 +228,7 @@
         <div class="prism-feature-copy">
           <span class="feature-label">FEATURED WORK · 개발 중</span>
           <h3 id="prismFeatureTitle">ERP 초기 구축 사례 — PRISM</h3>
-          <p>Workspace + ERP를 설계·구현·배포까지 직접 개발하고 있습니다. 문서·프로젝트·일정과 매출·구매·재고·생산·인사·보고 데이터를 하나의 업무 흐름으로 연결합니다.</p>
-          <a class="feature-link" href="https://savvy773.github.io/prism-platform-site/" onclick="return openModal('https://savvy773.github.io/prism-platform-site/','PRISM 공개 소개', event)">PRISM 공개 소개 보기 ↗</a>
+          <p>Workspace + ERP를 혼자서 처음부터 설계·구현·배포까지 개발하고 있습니다. 문서·프로젝트·일정과 매출·구매·재고·생산·인사·보고 데이터를 하나의 업무 흐름으로 연결합니다.</p>
         </div>
         <ol class="prism-flow" aria-label="PRISM 개발 범위">
           <li><span class="flow-number">01</span><div><strong>설계</strong><span>업무 흐름 · 데이터 모델</span></div></li>
