@@ -17,3 +17,5 @@ PRISM, built solo from scratch, is the largest project and the featured initial 
 Project cards use compact previews and spacing on desktop, and a thumbnail beside the content on narrow screens. Keep descriptions fully visible and project links available. The main page follows the resume and Journey work documents: beige backgrounds, ivory surfaces, brown accents, and muted green secondary accents across Projects, Journey, navigation, and dialogs.
 
 Keep the introduction and summary metrics compact. PRISM development steps use a 2-by-2 grid; five work records use three columns on desktop, two on tablet, and one on mobile, with short summaries and a clear section heading.
+
+Google Fonts links use `display=optional`, not `swap`: a late font swap shifts the layout on first visit (CLS). Keep it on every page.
