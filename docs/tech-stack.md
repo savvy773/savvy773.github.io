@@ -3,7 +3,7 @@
 빌드리스(no build step) 정적 포트폴리오.
 프레임워크·번들러 없이 **순수 HTML / CSS / JS**만 사용합니다.
 
-- **사이트**: https://savvy773.github.io/
+- **사이트**: https://juns.win/ (Cloudflare, `scripts/deploy-cf.sh`) · https://savvy773.github.io/ 는 juns.win으로 이동
 - **저장소**: https://github.com/savvy773/savvy773.github.io
 
 ---
