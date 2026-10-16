@@ -1083,7 +1083,7 @@ h1 { animation-delay: 0.06s; }
 .map-track > span { display: block; height: 100%; width: var(--share); background: var(--accent-2); border-radius: inherit; }
 .map-flow { display: block; font-size: 0.72rem; word-break: keep-all; }
 .project-result { color: var(--text-dim); font-size: 0.75rem; margin: 0.7rem 0 1rem; }
-.prism-feature { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 1.25rem; padding: 1rem 1.15rem; border-radius: var(--r-lg); border-top: 3px solid var(--accent); }
+.prism-feature { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: start; gap: 1rem 1.25rem; padding: 1rem 1.15rem; border-radius: var(--r-lg); border-top: 3px solid var(--accent); }
 .feature-label { color: var(--accent); font: 600 0.7rem var(--mono); }
 .prism-feature h3 { margin: 0.4rem 0; font-size: 1.15rem; letter-spacing: -0.03em; }
 .prism-feature p { font-size: 0.83rem; color: var(--text-2); line-height: 1.6; margin: 0 0 0.5rem; word-break: keep-all; }
@@ -1093,7 +1093,26 @@ h1 { animation-delay: 0.06s; }
 .prism-flow li { display: flex; align-items: center; gap: 0.6rem; padding: 0.55rem 0.65rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); }
 .flow-number { font: 500 0.8rem var(--mono); color: var(--accent); }
 .prism-flow strong { display: block; font-size: 0.85rem; }
-.prism-flow div > span { display: block; font-size: 0.75rem; color: var(--text-dim); }
+.prism-flow div > span { display: block; font-size: 0.75rem; color: var(--text-dim); word-break: keep-all; }
+.prism-facts { list-style: none; margin: 0.75rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; }
+.prism-facts li { padding: 0.5rem 0.65rem; border-left: 2px solid var(--accent-2); background: var(--accent-muted); border-radius: 0 8px 8px 0; }
+.prism-facts strong { display: block; font-size: 1.05rem; color: var(--text); }
+.prism-facts span { display: block; font-size: 0.72rem; color: var(--text-dim); word-break: keep-all; }
+.prism-shots { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+.prism-shot { display: block; color: inherit; text-decoration: none; border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; background: #1c1d20; }
+.prism-shot img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: left top; }
+.shot-caption { display: flex; justify-content: space-between; gap: 0.5rem; padding: 0.5rem 0.7rem; background: var(--paper); border-top: 1px solid var(--border); font-size: 0.78rem; }
+.shot-caption span { color: var(--accent-2); font-size: 0.7rem; font-weight: 500; white-space: nowrap; align-self: center; }
+.prism-detail { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.15fr); gap: 0.75rem; }
+.prism-block { padding: 0.75rem 0.85rem; border: 1px solid var(--border); border-radius: var(--r); background: var(--bg); }
+.prism-detail h4 { margin: 0 0 0.5rem; font-size: 0.85rem; }
+.prism-detail ul { margin: 0; padding-left: 1rem; display: grid; gap: 0.3rem; font-size: 0.76rem; line-height: 1.55; color: var(--text-2); word-break: keep-all; }
+.prism-detail b { color: var(--text); margin-right: 0.2rem; }
+.prism-feature .prism-next { margin: 0.55rem 0 0; font-size: 0.72rem; color: var(--text-dim); }
+.prism-stack { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.4rem 0.6rem; align-items: baseline; }
+.prism-stack dt { font: 600 0.68rem var(--mono); color: var(--accent); }
+.prism-stack dd { margin: 0; display: flex; flex-wrap: wrap; gap: 0.25rem; }
+.prism-stack dd span { font-size: 0.7rem; padding: 0.1rem 0.45rem; border: 1px solid var(--border); border-radius: 999px; background: var(--paper); color: var(--text-2); }
 .journey-records-heading { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin: 1.15rem 0 0.7rem; }
 .journey-note { display: flex; align-items: center; gap: 0.55rem; font-size: 0.95rem; font-weight: 700; color: var(--text); margin: 0; }
 .journey-note::before { content: ""; width: 3px; height: 16px; border-radius: 2px; background: var(--accent-2); flex-shrink: 0; }
@@ -1114,6 +1133,8 @@ h1 { animation-delay: 0.06s; }
   .hero { grid-template-columns: minmax(0, 1fr) 270px; gap: 0 1.5rem; }
   .repo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .timeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .prism-detail { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .prism-block:last-child { grid-column: 1 / -1; }
 }
 @media (max-width: 720px) {
   .hero { display: block; }
@@ -1123,6 +1144,7 @@ h1 { animation-delay: 0.06s; }
   .context-grid { grid-template-columns: 1fr; }
   .project-map { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .prism-feature { grid-template-columns: 1fr; gap: 0.75rem; padding: 0.9rem; }
+  .prism-shots, .prism-detail { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
   .repo-grid { grid-template-columns: 1fr; }

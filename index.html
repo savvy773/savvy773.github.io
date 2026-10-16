@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=optional">
-<link rel="stylesheet" href="css/site.css?v=2cd32988751d">
+<link rel="stylesheet" href="css/site.css?v=36e2eecea7f0">
 </head>
 <body>
   <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -109,7 +109,7 @@
         </svg>
       </span>
       <div class="li-body">
-        <p><b>PRISM ERP 플랫폼을 설계부터 배포까지 직접 개발하고 있습니다.</b> React·TypeScript 프론트엔드와 Python·FastAPI 백엔드, PostgreSQL 데이터베이스를 연결해 협업과 운영 업무가 이어지는 풀스택 플랫폼을 만듭니다.</p>
+        <p><b>PRISM Workspace + ERP를 혼자 처음부터 설계하고 배포까지 완성했습니다.</b> React·TypeScript 프론트엔드와 Python·FastAPI 백엔드, PostgreSQL 데이터베이스를 연결해 협업과 운영 업무가 이어지는 풀스택 플랫폼을 만들었습니다.</p>
         <div class="learning-tags">
           <span>REACT</span><span>TYPESCRIPT</span><span>FASTAPI</span><span>POSTGRESQL</span><span>DOCKER</span>
         </div>
@@ -134,7 +134,7 @@
           <img class="repo-thumb" src="assets/thumbs/prism-erp.svg" alt="PRISM Workspace + ERP 업무 모듈 구성" loading="lazy">
           <div class="repo-body">
             <div class="repo-head"><svg class="icon-gh" aria-hidden="true" viewBox="0 0 16 16"><path fill="currentColor" d="M4 7V5a4 4 0 0 1 8 0v2h.5A1.5 1.5 0 0 1 14 8.5v5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5v-5A1.5 1.5 0 0 1 3.5 7H4zm1.5 0h5V5a2.5 2.5 0 0 0-5 0v2z"/></svg><h3><a href="#journey">PRISM Workspace + ERP</a></h3><span class="repo-live">PRIVATE</span></div>
-            <p class="repo-desc">혼자서 처음부터 설계·개발·배포한 사내 업무 플랫폼. 문서·주간업무·프로젝트와 매출·구매·재고·생산·재무·인사·보고를 하나로 연결합니다.</p>
+            <p class="repo-desc">혼자 처음부터 설계·개발·배포한 사내 업무 플랫폼. 문서·주간업무·프로젝트와 쇼핑몰·이카운트 자동 수집, 정산·대사·경영 보고를 하나로 연결합니다.</p>
             <div class="repo-tags"><span>React</span><span>FastAPI</span><span>PostgreSQL</span></div>
           </div>
           <div class="repo-actions"><a href="#journey">개발 사례 보기 ↓</a></div>
@@ -226,16 +226,63 @@
       </div>
       <article class="prism-feature glass" aria-labelledby="prismFeatureTitle">
         <div class="prism-feature-copy">
-          <span class="feature-label">FEATURED WORK · 개발 중</span>
-          <h3 id="prismFeatureTitle">ERP 초기 구축 사례 — PRISM</h3>
-          <p>Workspace + ERP를 혼자서 처음부터 설계·구현·배포까지 개발하고 있습니다. 문서·프로젝트·일정과 매출·구매·재고·생산·인사·보고 데이터를 하나의 업무 흐름으로 연결합니다.</p>
+          <span class="feature-label">FEATURED WORK · 웹 개발 완료</span>
+          <h3 id="prismFeatureTitle">PRISM — 사내 Workspace + ERP를 혼자 처음부터 설계·구축</h3>
+          <p>빈 저장소에서 시작해 업무 흐름 분석, 데이터 모델, 화면, API, 데이터 수집 자동화, 배포·운영까지 1인 풀스택으로 완성했습니다. 흩어진 쇼핑몰·결제·이카운트 자료를 한곳에 모아 정산·대사·경영 보고까지 이어지게 만들었습니다.</p>
+          <ul class="prism-facts" aria-label="PRISM 규모">
+            <li><strong>1인</strong><span>기획 · 설계 · 개발 · 운영</span></li>
+            <li><strong>3개</strong><span>서비스 WEB · ERP · Auth</span></li>
+            <li><strong>19개</strong><span>운영 중인 ERP 화면</span></li>
+          </ul>
         </div>
         <ol class="prism-flow" aria-label="PRISM 개발 범위">
-          <li><span class="flow-number">01</span><div><strong>설계</strong><span>업무 흐름 · 데이터 모델</span></div></li>
-          <li><span class="flow-number">02</span><div><strong>사용자 화면</strong><span>React · TypeScript</span></div></li>
-          <li><span class="flow-number">03</span><div><strong>API와 데이터</strong><span>FastAPI · PostgreSQL</span></div></li>
-          <li><span class="flow-number">04</span><div><strong>배포</strong><span>Docker · Caddy</span></div></li>
+          <li><span class="flow-number">01</span><div><strong>설계</strong><span>업무 흐름 · DB 스키마 · 권한</span></div></li>
+          <li><span class="flow-number">02</span><div><strong>사용자 화면</strong><span>React · TypeScript · ECharts</span></div></li>
+          <li><span class="flow-number">03</span><div><strong>API와 데이터</strong><span>FastAPI · PostgreSQL · 수집 자동화</span></div></li>
+          <li><span class="flow-number">04</span><div><strong>배포·운영</strong><span>Docker · Caddy · 백업</span></div></li>
         </ol>
+        <div class="prism-shots">
+          <a class="prism-shot" href="assets/shots/prism-erp-report.webp" onclick="return openModal('assets/shots/prism-erp-report.webp','PRISM ERP 경영 보고 · 예시 데이터', event)">
+            <img src="assets/shots/prism-erp-report.webp" width="1087" height="795" alt="PRISM ERP 경영 보고 화면: 기간 매출, 영업이익률, 매출 추이 차트와 채널별 매출(예시 데이터)" loading="lazy">
+            <span class="shot-caption"><strong>ERP · 경영 보고</strong><span>실제 화면 · 예시 데이터</span></span>
+          </a>
+          <a class="prism-shot" href="assets/shots/prism-web-weekly.webp" onclick="return openModal('assets/shots/prism-web-weekly.webp','PRISM Workspace 주간업무 · 예시 데이터', event)">
+            <img src="assets/shots/prism-web-weekly.webp" width="1079" height="617" alt="PRISM Workspace 주간업무 화면: 주차별 팀원 업무와 진척률(예시 데이터)" loading="lazy">
+            <span class="shot-caption"><strong>Workspace · 주간업무</strong><span>실제 화면 · 예시 데이터</span></span>
+          </a>
+        </div>
+        <div class="prism-detail">
+          <div class="prism-block">
+            <h4 id="prismBuiltTitle">완성한 기능</h4>
+            <ul>
+              <li><b>Workspace</b> 문서 허브 · 주간업무 · 프로젝트</li>
+              <li><b>데이터 수집</b> Cafe24 · Shopify · 이카운트 · 결제사 자동 수집 (API · Playwright)</li>
+              <li><b>데이터 반영</b> 엑셀 Import → Staging 검증·승인 → 기준정보</li>
+              <li><b>매출 원장</b> 승인된 매출을 채널·팀·거래처·품목별 조회</li>
+              <li><b>회계·보고</b> 월 정산표 · 재경 대사 · 월간 실적 · 품목 포트폴리오 · 경영 보고 · 매출 분석</li>
+            </ul>
+            <p class="prism-next">다음 단계: 구매 · 재고 · 생산 · HR 모듈</p>
+          </div>
+          <div class="prism-block">
+            <h4 id="prismDesignTitle">설계 포인트</h4>
+            <ul>
+              <li>WEB · ERP · Auth 분리, 공통 세션으로 한 번 로그인</li>
+              <li>서비스마다 UI와 API를 이미지 하나로 배포, 태그 하나로 롤백</li>
+              <li>OpenAPI 명세에서 TypeScript 클라이언트 자동 생성</li>
+              <li>PostgreSQL 하나로 데이터 · 작업 큐 · 세션 처리 (Redis 없음)</li>
+              <li>Caddy 호스트 분기, 수집은 systemd 타이머, pg_dump 백업</li>
+            </ul>
+          </div>
+          <div class="prism-block">
+            <h4 id="prismStackTitle">기술 스택</h4>
+            <dl class="prism-stack">
+              <dt>Frontend</dt><dd><span>React</span><span>TypeScript</span><span>Vite</span><span>TanStack</span><span>Tailwind</span><span>ECharts</span></dd>
+              <dt>Backend</dt><dd><span>Python</span><span>FastAPI</span><span>Pydantic</span><span>SQLAlchemy</span><span>Alembic</span></dd>
+              <dt>Data</dt><dd><span>PostgreSQL</span><span>Procrastinate</span><span>Playwright</span><span>openpyxl</span></dd>
+              <dt>Infra</dt><dd><span>Docker Compose</span><span>Caddy</span><span>systemd</span><span>uv</span><span>pnpm</span></dd>
+            </dl>
+          </div>
+        </div>
       </article>
       <div class="journey-records-heading">
         <h3 class="journey-note" id="journeyRecordsTitle">업무 자동화와 개발 과정의 기록</h3>

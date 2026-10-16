@@ -36,7 +36,7 @@
 
 ## Featured Work
 
-PRISM Workspace + ERP를 혼자서 처음부터 설계·React/TypeScript 프론트엔드·FastAPI 백엔드·PostgreSQL 데이터베이스·Docker/Caddy 배포까지 개발하고 있습니다. 원본 소스와 소개 페이지는 비공개입니다.
+PRISM Workspace + ERP를 혼자 처음부터 설계·React/TypeScript 프론트엔드·FastAPI 백엔드·PostgreSQL 데이터베이스·Docker/Caddy 배포까지 개발해 웹 버전을 완성했습니다. 쇼핑몰·결제·이카운트 자동 수집, 엑셀 Import·Staging 승인, 정산·대사·경영 보고가 운영 중이고 구매·재고·생산·HR은 다음 단계입니다. 원본 소스와 소개 페이지는 비공개입니다.
 
 ## Sections
 
@@ -44,7 +44,7 @@ PRISM Workspace + ERP를 혼자서 처음부터 설계·React/TypeScript 프론�
 |---|---|
 | **Hero** | 소개·경력 요약·PRISM ERP 개발, 스킬 스트립 |
 | **Repositories** | 프로젝트 7개 (비공개 PRISM Workspace + ERP, ai-analysis, ubuntu-scr-saver, web-ai-usage, app-yt-subs, dpi-bye, stt-whisper), GitHub 소스·미리보기 링크 |
-| **Journey** | PRISM ERP 초기 구축 사례·개발 범위 시각화, HEIS Tool·OPC-ISL 등 업무 기록 |
+| **Journey** | PRISM 1인 구축 사례: 실제 화면(예시 데이터)·완성 기능·설계 포인트·기술 스택, HEIS Tool·OPC-ISL 등 업무 기록 |
 | **Resume** | 모달로 바로 보는 이력서 (`resume/resume.html`) |
 
 ## Structure
