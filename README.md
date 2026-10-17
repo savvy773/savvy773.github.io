@@ -75,6 +75,10 @@ npx --yes serve .
 
 CSS·JavaScript 수정 후 게시 전에 `node scripts/version-assets.mjs`를 실행하세요. 파일 내용에 따른 버전을 URL에 붙여 이전 캐시와 새 페이지가 섞이지 않게 합니다.
 
+## Deploy
+
+juns.win은 Cloudflare에 직접 업로드합니다. 커밋한 뒤 `scripts/deploy-cf.sh`를 실행하면 커밋된 HEAD만 올라갑니다(작업 중 파일은 제외). GitHub push는 사이트 반영과 무관한 소스 보관용이고, savvy773.github.io는 juns.win으로 이동만 시킵니다.
+
 ## Docs
 
 - [기술 스택 상세](docs/tech-stack.md)
