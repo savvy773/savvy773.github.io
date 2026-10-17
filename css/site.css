@@ -1674,3 +1674,15 @@ body[data-page="video"] .topnav [data-nav="video"] { color: var(--text); backgro
 @media (max-width: 1000px) { .film { grid-template-columns: 1fr; } .film-info { padding: 0.4rem 0.5rem 0.5rem; } }
 @media (max-width: 720px) { .film-chapters { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 480px) { .nav-long { display: none; } }
+
+/* tap-to-play video: a big centred button until playback starts, then native controls */
+.player { position: relative; display: block; }
+.player-hit { position: absolute; inset: 0; cursor: pointer; }
+.player.is-started .player-hit { bottom: 56px; }
+.entry-media.player video { display: block; width: 100%; height: 100%; object-fit: cover; background: #111; }
+.player-play { position: absolute; inset: 50% auto auto 50%; width: 68px; height: 68px; margin: -34px 0 0 -34px; display: grid; place-items: center; border: 0; border-radius: 50%; background: rgba(0, 0, 0, 0.55); color: #fff; cursor: pointer; transition: transform 0.18s var(--ease-out), background 0.18s var(--ease); }
+.player-play svg { width: 30px; height: 30px; margin-left: 4px; fill: currentColor; }
+.player-play:hover { background: var(--accent); transform: scale(1.05); }
+.player-play:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.player.is-started .player-play { display: none; }
+.film-player.player video { border-radius: 12px; }

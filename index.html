@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=optional">
 <script type="speculationrules">{"prefetch":[{"urls":["/","/projects/","/projects/prism/"],"eagerness":"eager"}],"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/resume/*"}},{"not":{"href_matches":"/journey/*"}},{"not":{"href_matches":"/assets/*"}}]},"eagerness":"moderate"}]}</script>
-<link rel="stylesheet" href="/css/site.css?v=46bb8501bcbc">
+<link rel="stylesheet" href="/css/site.css?v=be6ee0f33b9b">
 <!-- /shared:head -->
 </head>
 <body data-page="home">
@@ -204,18 +204,21 @@
         <p class="section-sub"><a href="/video/">영상 모두 보기 →</a></p>
       </div>
       <div class="entry-grid entry-grid--one">
-        <a class="entry-card glass" href="/video/">
-          <span class="entry-media entry-media--play">
-            <img src="/assets/video/prism-intro-ko-poster.jpg" width="960" height="540" alt="PRISM 소개 영상 첫 장면" loading="lazy" decoding="async">
+        <div class="entry-card glass">
+          <span class="entry-media player">
+            <video data-player playsinline preload="none" width="1920" height="1080" poster="/assets/video/prism-intro-ko-poster.jpg" aria-label="3분 만에 보는 PRISM 소개 영상">
+              <source src="https://media.juns.win/video/prism-intro-ko.mp4" type="video/mp4">
+            </video>
+            <span class="player-hit" aria-hidden="true"></span><button type="button" class="player-play" aria-label="재생"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>
           </span>
           <span class="entry-body">
             <span class="entry-kicker">코드로 만든 영상 · 3분 33초</span>
             <strong class="entry-title">3분 만에 보는 PRISM</strong>
             <span class="entry-desc">Remotion(React)으로 장면·캐릭터·자막을 코드로 만들고 Gemini TTS로 내레이션을 입혔습니다. AI 영상 생성 실험도 함께 있습니다.</span>
             <span class="entry-facts"><span><b>Remotion</b> React·TS</span><span><b>Gemini</b> TTS·Veo</span><span><b>자막·챕터</b> 자동</span></span>
-            <span class="entry-go">영상 보기 →</span>
+            <a class="entry-go" href="/video/">영상 페이지로 →</a>
           </span>
-        </a>
+        </div>
       </div>
     </section>
 
@@ -243,6 +246,6 @@
     <iframe id="modalIframe" src="about:blank" title="문서 미리보기" loading="lazy"></iframe>
   </dialog>
 <!-- /shared:dialog -->
-  <script src="/js/app.js?v=0b39ecd0d8b6"></script>
+  <script src="/js/app.js?v=6ece5ac32b57"></script>
 </body>
 </html>

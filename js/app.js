@@ -304,6 +304,21 @@
     const img = [...link.querySelectorAll('img')].find((i) => getComputedStyle(i).display !== 'none') || link.querySelector('img');
     return openModal(img.currentSrc || img.src, link.dataset.title, event);
   };
+  // ── tap-to-play videos: the whole picture plays/pauses; native controls appear after the first play ──
+  document.querySelectorAll('video[data-player]').forEach((video) => {
+    const box = video.closest('.player');
+    const start = () => {
+      if (box) box.classList.add('is-started');
+      video.controls = true;
+    };
+    const toggle = () => { if (video.paused) video.play().catch(() => {}); else video.pause(); };
+    video.addEventListener('play', start);
+    box?.querySelector('.player-play')?.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); video.play().catch(() => {}); });
+    // a transparent layer takes clicks on the picture (browsers differ on whether the video itself toggles);
+    // after the first play it stops above the native control bar
+    box?.querySelector('.player-hit')?.addEventListener('click', toggle);
+  });
+
   // ── film chapters: jump the linked video to a scene and mark the chapter being watched ──
   document.querySelectorAll('.film-chapters[data-video]').forEach((list) => {
     const video = document.getElementById(list.dataset.video);
