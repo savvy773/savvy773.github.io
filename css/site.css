@@ -63,7 +63,7 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: auto; }
 /* in-page nav swaps the view with a short cross-fade (View Transitions) instead of scrolling */
-::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.22s; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.14s; }
 #top, #repos, #journey, section[id] { scroll-margin-top: calc(var(--topbar-h) + 12px); }
 
 html { scrollbar-width: thin; scrollbar-color: var(--border-hi) transparent; }
@@ -1623,4 +1623,29 @@ h1.prism-title { margin: 0.4rem 0; font-size: clamp(1.25rem, 2.6vw, 1.6rem); fon
   .entry-grid { grid-template-columns: 1fr; }
   .project-tabs { display: flex; }
   .project-tabs a { flex: 1; justify-content: center; }
+}
+
+/* career note: same reading rhythm as the PRISM note next to it (lead in bold, stack chips below) */
+.exp-note { display: grid; gap: 0.6rem; align-content: start; }
+.exp-note p { margin: 0; color: var(--text-2); font-size: 0.85rem; line-height: 1.6; }
+.exp-note p b { color: var(--text); font-weight: 600; }
+
+/* ── Unified top nav: the same page links everywhere, current page marked ── */
+body[data-page="prism"] .topnav [data-nav="prism"],
+body[data-page="projects"] .topnav [data-nav="projects"] { color: var(--text); background: color-mix(in srgb, var(--text) 7%, transparent); }
+.entry-grid--one { grid-template-columns: 1fr; }
+.entry-grid--one .entry-card { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: center; gap: 0.4rem; }
+.entry-grid--one .entry-body { padding: 0.8rem 1.2rem; }
+.repo-grid--three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.section-sub a { color: var(--accent); font-weight: 600; text-decoration: none; }
+#records { margin-top: 2.2rem; }
+@media (max-width: 1000px) { .repo-grid--three { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 720px) {
+  .entry-grid--one .entry-card { grid-template-columns: 1fr; }
+  .entry-grid--one .entry-body { padding: 0.95rem 0.6rem 0.6rem; }
+}
+@media (max-width: 560px) {
+  .repo-grid--three { grid-template-columns: 1fr; }
+  .brand-name { display: none; }
+  .topnav a { padding: 6px 9px; }
 }
