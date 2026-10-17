@@ -306,6 +306,7 @@
   };
   // ── tap-to-play videos: the whole picture plays/pauses; native controls appear after the first play ──
   document.querySelectorAll('video[data-player]').forEach((video) => {
+    video.volume = 0.5; // start at half volume (iOS ignores this: its volume is the hardware buttons)
     const box = video.closest('.player');
     const start = () => {
       if (box) box.classList.add('is-started');
