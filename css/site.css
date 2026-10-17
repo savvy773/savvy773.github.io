@@ -1565,5 +1565,5 @@ h1 { animation-delay: 0.06s; }
   .theme-toggle { width: 38px; height: 38px; }
 }
 
-/* the PRISM thumbnail is a wide 8:3 graphic: show all of it on its own paper colour instead of cropping */
-.repo-card[data-project="prism-erp"] .repo-thumb { object-fit: contain; object-position: center; background: #f3ecdd; }
+/* PRISM card shows the real ERP dashboard, light or dark with the page */
+.repo-card[data-project="prism-erp"] .repo-thumb { object-position: left top; }
