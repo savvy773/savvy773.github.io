@@ -304,6 +304,24 @@
     const img = [...link.querySelectorAll('img')].find((i) => getComputedStyle(i).display !== 'none') || link.querySelector('img');
     return openModal(img.currentSrc || img.src, link.dataset.title, event);
   };
+  // ── film chapters: jump the linked video to a scene and mark the chapter being watched ──
+  document.querySelectorAll('.film-chapters[data-video]').forEach((list) => {
+    const video = document.getElementById(list.dataset.video);
+    if (!video) return;
+    const buttons = [...list.querySelectorAll('button[data-t]')];
+    list.addEventListener('click', (e) => {
+      const b = e.target.closest('button[data-t]');
+      if (!b) return;
+      video.currentTime = Number(b.dataset.t);
+      video.play().catch(() => { /* autoplay blocked: the position is still set */ });
+    });
+    video.addEventListener('timeupdate', () => {
+      let current = buttons[0];
+      for (const b of buttons) if (video.currentTime >= Number(b.dataset.t)) current = b;
+      buttons.forEach((b) => b.setAttribute('aria-current', String(b === current)));
+    });
+  });
+
   window.openModal = openModal;
   window.closeModal = closeModal;
 })();

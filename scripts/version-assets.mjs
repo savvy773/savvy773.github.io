@@ -6,7 +6,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
 
 const root = new URL('../', import.meta.url);
-const pages = ['index.html', 'projects/index.html', 'projects/prism/index.html'];
+const pages = ['index.html', 'projects/index.html', 'projects/prism/index.html', 'video/index.html'];
 const assets = ['css/site.css', 'js/app.js'];
 const read = (p) => readFileSync(new URL(p, root), 'utf8');
 

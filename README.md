@@ -47,6 +47,7 @@ PRISM Workspace + ERP를 혼자 처음부터 설계·React/TypeScript 프론트�
 | **홈 `/`** | 소개·경력 요약, 프로젝트 입구 카드 2개(PRISM ERP, 개인 프로젝트), Journey 업무 기록 5개 |
 | **개인 프로젝트 `/projects/`** | 공개 프로젝트 6개(ai-analysis, ubuntu-scr-saver, web-ai-usage, app-yt-subs, dpi-bye, stt-whisper), 분야별 필터 |
 | **PRISM ERP `/projects/prism/`** | 1인 구축 사례: 데이터 흐름, 실제 화면 쇼케이스(수치 가림), 완성 기능·설계 포인트·기술 스택 |
+| **영상 `/video/`** | 코드로 만든 PRISM 소개 영상(3:33, 챕터), 기기별 클립 3개, AI 영상 생성 예시. 영상 파일은 R2 `juns-media`(media.juns.win)에서 제공 |
 | **Resume** | 모달로 바로 보는 이력서 (`resume/resume.html`) |
 
 ## Structure
@@ -56,6 +57,7 @@ PRISM Workspace + ERP를 혼자 처음부터 설계·React/TypeScript 프론트�
 ├── index.html          # 홈
 ├── projects/index.html # 개인 프로젝트
 ├── projects/prism/index.html # PRISM ERP 사례
+├── video/index.html    # 영상 제작
 ├── css/site.css        # 토큰·카드·반응형
 ├── js/
 │   ├── app.js          # 모달·스크롤·reveal·카드 틸트·업무 기록·쇼케이스 탭
