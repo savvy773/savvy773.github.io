@@ -1663,11 +1663,6 @@ body[data-page="video"] .topnav [data-nav="video"] { color: var(--text); backgro
 .film-chapters button:hover { border-color: var(--accent); background: var(--accent-soft); }
 .film-chapters button[aria-current="true"] { border-color: var(--accent); background: var(--accent-soft); }
 .video-sub { margin-top: 2.2rem; }
-.clip-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
-.clip { margin: 0; padding: 0.5rem; border-radius: 16px; background: var(--paper); }
-.clip video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; border-radius: 10px; background: #111; }
-.clip figcaption { display: grid; gap: 2px; padding: 0.6rem 0.3rem 0.2rem; font-size: 0.8rem; color: var(--text-2); }
-.clip figcaption strong { font-size: 0.92rem; color: var(--text); }
 .video-steps { list-style: none; margin: 0.2rem 0 0; padding: 0; display: grid; gap: 4px; counter-reset: vstep; }
 .video-steps li { display: flex; gap: 8px; align-items: baseline; font-size: 0.8rem; color: var(--text-2); counter-increment: vstep; }
 .video-steps li::before { content: counter(vstep); flex-shrink: 0; width: 18px; height: 18px; display: grid; place-items: center; border-radius: 6px; background: var(--accent-soft); color: var(--accent); font-size: 0.68rem; font-weight: 700; }
@@ -1677,5 +1672,5 @@ body[data-page="video"] .topnav [data-nav="video"] { color: var(--text); backgro
 @media (hover: hover) and (pointer: fine) { .entry-card:hover .entry-media--play::after { transform: scale(1.06); } }
 .nav-long { display: inline; }
 @media (max-width: 1000px) { .film { grid-template-columns: 1fr; } .film-info { padding: 0.4rem 0.5rem 0.5rem; } }
-@media (max-width: 720px) { .clip-grid { grid-template-columns: 1fr; } .film-chapters { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 720px) { .film-chapters { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 480px) { .nav-long { display: none; } }
