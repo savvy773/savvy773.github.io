@@ -1,5 +1,5 @@
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
   --bg: #f6f7f9;
   --paper: #ffffff;
   --paper-2: #f1f2f5;
@@ -33,30 +33,30 @@
   --glass-bg: var(--paper);
   --glass-border: 1px solid var(--border);
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0b0c10;
-    --paper: #13151b;
-    --paper-2: #1a1d24;
-    --surface-solid: #13151b;
-    --border: rgba(255, 255, 255, 0.08);
-    --border-hi: rgba(255, 255, 255, 0.14);
-    --text: #eceef2;
-    --text-2: #a9afbb;
-    --text-dim: #7e8594;
-    --accent: #8b85ff;
-    --accent-2: #2dd4bf;
-    --accent-soft: rgba(139, 133, 255, 0.12);
-    --accent-glow: rgba(139, 133, 255, 0.28);
-    --accent-muted: rgba(45, 212, 191, 0.08);
-    --grad: linear-gradient(100deg, #a5a1ff 0%, #c084fc 45%, #2dd4bf 100%);
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 18px 44px -14px rgba(0, 0, 0, 0.6), 0 2px 6px rgba(0, 0, 0, 0.3);
-    --glow-1: rgba(99, 102, 241, 0.18);
-    --glow-2: rgba(20, 184, 166, 0.10);
-    --grid-line: rgba(255, 255, 255, 0.035);
-    --backdrop: rgba(0, 0, 0, 0.6);
-  }
+/* Light by default; dark only when the visitor picks it (topbar toggle, stored per browser). */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #1c1f26;
+  --paper: #252931;
+  --paper-2: #2c3039;
+  --surface-solid: #252931;
+  --border: rgba(255, 255, 255, 0.09);
+  --border-hi: rgba(255, 255, 255, 0.16);
+  --text: #eef0f4;
+  --text-2: #b6bcc8;
+  --text-dim: #8e95a3;
+  --accent: #9b96ff;
+  --accent-2: #3fd3bd;
+  --accent-soft: rgba(155, 150, 255, 0.12);
+  --accent-glow: rgba(155, 150, 255, 0.24);
+  --accent-muted: rgba(63, 211, 189, 0.09);
+  --grad: linear-gradient(100deg, #aaa6ff 0%, #c4a1ff 45%, #3fd3bd 100%);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+  --shadow-lg: 0 16px 40px -14px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.18);
+  --glow-1: rgba(120, 115, 255, 0.14);
+  --glow-2: rgba(45, 212, 191, 0.08);
+  --grid-line: rgba(255, 255, 255, 0.04);
+  --backdrop: rgba(10, 12, 16, 0.55);
 }
 
 * { box-sizing: border-box; }
@@ -259,6 +259,24 @@ html.is-scrolled .topbar {
   color: var(--text);
   background: color-mix(in srgb, var(--text) 7%, transparent);
 }
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+.theme-toggle:hover { color: var(--text); background: color-mix(in srgb, var(--text) 7%, transparent); }
+.theme-toggle svg { width: 16px; height: 16px; }
+.theme-toggle .icon-sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+:root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
 .topnav a.nav-cta {
   color: var(--bg);
   font-weight: 600;

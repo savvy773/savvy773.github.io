@@ -150,6 +150,28 @@
     });
   })();
 
+  // ── theme toggle: light by default, dark only by choice (the head script applies it before paint) ──
+  (function () {
+    const btn = document.querySelector('.theme-toggle');
+    if (!btn) return;
+    const root = document.documentElement;
+    const meta = document.querySelector('meta[name="theme-color"]');
+    function sync() {
+      const dark = root.dataset.theme === 'dark';
+      btn.setAttribute('aria-pressed', String(dark));
+      btn.setAttribute('aria-label', dark ? '라이트 모드로 전환' : '다크 모드로 전환');
+      if (meta) meta.content = dark ? '#1c1f26' : '#f6f7f9';
+    }
+    btn.addEventListener('click', () => {
+      const dark = root.dataset.theme !== 'dark';
+      if (dark) root.dataset.theme = 'dark';
+      else delete root.dataset.theme;
+      try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch (_) { /* storage blocked */ }
+      sync();
+    });
+    sync();
+  })();
+
   // ── PRISM showcase: tabs cross-fade the stage; one autoplay pass while visible, any input stops it ──
   (function () {
     const root = document.querySelector('.prism-showcase');
