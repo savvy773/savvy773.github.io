@@ -1,5 +1,6 @@
 :root {
-  color-scheme: light;
+  /* `only` stops phone browsers (Chrome Android, Samsung Internet) from force-darkening the light theme */
+  color-scheme: only light;
   --bg: #f6f7f9;
   --paper: #ffffff;
   --paper-2: #f1f2f5;
@@ -35,7 +36,7 @@
 }
 /* Light by default; dark only when the visitor picks it (topbar toggle, stored per browser). */
 :root[data-theme="dark"] {
-  color-scheme: dark;
+  color-scheme: only dark;
   --bg: #1c1f26;
   --paper: #252931;
   --paper-2: #2c3039;
