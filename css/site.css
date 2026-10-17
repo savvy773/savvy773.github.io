@@ -1456,6 +1456,7 @@ h1 { animation-delay: 0.06s; }
   --accent-soft: rgba(52, 211, 153, 0.12);
   --accent-glow: rgba(52, 211, 153, 0.22);
   --accent-muted: rgba(52, 211, 153, 0.09);
+  --btn-grad: var(--accent);
   --btn-glow: 0 6px 16px -8px rgba(52, 211, 153, 0.45);
   --glow-1: rgba(52, 211, 153, 0.07);
   --glow-2: rgba(255, 255, 255, 0.03);
@@ -1552,8 +1553,17 @@ h1 { animation-delay: 0.06s; }
   .repo-actions a:hover { background: color-mix(in srgb, var(--text) 9%, var(--paper-2)); }
   .repo-actions a:last-child:hover { background: color-mix(in srgb, var(--accent) 16%, transparent); }
 }
+/* phones: stack the card (thumbnail on top) and keep the thumbnail box sized before the image loads (CLS 0) */
 @media (max-width: 560px) {
-  .repo-card { padding: 0.4rem; }
-  .repo-card::after { top: 0.8rem; left: 0.8rem; font-size: 0.6rem; }
-  .repo-thumb { aspect-ratio: auto; border-radius: 10px; }
+  .repo-card { display: flex; flex-direction: column; padding: 0.4rem; }
+  .repo-card::after { top: 0.8rem; left: 0.8rem; font-size: 0.62rem; }
+  .repo-thumb { grid-row: auto; width: 100%; height: auto; min-height: 0; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border-radius: 10px; border: 1px solid var(--border); }
+  .repo-actions { grid-column: auto; }
+  .repo-actions a { padding: 0.55rem 0.9rem; }
 }
+@media (pointer: coarse) {
+  .theme-toggle { width: 38px; height: 38px; }
+}
+
+/* the PRISM thumbnail is a wide 8:3 graphic: show all of it on its own paper colour instead of cropping */
+.repo-card[data-project="prism-erp"] .repo-thumb { object-fit: contain; object-position: center; background: #f3ecdd; }
