@@ -1794,3 +1794,13 @@ body[data-page="video"] .topnav .nav-video { color: var(--nav-c); background: co
 .film--vertical .film-player { max-width: 360px; width: 100%; justify-self: center; }
 .film--vertical .film-player video { aspect-ratio: 9 / 16; }
 @media (max-width: 1000px) { .film--vertical { grid-template-columns: 1fr; } .film--vertical .film-player { max-width: 320px; } }
+
+/* the pixel short sits at the end as a compact card */
+.film--small { grid-template-columns: 200px minmax(0, 1fr); gap: 1rem; }
+.film--small .film-player { max-width: 200px; }
+.film--small .film-title { font-size: 1.05rem; }
+.film--small .film-desc, .film--small .video-steps li { font-size: 0.78rem; }
+.film--small .player-play { width: 52px; height: 52px; margin: -26px 0 0 -26px; }
+.film--small .player-play svg { width: 24px; height: 24px; }
+@media (max-width: 1000px) { .film--small { grid-template-columns: 160px minmax(0, 1fr); } .film--small .film-player { max-width: 160px; } }
+@media (max-width: 560px) { .film--small { grid-template-columns: 1fr; } .film--small .film-player { max-width: 200px; } }

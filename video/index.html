@@ -5,15 +5,15 @@
 <script>if(location.hostname==='savvy773.github.io')location.replace('https://juns.win'+location.pathname+location.search+location.hash)</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>영상 제작 — Juns</title>
-<meta name="description" content="Remotion·React로 코드로 만든 3분 33초 PRISM 소개 영상, 픽셀과 소리를 모두 코드로 만든 도트 애니메이션, Gemini Veo AI 영상 생성 파이프라인.">
+<meta name="description" content="Remotion·React로 코드로 만든 3분 33초 PRISM 소개 영상, 픽셀과 소리를 모두 코드로 만든 2D 애니메이션, Gemini Veo AI 영상 생성 파이프라인.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://juns.win/video/">
 <meta property="og:title" content="영상 제작 — Juns">
-<meta property="og:description" content="Remotion·React로 코드로 만든 3분 33초 PRISM 소개 영상, 픽셀과 소리를 모두 코드로 만든 도트 애니메이션, Gemini Veo AI 영상 생성 파이프라인.">
+<meta property="og:description" content="Remotion·React로 코드로 만든 3분 33초 PRISM 소개 영상, 픽셀과 소리를 모두 코드로 만든 2D 애니메이션, Gemini Veo AI 영상 생성 파이프라인.">
 <meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="영상 제작 — Juns">
-<meta name="twitter:description" content="Remotion·React로 코드로 만든 3분 33초 PRISM 소개 영상, 픽셀과 소리를 모두 코드로 만든 도트 애니메이션, Gemini Veo AI 영상 생성 파이프라인.">
+<meta name="twitter:description" content="Remotion·React로 코드로 만든 3분 33초 PRISM 소개 영상, 픽셀과 소리를 모두 코드로 만든 2D 애니메이션, Gemini Veo AI 영상 생성 파이프라인.">
 <link rel="canonical" href="https://juns.win/video/">
 <!-- shared:head -->
 <meta name="color-scheme" content="light dark">
@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=optional">
 <script type="speculationrules">{"prefetch":[{"urls":["/","/projects/","/projects/prism/"],"eagerness":"eager"}],"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/resume/*"}},{"not":{"href_matches":"/journey/*"}},{"not":{"href_matches":"/assets/*"}}]},"eagerness":"moderate"}]}</script>
-<link rel="stylesheet" href="/css/site.css?v=d8a4b723f148">
+<link rel="stylesheet" href="/css/site.css?v=07ced0baec2e">
 <!-- /shared:head -->
 </head>
 <body data-page="video">
@@ -64,7 +64,7 @@
     <section class="page-section" id="video">
       <div class="section-head">
         <h1 class="page-title">영상 제작</h1>
-        <p class="section-sub">코드로 만드는 영상 · 도트 애니메이션 · AI 영상 생성</p>
+        <p class="section-sub">코드로 만드는 영상 · 2D 애니메이션 · AI 영상 생성</p>
       </div>
 
       <article class="film glass">
@@ -91,32 +91,6 @@
             <button type="button" data-t="193"><span>3:13</span>정리</button>
           </div>
           <div class="entry-facts"><span><b>Remotion</b> React·TypeScript</span><span><b>Gemini</b> TTS 내레이션</span><span><b>자막·챕터</b> 자동 생성</span><span><b>1920×1080</b> 30fps</span></div>
-        </div>
-      </article>
-
-      <div class="section-head video-sub">
-        <h2>코드로 찍은 도트 애니메이션</h2>
-        <p class="section-sub">이미지·음원 생성 없이 모든 픽셀과 소리를 코드 데이터로 · YouTube Shorts</p>
-      </div>
-      <article class="film film--vertical glass">
-        <div class="film-player player">
-          <video data-player playsinline preload="none" width="1080" height="1920" poster="/assets/video/dot-lotto-poster.jpg" aria-label="도트 애니메이션 단편: 로또 전 / 후">
-            <source src="https://media.juns.win/video/dot-lotto.mp4" type="video/mp4">
-          </video>
-          <span class="player-hit" aria-hidden="true"></span><button type="button" class="player-play" aria-label="재생"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>
-        </div>
-        <div class="film-info">
-          <span class="entry-kicker">도트 단편 · 42초 · 9:16</span>
-          <h2 class="film-title">로또 전 / 후</h2>
-          <p class="film-desc">반지하에서 라면을 먹던 주인공이 복권에 당첨되기까지를 픽셀아트로 그린 단편입니다. 그림·글자·효과음·배경음 모두 외부 소스 없이 코드로 한 점씩 정의하고 합성했습니다.</p>
-          <ol class="video-steps">
-            <li><b>픽셀 데이터</b><span>고정 팔레트와 문자 그리드 스프라이트로 모든 점을 코드에 정의</span></li>
-            <li><b>글자</b><span>Galmuri 비트맵 폰트(BDF)를 읽어 점으로 찍기</span></li>
-            <li><b>프레임</b><span>180×320 SVG를 프레임 번호·시드로 매번 같게 생성, Bayer 디더 전환</span></li>
-            <li><b>소리</b><span>사각파·삼각파·노이즈로 칩튠 합성, 자막 타자음 자동, −14.5 LUFS 마스터</span></li>
-            <li><b>출력</b><span>FFmpeg(librsvg) ×6 nearest 업스케일 → 1080×1920</span></li>
-          </ol>
-          <div class="entry-facts"><span><b>TypeScript</b> Node</span><span><b>FFmpeg</b> librsvg</span><span><b>0개</b> 외부 이미지·음원</span><span><b>1080×1920</b> 30fps</span></div>
         </div>
       </article>
 
@@ -157,6 +131,32 @@
         <li><strong>렌더링</strong><span>내레이션 길이에 맞춰 1920×1080</span></li>
         <li><strong>자막·챕터·업로드</strong><span>SRT, YouTube 챕터·메타데이터</span></li>
       </ol>
+
+      <div class="section-head video-sub">
+        <h2>2D 애니메이션</h2>
+        <p class="section-sub">이미지·음원 생성 없이 모든 픽셀과 소리를 코드 데이터로 · YouTube Shorts</p>
+      </div>
+      <article class="film film--vertical film--small glass">
+        <div class="film-player player">
+          <video data-player playsinline preload="none" width="1080" height="1920" poster="/assets/video/dot-lotto-poster.jpg" aria-label="2D 애니메이션 단편: 로또 전 / 후">
+            <source src="https://media.juns.win/video/dot-lotto.mp4" type="video/mp4">
+          </video>
+          <span class="player-hit" aria-hidden="true"></span><button type="button" class="player-play" aria-label="재생"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>
+        </div>
+        <div class="film-info">
+          <span class="entry-kicker">2D 애니메이션 단편 · 42초 · 9:16</span>
+          <h2 class="film-title">로또 전 / 후</h2>
+          <p class="film-desc">반지하에서 라면을 먹던 주인공이 복권에 당첨되기까지를 픽셀아트로 그린 단편입니다. 그림·글자·효과음·배경음 모두 외부 소스 없이 코드로 한 점씩 정의하고 합성했습니다.</p>
+          <ol class="video-steps">
+            <li><b>픽셀 데이터</b><span>고정 팔레트와 문자 그리드 스프라이트로 모든 점을 코드에 정의</span></li>
+            <li><b>글자</b><span>Galmuri 비트맵 폰트(BDF)를 읽어 점으로 찍기</span></li>
+            <li><b>프레임</b><span>180×320 SVG를 프레임 번호·시드로 매번 같게 생성, Bayer 디더 전환</span></li>
+            <li><b>소리</b><span>사각파·삼각파·노이즈로 칩튠 합성, 자막 타자음 자동, −14.5 LUFS 마스터</span></li>
+            <li><b>출력</b><span>FFmpeg(librsvg) ×6 nearest 업스케일 → 1080×1920</span></li>
+          </ol>
+          <div class="entry-facts"><span><b>TypeScript</b> Node</span><span><b>FFmpeg</b> librsvg</span><span><b>0개</b> 외부 이미지·음원</span><span><b>1080×1920</b> 30fps</span></div>
+        </div>
+      </article>
     </section>
 
 <!-- shared:footer -->
