@@ -8,7 +8,7 @@
 [![Stack](https://img.shields.io/badge/Stack-HTML·CSS·JS-3f4441?style=flat-square)](#)
 [![Hosting](https://img.shields.io/badge/Hosting-Cloudflare-3f4441?style=flat-square)](#)
 
-<img src=".github/preview.jpg" alt="juns.win 홈(라이트)과 PRISM ERP 사례 페이지(다크)" width="100%">
+<img src=".github/preview.jpg" alt="juns.win 홈 화면" width="100%">
 
 </div>
 
