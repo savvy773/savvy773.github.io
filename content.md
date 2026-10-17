@@ -19,3 +19,5 @@ Project cards use compact previews and spacing on desktop, and a thumbnail besid
 Keep the introduction and summary metrics compact. The PRISM feature shows facts and 2-by-2 development steps, a five-step data-flow strip, a tabbed showcase of five real screens (figures redacted in the DOM before capture, see `assets/shots/`) that cross-fades between tabs, then built features, design points and stack (one column on mobile); five work records use three columns on desktop, two on tablet, and one on mobile, with short summaries and a clear section heading.
 
 Google Fonts links use `display=optional`, not `swap`: a late font swap shifts the layout on first visit (CLS). Keep it on every page.
+
+Pages: `/` (home), `/projects/` (personal projects) and `/projects/prism/` (PRISM case study). The head, topbar, footer and dialog sit between `<!-- shared:NAME -->` markers. Edit them in `index.html` only; `node scripts/version-assets.mjs` copies them into the other pages and stamps the CSS/JS versions. Paths are root-absolute (`/assets/…`). The old `/#prismFeatureTitle` link redirects to `/projects/prism/`.

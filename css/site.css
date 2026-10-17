@@ -1568,3 +1568,59 @@ h1 { animation-delay: 0.06s; }
 
 /* PRISM card shows the real ERP dashboard, light or dark with the page */
 .repo-card[data-project="prism-erp"] .repo-thumb { object-position: left top; }
+
+/* ── Multi-page: home entry cards, project tabs, page titles, cross-page fade ── */
+@view-transition { navigation: auto; }
+@media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
+.topnav .topnav-page { display: flex; }
+body[data-page="projects"] .topnav [data-nav="projects"],
+body[data-page="prism"] .topnav [data-nav="projects"] { color: var(--text); background: color-mix(in srgb, var(--text) 7%, transparent); }
+
+.entry-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.entry-card { display: flex; flex-direction: column; padding: 0.5rem; border-radius: 18px; color: inherit; text-decoration: none; background: var(--paper); transition: transform 0.22s var(--ease-out), box-shadow 0.22s var(--ease), border-color 0.2s var(--ease); }
+.entry-media { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 12px; border: 1px solid var(--border); background: var(--paper-2); }
+.entry-media img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: left top; }
+.entry-mosaic { display: grid; grid-template-columns: 1.2fr 1fr; grid-template-rows: 1fr 1fr; gap: 4px; padding: 4px; }
+.entry-mosaic img { border-radius: 8px; min-height: 0; }
+.entry-mosaic img:first-child { grid-row: 1 / 3; }
+.entry-mosaic img:nth-child(4) { display: none; }
+.entry-body { display: grid; gap: 0.45rem; padding: 0.95rem 0.6rem 0.6rem; }
+.entry-kicker { font-size: 0.72rem; font-weight: 600; color: var(--accent); }
+.entry-title { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.025em; line-height: 1.3; }
+.entry-desc { font-size: 0.86rem; line-height: 1.6; color: var(--text-2); word-break: keep-all; }
+.entry-facts { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.15rem; }
+.entry-facts span { padding: 0.22rem 0.6rem; border-radius: 8px; background: var(--paper-2); font-size: 0.74rem; color: var(--text-2); }
+.entry-facts b { color: var(--text); margin-right: 0.15rem; }
+.entry-facts .cat-ai b { color: var(--cat-ai); }
+.entry-facts .cat-automation b { color: var(--cat-automation); }
+.entry-facts .cat-utility b { color: var(--cat-utility); }
+.entry-go { justify-self: start; margin-top: 0.35rem; padding: 0.42rem 0.85rem; border-radius: 9px; font-size: 0.78rem; font-weight: 600; color: var(--accent); background: var(--accent-soft); transition: background 0.18s var(--ease); }
+@media (hover: hover) and (pointer: fine) {
+  .entry-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--border-hi); }
+  .entry-card:hover .entry-go { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+}
+.entry-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.project-tabs { display: inline-flex; gap: 4px; margin: 0.5rem 0 1.4rem; padding: 4px; border-radius: 12px; background: var(--paper); border: 1px solid var(--border); box-shadow: var(--card-shadow); }
+.project-tabs a { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.5rem 0.95rem; border-radius: 9px; font-size: 0.86rem; font-weight: 600; color: var(--text-2); text-decoration: none; transition: background 0.18s var(--ease), color 0.18s var(--ease); }
+.project-tabs a span { font-size: 0.7rem; font-weight: 600; padding: 0.05rem 0.4rem; border-radius: 6px; background: var(--paper-2); color: var(--text-dim); }
+.project-tabs a:hover { color: var(--text); background: var(--paper-2); }
+.project-tabs a[aria-current="page"] { color: #fff; background: var(--accent); }
+.project-tabs a[aria-current="page"] span { background: rgba(255, 255, 255, 0.2); color: #fff; }
+:root[data-theme="dark"] .project-tabs a[aria-current="page"], :root[data-theme="dark"] .project-tabs a[aria-current="page"] span { color: #0f1a15; }
+
+.page-section { margin-top: 0; }
+h1.page-title, h1.prism-title { animation: none; }
+h1.page-title { font-size: clamp(1.7rem, 3.6vw, 2.2rem); font-weight: 700; letter-spacing: -0.035em; margin: 0; line-height: 1.2; }
+h1.prism-title { margin: 0.4rem 0; font-size: clamp(1.25rem, 2.6vw, 1.6rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.3; }
+.map-all strong { background:
+    radial-gradient(closest-side, var(--paper) 72%, transparent 73%),
+    conic-gradient(var(--cat-ai) 0 var(--ring-a, 50%), var(--cat-automation) 0 var(--ring-b, 66.7%), var(--cat-utility) 0 100%); }
+.project-map button.map-all[aria-pressed="true"] strong { background:
+    radial-gradient(closest-side, color-mix(in srgb, var(--accent) 7%, var(--paper)) 72%, transparent 73%),
+    conic-gradient(var(--cat-ai) 0 var(--ring-a, 50%), var(--cat-automation) 0 var(--ring-b, 66.7%), var(--cat-utility) 0 100%); }
+@media (max-width: 720px) {
+  .entry-grid { grid-template-columns: 1fr; }
+  .project-tabs { display: flex; }
+  .project-tabs a { flex: 1; justify-content: center; }
+}

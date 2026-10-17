@@ -3,54 +3,60 @@
 <head>
 <meta charset="UTF-8">
 <script>if(location.hostname==='savvy773.github.io')location.replace('https://juns.win'+location.pathname+location.search+location.hash)</script>
+<script>if(location.hash==='#prismFeatureTitle')location.replace('/projects/prism/')</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Juns — Portfolio</title>
-<meta name="description" content="Juns의 포트폴리오. 로컬 AI 도구, Windows·Ubuntu 유틸리티, 업무 자동화와 공개 GitHub 프로젝트.">
-<meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#f5f6f4">
-<script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t?t==='dark':matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.dataset.theme='dark'})()</script>
+<meta name="description" content="Juns의 포트폴리오. 1인으로 만든 사내 ERP, 로컬 AI 도구, Windows·Ubuntu 유틸리티와 업무 자동화 프로젝트.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://juns.win/">
 <meta property="og:title" content="Juns — Portfolio">
-<meta property="og:description" content="Juns의 포트폴리오. 로컬 AI 도구, Windows·Ubuntu 유틸리티, 업무 자동화와 공개 GitHub 프로젝트.">
+<meta property="og:description" content="Juns의 포트폴리오. 1인으로 만든 사내 ERP, 로컬 AI 도구, Windows·Ubuntu 유틸리티와 업무 자동화 프로젝트.">
 <meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Juns — Portfolio">
-<meta name="twitter:description" content="Juns의 포트폴리오. 로컬 AI 도구, Windows·Ubuntu 유틸리티, 업무 자동화와 공개 GitHub 프로젝트.">
+<meta name="twitter:description" content="Juns의 포트폴리오. 1인으로 만든 사내 ERP, 로컬 AI 도구, Windows·Ubuntu 유틸리티와 업무 자동화 프로젝트.">
 <link rel="canonical" href="https://juns.win/">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23faf6ec'/%3E%3Crect x='0.75' y='0.75' width='30.5' height='30.5' rx='6.25' fill='none' stroke='%23a63d24' stroke-width='1.5'/%3E%3Ctext x='16' y='22' font-family='Arial,sans-serif' font-weight='700' font-size='16' fill='%23a63d24' text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E">
+<!-- shared:head -->
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f5f6f4">
+<script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t?t==='dark':matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.dataset.theme='dark'})()</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23059669'/%3E%3Ctext x='16' y='22' font-family='Arial,sans-serif' font-weight='700' font-size='16' fill='%23ffffff' text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=optional">
-<link rel="stylesheet" href="css/site.css?v=ce9c152cf373">
+<link rel="stylesheet" href="/css/site.css?v=8e14323e139d">
+<!-- /shared:head -->
 </head>
-<body>
+<body data-page="home">
+<!-- shared:sprite -->
   <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
     <symbol id="icon-github" viewBox="0 0 16 16">
       <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/>
     </symbol>
   </svg>
+<!-- /shared:sprite -->
 
   <div class="mesh-tint" aria-hidden="true"></div>
-  <div class="accent-bar" aria-hidden="true"></div>
 
+<!-- shared:topbar -->
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand-cluster">
-        <a class="brand" href="#top">
+        <a class="brand" href="/">
           <span class="brand-mark">J</span>
           <span class="brand-name">Savvy773</span>
         </a>
       </div>
       <nav class="topnav" aria-label="주요 메뉴">
-        <a class="topnav-anchor" href="#repos">Projects</a>
-        <a class="topnav-anchor" href="#journey">Journey</a>
-        <a href="https://github.com/savvy773" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="topnav-page" data-nav="projects" href="/projects/">Projects</a>
+        <a class="topnav-anchor" data-nav="journey" href="/#journey">Journey</a>
+        <a class="topnav-anchor" href="https://github.com/savvy773" target="_blank" rel="noopener noreferrer">GitHub</a>
         <button type="button" class="theme-toggle" aria-label="다크 모드로 전환" aria-pressed="false"><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
-        <a class="nav-cta" href="resume/resume.html" onclick="return openModal('resume/resume.html','이력서', event)">Resume</a>
+        <a class="nav-cta" href="/resume/resume.html" onclick="return openModal('/resume/resume.html','이력서', event)">Resume</a>
       </nav>
     </div>
   </header>
+<!-- /shared:topbar -->
 
   <div class="wrap" id="top">
     <section class="hero">
@@ -65,9 +71,9 @@
       </h1>
       <p class="tagline">로컬 AI 도구부터 업무 자동화까지. 직접 쓰는 소프트웨어를 만들고 GitHub에 공개합니다.</p>
       <div class="hero-cta">
-        <a class="btn btn-primary" href="#repos">
+        <a class="btn btn-primary" href="/projects/">
           <span>Projects</span>
-          <span class="btn-arrow" aria-hidden="true">↓</span>
+          <span class="btn-arrow" aria-hidden="true">→</span>
         </a>
         <a class="btn btn-ghost" href="#journey">
           <span>Journey</span>
@@ -123,246 +129,49 @@
     </div>
     <section class="reveal-section" id="repos">
       <div class="section-head">
-        <h2>Repositories</h2>
-        <p class="section-sub">7 projects · 1 private · updated 2026-10-17 · <a href="https://github.com/savvy773?tab=repositories" target="_blank" rel="noopener noreferrer">All repositories ↗</a></p>
+        <h2>Projects</h2>
+        <p class="section-sub">사내 ERP 1 · 개인 프로젝트 6 · <a href="https://github.com/savvy773?tab=repositories" target="_blank" rel="noopener noreferrer">GitHub ↗</a></p>
       </div>
-      <div class="project-map" role="group" aria-label="프로젝트 분야별 보기" hidden>
-        <button class="map-all" type="button" data-filter="all" aria-pressed="true">전체 <strong>7</strong></button>
-        <button type="button" data-filter="ai" aria-pressed="false"><span class="map-label">AI 도구 <strong>3</strong></span><span class="map-track" aria-hidden="true"><span style="--share: 43%"></span></span><span class="map-flow">음성·모델·사용량 → 입력과 비교</span></button>
-        <button type="button" data-filter="automation" aria-pressed="false"><span class="map-label">업무 자동화 <strong>2</strong></span><span class="map-track" aria-hidden="true"><span style="--share: 29%"></span></span><span class="map-flow">업무 데이터·반복 작업 → ERP와 구독 관리</span></button>
-        <button type="button" data-filter="utility" aria-pressed="false"><span class="map-label">개발 유틸리티 <strong>2</strong></span><span class="map-track" aria-hidden="true"><span style="--share: 29%"></span></span><span class="map-flow">시스템·네트워크 → 모니터링과 연결</span></button>
-      </div>
-      <p class="project-result" role="status" aria-live="polite" hidden>전체 프로젝트 7개</p>
-      <div class="repo-grid">
-        <article class="repo-card glass" data-project="prism-erp" data-category="automation">
-          <img class="repo-thumb shot-light" src="assets/thumbs/prism-erp-light.webp" width="960" height="580" alt="PRISM ERP 대시보드 화면(수치 가림)" loading="lazy" decoding="async">
-          <img class="repo-thumb shot-dark" src="assets/thumbs/prism-erp-dark.webp" width="960" height="580" alt="" aria-hidden="true" loading="lazy" decoding="async">
-          <div class="repo-body">
-            <div class="repo-head"><svg class="icon-gh" aria-hidden="true" viewBox="0 0 16 16"><path fill="currentColor" d="M4 7V5a4 4 0 0 1 8 0v2h.5A1.5 1.5 0 0 1 14 8.5v5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5v-5A1.5 1.5 0 0 1 3.5 7H4zm1.5 0h5V5a2.5 2.5 0 0 0-5 0v2z"/></svg><h3><a href="#journey">PRISM Workspace + ERP</a></h3><span class="repo-live">Private</span></div>
-            <p class="repo-desc">혼자 처음부터 설계·개발·배포한 사내 업무 플랫폼. 문서·주간업무·프로젝트와 쇼핑몰·이카운트 자동 수집, 정산·대사·경영 보고를 하나로 연결합니다.</p>
-            <div class="repo-tags"><span>React</span><span>FastAPI</span><span>PostgreSQL</span></div>
-          </div>
-          <div class="repo-actions"><a href="#journey">개발 사례 보기 ↓</a></div>
-        </article>
-
-        <article class="repo-card glass" data-project="ai-analysis" data-category="ai">
-          <img class="repo-thumb" src="assets/thumbs/ai-analysis.webp" width="960" height="1147" alt="AI 모델 점수·비용·응답 시간 비교 화면" loading="lazy" decoding="async">
-          <div class="repo-body">
-            <div class="repo-head"><svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg><h3><a href="https://github.com/savvy773/ai-analysis" target="_blank" rel="noopener noreferrer">ai-analysis</a></h3><span class="repo-live">Source</span></div>
-            <p class="repo-desc">AI 모델의 성능·코딩 점수·응답 시간·비용을 비교하는 로컬 브라우저 리포트. 필터와 즐겨찾기로 모델 선택을 돕습니다.</p>
-            <div class="repo-tags"><span>Python</span><span>AI</span><span>Data</span></div>
-          </div>
-          <div class="repo-actions"><a href="https://github.com/savvy773/ai-analysis" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="assets/thumbs/ai-analysis.png" onclick="return openModal('assets/thumbs/ai-analysis.png','ai-analysis 화면', event)">화면 보기 ↗</a></div>
-        </article>
-
-
-        <article class="repo-card glass" data-project="ubuntu-scr-saver" data-category="utility">
-          <img class="repo-thumb" src="assets/thumbs/ubuntu-scr-saver.webp" width="960" height="600" alt="Ubuntu 화면 보호기의 시계와 시스템 리소스 모니터" loading="lazy" decoding="async">
-          <div class="repo-body">
-            <div class="repo-head"><svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg><h3><a href="https://github.com/savvy773/ubuntu-scr-saver" target="_blank" rel="noopener noreferrer">ubuntu-scr-saver</a></h3><span class="repo-live">Source</span></div>
-            <p class="repo-desc">CPU·메모리·디스크 사용량, 시계와 영어 문구를 표시하는 Ubuntu 화면 보호기. 시스템 상태를 한눈에 확인합니다.</p>
-            <div class="repo-tags"><span>TypeScript</span><span>Ubuntu</span><span>Monitoring</span></div>
-          </div>
-          <div class="repo-actions"><a href="https://github.com/savvy773/ubuntu-scr-saver" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="assets/thumbs/ubuntu-scr-saver.png" onclick="return openModal('assets/thumbs/ubuntu-scr-saver.png','Ubuntu 화면 보호기', event)">화면 보기 ↗</a></div>
-        </article>
-
-        <article class="repo-card glass" data-project="web-ai-usage" data-category="ai">
-          <img class="repo-thumb" src="assets/thumbs/web-ai-usage.webp" width="640" height="400" alt="" loading="lazy" decoding="async">
-          <div class="repo-body">
-            <div class="repo-head">
-              <svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg>
-              <h3><a href="https://github.com/savvy773/web-ai-usage" target="_blank" rel="noopener noreferrer">web-ai-usage</a></h3>
-              <span class="repo-live">Live</span>
-            </div>
-            <p class="repo-desc">Claude·Codex·Gemini CLI 사용량을 한 화면에서 보는 로컬 대시보드. 클라우드 전송·텔레메트리 없음.</p>
-            <div class="repo-tags"><span>TS</span><span>Svel</span></div>
-          </div>
-        <div class="repo-actions"><a href="https://github.com/savvy773/web-ai-usage" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/web-ai-usage/" target="_blank" rel="noopener noreferrer">미리보기 ↗</a></div>
-        </article>
-
-        <article class="repo-card glass" data-project="app-yt-subs" data-category="automation">
-          <img class="repo-thumb" src="assets/thumbs/app-yt-subs.webp" width="640" height="400" alt="" loading="lazy" decoding="async">
-          <div class="repo-body">
-            <div class="repo-head">
-              <svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg>
-              <h3><a href="https://github.com/savvy773/app-yt-subs" target="_blank" rel="noopener noreferrer">app-yt-subs</a></h3>
-              <span class="repo-live">Live</span>
-            </div>
-            <p class="repo-desc">Flet + Playwright 기반 유튜브 구독 정리 앱. 채널 목록·구독 관리를 데스크톱 UI로 처리.</p>
-            <div class="repo-tags"><span>Py</span><span>Flet</span><span>PW</span></div>
-          </div>
-        <div class="repo-actions"><a href="https://github.com/savvy773/app-yt-subs" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/app-yt-subs/" target="_blank" rel="noopener noreferrer">미리보기 ↗</a></div>
-        </article>
-
-        <article class="repo-card glass" data-project="dpi-bye" data-category="utility">
-          <img class="repo-thumb" src="assets/thumbs/dpi-bye.webp" width="640" height="400" alt="" loading="lazy" decoding="async">
-          <div class="repo-body">
-            <div class="repo-head">
-              <svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg>
-              <h3><a href="https://github.com/savvy773/dpi-bye" target="_blank" rel="noopener noreferrer">dpi-bye</a></h3>
-              <span class="repo-live">Live</span>
-            </div>
-            <p class="repo-desc">TLS ClientHello를 분할해 SNI 기반 DPI 차단을 우회하는 WinDivert 툴. KT·SKT·LGU+ 대응.</p>
-            <div class="repo-tags"><span>Py</span><span>WinD</span><span>PS</span></div>
-          </div>
-        <div class="repo-actions"><a href="https://github.com/savvy773/dpi-bye" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/dpi-bye/" target="_blank" rel="noopener noreferrer">미리보기 ↗</a></div>
-        </article>
-
-        <article class="repo-card glass" data-project="stt-whisper" data-category="ai">
-          <img class="repo-thumb" src="assets/thumbs/stt-whisper.webp" width="640" height="400" alt="" loading="lazy" decoding="async">
-          <div class="repo-body">
-            <div class="repo-head">
-              <svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg>
-              <h3><a href="https://github.com/savvy773/stt-whisper" target="_blank" rel="noopener noreferrer">stt-whisper</a></h3>
-              <span class="repo-live">Live</span>
-            </div>
-            <p class="repo-desc">단축키로 어디서든 실시간 받아쓰기하는 온디바이스 STT 유틸. faster-whisper 기반 GPU 추론, 클라우드 전송 없음.</p>
-            <div class="repo-tags"><span>Py</span><span>Qt</span><span>CUDA</span></div>
-          </div>
-        <div class="repo-actions"><a href="https://github.com/savvy773/stt-whisper" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/stt-whisper/" target="_blank" rel="noopener noreferrer">미리보기 ↗</a></div>
-        </article>
+      <div class="entry-grid">
+        <a class="entry-card glass" href="/projects/prism/">
+          <span class="entry-media">
+            <img class="shot-light" src="/assets/thumbs/prism-erp-light.webp" width="960" height="580" alt="PRISM ERP 대시보드 화면(수치 가림)" loading="lazy" decoding="async">
+            <img class="shot-dark" src="/assets/thumbs/prism-erp-dark.webp" width="960" height="580" alt="" aria-hidden="true" loading="lazy" decoding="async">
+          </span>
+          <span class="entry-body">
+            <span class="entry-kicker">사내 프로젝트 · 웹 개발 완료</span>
+            <strong class="entry-title">PRISM Workspace + ERP</strong>
+            <span class="entry-desc">기획부터 배포까지 1인으로 만든 사내 플랫폼. 쇼핑몰·이카운트 자동 수집에서 정산·경영 보고까지 이어집니다.</span>
+            <span class="entry-facts"><span><b>1인</b> 설계·개발·운영</span><span><b>3개</b> 서비스</span><span><b>19개</b> ERP 화면</span></span>
+            <span class="entry-go">개발 사례 보기 →</span>
+          </span>
+        </a>
+        <a class="entry-card glass" href="/projects/">
+          <span class="entry-media entry-mosaic" aria-hidden="true">
+            <img src="/assets/thumbs/ai-analysis.webp" width="960" height="1147" alt="" loading="lazy" decoding="async">
+            <img src="/assets/thumbs/web-ai-usage.webp" width="640" height="400" alt="" loading="lazy" decoding="async">
+            <img src="/assets/thumbs/stt-whisper.webp" width="640" height="400" alt="" loading="lazy" decoding="async">
+            <img src="/assets/thumbs/dpi-bye.webp" width="640" height="400" alt="" loading="lazy" decoding="async">
+          </span>
+          <span class="entry-body">
+            <span class="entry-kicker">오픈소스 · GitHub 공개</span>
+            <strong class="entry-title">개인 프로젝트 6개</strong>
+            <span class="entry-desc">직접 쓰려고 만든 로컬 AI 도구, 업무 자동화, Windows·Ubuntu 유틸리티.</span>
+            <span class="entry-facts"><span class="cat-ai"><b>3</b> AI 도구</span><span class="cat-automation"><b>1</b> 업무 자동화</span><span class="cat-utility"><b>2</b> 개발 유틸리티</span></span>
+            <span class="entry-go">전체 보기 →</span>
+          </span>
+        </a>
       </div>
     </section>
 
     <section class="reveal-section" id="journey">
       <div class="section-head">
         <h2>Journey</h2>
-        <p class="section-sub">ERP case study · work archive</p>
-      </div>
-      <article class="prism-feature glass" aria-labelledby="prismFeatureTitle">
-        <div class="prism-feature-copy">
-          <span class="feature-label">FEATURED WORK · 웹 개발 완료</span>
-          <h3 id="prismFeatureTitle">PRISM — 사내 Workspace + ERP를 1인 개발로 처음부터 설계·구축</h3>
-          <p>빈 저장소에서 시작해 업무 흐름 분석, 데이터 모델, 화면, API, 데이터 수집 자동화, 배포·운영까지 1인 풀스택으로 완성했습니다. 흩어진 쇼핑몰·결제·이카운트 자료를 한곳에 모아 정산·대사·경영 보고까지 이어지게 만들었습니다.</p>
-          <ul class="prism-facts" aria-label="PRISM 규모">
-            <li><strong>1인</strong><span>기획 · 설계 · 개발 · 운영</span></li>
-            <li><strong>3개</strong><span>서비스 WEB · ERP · Auth</span></li>
-            <li><strong>19개</strong><span>운영 중인 ERP 화면</span></li>
-          </ul>
-        </div>
-        <ol class="prism-flow" aria-label="PRISM 개발 범위">
-          <li><span class="flow-number">01</span><div><strong>설계</strong><span>업무 흐름 · DB 스키마 · 권한</span></div></li>
-          <li><span class="flow-number">02</span><div><strong>사용자 화면</strong><span>React · TypeScript · ECharts</span></div></li>
-          <li><span class="flow-number">03</span><div><strong>API와 데이터</strong><span>FastAPI · PostgreSQL · 수집 자동화</span></div></li>
-          <li><span class="flow-number">04</span><div><strong>배포·운영</strong><span>Docker · Caddy · 백업</span></div></li>
-        </ol>
-        <ol class="prism-pipeline" aria-label="PRISM 데이터 흐름">
-          <li><strong>자동 수집</strong><span>Cafe24 · Shopify · 이카운트 · 결제사</span></li>
-          <li><strong>Staging 검증</strong><span>엑셀 Import · 중복 · 기준정보 대조</span></li>
-          <li><strong>승인</strong><span>담당자 확인 후 원장 반영</span></li>
-          <li><strong>매출 원장</strong><span>채널 · 팀 · 거래처 · 품목</span></li>
-          <li><strong>정산 · 보고</strong><span>월 정산표 · 재경 대사 · 경영 보고</span></li>
-        </ol>
-        <div class="prism-showcase">
-          <div class="showcase-tabs" role="tablist" aria-label="PRISM 실제 화면">
-            <button type="button" role="tab" id="showcaseTab-dashboard" aria-controls="showcaseSlide-dashboard" aria-selected="true" tabindex="0"><strong>대시보드</strong><span>결제·주문·사업부 매출 요약</span><i class="tab-progress" aria-hidden="true"></i></button>
-            <button type="button" role="tab" id="showcaseTab-collect" aria-controls="showcaseSlide-collect" aria-selected="false" tabindex="-1"><strong>데이터 수집</strong><span>Cafe24 주문 원본 자동 수집</span><i class="tab-progress" aria-hidden="true"></i></button>
-            <button type="button" role="tab" id="showcaseTab-schedule" aria-controls="showcaseSlide-schedule" aria-selected="false" tabindex="-1"><strong>수집 스케줄</strong><span>하루 일정 · 소스별 자동 실행</span><i class="tab-progress" aria-hidden="true"></i></button>
-            <button type="button" role="tab" id="showcaseTab-monthly" aria-controls="showcaseSlide-monthly" aria-selected="false" tabindex="-1"><strong>월간 실적</strong><span>사업부 추이 · 비중 · 재경 검수</span><i class="tab-progress" aria-hidden="true"></i></button>
-            <button type="button" role="tab" id="showcaseTab-portfolio" aria-controls="showcaseSlide-portfolio" aria-selected="false" tabindex="-1"><strong>품목 포트폴리오</strong><span>판매량 × 매출 4분면 · 전략 제안</span><i class="tab-progress" aria-hidden="true"></i></button>
-            <button type="button" role="tab" id="showcaseTab-traffic" aria-controls="showcaseSlide-traffic" aria-selected="false" tabindex="-1"><strong>접속 통계</strong><span>유입 경로 · 검색어 SEO 분석</span><i class="tab-progress" aria-hidden="true"></i></button>
-            <button type="button" role="tab" id="showcaseTab-weekly" aria-controls="showcaseSlide-weekly" aria-selected="false" tabindex="-1"><strong>주간업무</strong><span>Workspace · 팀별 주차 업무</span><i class="tab-progress" aria-hidden="true"></i></button>
-          </div>
-          <figure class="showcase-stage">
-            <div class="showcase-chrome" aria-hidden="true">
-              <span class="showcase-dots"><i></i><i></i><i></i></span>
-              <span class="showcase-url">prism / <b>ERP · 대시보드</b></span>
-              <span class="showcase-badge">실제 화면 · 수치 가림</span>
-            </div>
-            <div class="showcase-view">
-              <a class="showcase-slide is-active" id="showcaseSlide-dashboard" role="tabpanel" aria-labelledby="showcaseTab-dashboard" data-title="ERP · 대시보드" href="assets/shots/prism-erp-dashboard-light.webp" onclick="return openShot(this, event)">
-                <img class="shot-light" src="assets/shots/prism-erp-dashboard-light.webp" width="1440" height="870" alt="PRISM ERP 대시보드: 사업부 매출, 결제 KPI, 일별 결제 차트, 결제수단 비중, 상품 TOP 8, 최근 수집 주문(수치 가림)" loading="lazy" decoding="async">
-                <img class="shot-dark" src="assets/shots/prism-erp-dashboard.webp" aria-hidden="true" width="1440" height="870" alt="" loading="lazy" decoding="async">
-              </a>
-              <div class="showcase-slide showcase-feed" id="showcaseSlide-collect" role="tabpanel" aria-labelledby="showcaseTab-collect" hidden data-title="ERP · Cafe24 주문 수집" style="--rows:14">
-                <div class="feed-head">
-                  <span class="feed-src">Cafe24 → PRISM</span>
-                  <span class="feed-state"><span class="feed-run">수집 중</span><span class="feed-done">수집 완료 · 14행 · Staging 검증 대기</span></span>
-                  <i class="feed-bar" aria-hidden="true"></i>
-                </div>
-                <table class="feed-table">
-                  <caption class="sr-only">Cafe24에서 자동 수집한 주문 원본 예시 (주문번호 끝자리·금액 가림)</caption>
-                  <thead><tr><th>주문일시</th><th>주문번호</th><th>경로</th><th>품목</th><th>수량</th><th>금액</th><th>결제</th><th>상태</th></tr></thead>
-                  <tbody>
-                  <tr style="--i:0"><td class="feed-time">10.16 06:50</td><td class="feed-no">20261016-0000•••</td><td><span class="feed-ch">네이버 페이</span></td><td class="feed-item">3페이스 DC 어댑터<small>12.6V 3A</small></td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:52px"></i></td><td class="feed-pay">카드</td><td><span class="feed-st feed-st--ship">배송중</span></td></tr>
-                  <tr style="--i:1"><td class="feed-time">10.16 07:34</td><td class="feed-no">20261016-0000•••</td><td><span class="feed-ch">PC쇼핑몰</span></td><td class="feed-item">브로드윙 라운드 베이스<small>블랙(BK)</small></td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:58px"></i></td><td class="feed-pay">카드·적립금</td><td><span class="feed-st feed-st--ship">배송중</span></td></tr>
-                  <tr style="--i:2"><td class="feed-time">10.16 08:05</td><td class="feed-no">20261016-0000•••</td><td><span class="feed-ch">PC쇼핑몰</span></td><td class="feed-item">헤디2 액세서리<small>헤디2 밴드(탄)</small></td><td class="feed-qty">2</td><td class="feed-amt"><i style="width:56px"></i></td><td class="feed-pay">카드</td><td><span class="feed-st feed-st--ship">배송중</span></td></tr>
-                  <tr style="--i:3"><td class="feed-time">10.16 09:04</td><td class="feed-no">20261016-0000•••</td><td><span class="feed-ch">네이버 페이</span></td><td class="feed-item">캡온 200H+ 클립<small>블랙(BK)</small></td><td class="feed-qty">2</td><td class="feed-amt"><i style="width:50px"></i></td><td class="feed-pay">네이버페이</td><td><span class="feed-st feed-st--ship">배송중</span></td></tr>
-                  <tr style="--i:4"><td class="feed-time">10.16 09:30</td><td class="feed-no">20261016-0000•••</td><td><span class="feed-ch">네이버 페이</span></td><td class="feed-item">3페이스 네오20<small>베이직스탠드 증정</small></td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:64px"></i></td><td class="feed-pay">카드</td><td><span class="feed-st feed-st--cancel">취소완료</span></td></tr>
-                  <tr style="--i:5"><td class="feed-time">10.16 09:41</td><td class="feed-no">20261016-0000•••</td><td><span class="feed-ch">톡체크아웃</span></td><td class="feed-item">LED 스탠드 PL-6100</td><td class="feed-qty">2</td><td class="feed-amt"><i style="width:58px"></i></td><td class="feed-pay">선불</td><td><span class="feed-st feed-st--ship">배송중</span></td></tr>
-                  <tr style="--i:6"><td class="feed-time">10.16 09:45</td><td class="feed-no">20261016-0000•••</td><td><span class="feed-ch">모바일웹</span></td><td class="feed-item">미니힛</td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:56px"></i></td><td class="feed-pay">카드</td><td><span class="feed-st feed-st--ship">배송중</span></td></tr>
-                  <tr style="--i:7"><td class="feed-time">10.17 00:38</td><td class="feed-no">20261017-0000•••</td><td><span class="feed-ch">모바일웹</span></td><td class="feed-item">F21 연장선(Long)</td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:50px"></i></td><td class="feed-pay">카드</td><td><span class="feed-st feed-st--prep">상품준비중</span></td></tr>
-                  <tr style="--i:8"><td class="feed-time">10.17 00:42</td><td class="feed-no">20261017-0000•••</td><td><span class="feed-ch">모바일웹</span></td><td class="feed-item">V600+<small>웜그레이(WG)</small></td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:58px"></i></td><td class="feed-pay">카드</td><td><span class="feed-st feed-st--prep">상품준비중</span></td></tr>
-                  <tr style="--i:9"><td class="feed-time">10.17 01:05</td><td class="feed-no">20261017-0000•••</td><td><span class="feed-ch">PC쇼핑몰</span></td><td class="feed-item">헤디+<small>탄(TN) · 자전거 거치대 증정</small></td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:58px"></i></td><td class="feed-pay">카드·적립금</td><td><span class="feed-st feed-st--prep">상품준비중</span></td></tr>
-                  <tr style="--i:10"><td class="feed-time">10.17 07:24</td><td class="feed-no">20261017-0000•••</td><td><span class="feed-ch">네이버 페이</span></td><td class="feed-item">KFI 일산화탄소 경보기</td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:58px"></i></td><td class="feed-pay">카드</td><td><span class="feed-st feed-st--prep">상품준비중</span></td></tr>
-                  <tr style="--i:11"><td class="feed-time">10.17 08:58</td><td class="feed-no">20261017-0000•••</td><td><span class="feed-ch">모바일웹</span></td><td class="feed-item">다이너라이트</td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:58px"></i></td><td class="feed-pay">카드</td><td><span class="feed-st feed-st--prep">상품준비중</span></td></tr>
-                  <tr style="--i:12"><td class="feed-time">10.17 09:26</td><td class="feed-no">20261017-0000•••</td><td><span class="feed-ch">톡체크아웃</span></td><td class="feed-item">텐톤 3종 세트(캠프)<small>테이블스탠드 증정</small></td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:64px"></i></td><td class="feed-pay">선불</td><td><span class="feed-st feed-st--prep">상품준비중</span></td></tr>
-                  <tr style="--i:13"><td class="feed-time">10.17 10:14</td><td class="feed-no">20261017-0000•••</td><td><span class="feed-ch">모바일웹</span></td><td class="feed-item">브로드윙 와이드<small>LSP-10180 (1800mm)</small></td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:64px"></i></td><td class="feed-pay">무통장</td><td><span class="feed-st feed-st--prep">상품준비중</span></td></tr>
-                  </tbody>
-                </table>
-              </div>
-              <a class="showcase-slide" id="showcaseSlide-schedule" role="tabpanel" aria-labelledby="showcaseTab-schedule" hidden data-title="ERP · 관리 › 수집" href="assets/shots/prism-erp-collect-light.webp" onclick="return openShot(this, event)">
-                <img class="shot-light" src="assets/shots/prism-erp-collect-light.webp" width="1440" height="1150" alt="PRISM ERP 수집 관리 화면: 오늘 수집 일정 타임라인, 이카운트·Cafe24·Shopify 소스별 실행 주기와 마지막·다음 실행(건수·금액 가림)" loading="lazy" decoding="async">
-                <img class="shot-dark" src="assets/shots/prism-erp-collect.webp" aria-hidden="true" width="1440" height="1150" alt="" loading="lazy" decoding="async">
-              </a>
-              <a class="showcase-slide" id="showcaseSlide-monthly" role="tabpanel" aria-labelledby="showcaseTab-monthly" hidden data-title="ERP · 월간 실적" href="assets/shots/prism-erp-monthly-v2-light.webp" onclick="return openShot(this, event)">
-                <img class="shot-light" src="assets/shots/prism-erp-monthly-v2-light.webp" width="1440" height="900" alt="PRISM ERP 월간 실적: 13개월 사업부별 누적 막대 차트, 사업부 비중 도넛, 사업부 매출 표와 추이 스파크라인, 재경 검수(수치 가림)" loading="lazy" decoding="async">
-                <img class="shot-dark" src="assets/shots/prism-erp-monthly-v2.webp" aria-hidden="true" width="1440" height="900" alt="" loading="lazy" decoding="async">
-              </a>
-              <a class="showcase-slide" id="showcaseSlide-portfolio" role="tabpanel" aria-labelledby="showcaseTab-portfolio" hidden data-title="ERP · 품목 포트폴리오" href="assets/shots/prism-erp-portfolio-v2-light.webp" onclick="return openShot(this, event)">
-                <img class="shot-light" src="assets/shots/prism-erp-portfolio-v2-light.webp" width="1440" height="910" alt="PRISM ERP 품목 포트폴리오: 판매량·매출 로그 산점도 4분면, 자동 전략 제안, 분면별 상위 품목(수치 가림)" loading="lazy" decoding="async">
-                <img class="shot-dark" src="assets/shots/prism-erp-portfolio-v2.webp" aria-hidden="true" width="1440" height="910" alt="" loading="lazy" decoding="async">
-              </a>
-              <a class="showcase-slide" id="showcaseSlide-traffic" role="tabpanel" aria-labelledby="showcaseTab-traffic" hidden data-title="ERP · Cafe24 접속 통계" href="assets/shots/prism-erp-traffic-light.webp" onclick="return openShot(this, event)">
-                <img class="shot-light" src="assets/shots/prism-erp-traffic-light.webp" width="1440" height="900" alt="PRISM ERP Cafe24 접속 통계: 일별 방문·검색 유입 추이, 브랜드명 아닌 검색어 유입, 유입 도메인과 검색어 비교 표(수치 가림)" loading="lazy" decoding="async">
-                <img class="shot-dark" src="assets/shots/prism-erp-traffic.webp" aria-hidden="true" width="1440" height="900" alt="" loading="lazy" decoding="async">
-              </a>
-              <a class="showcase-slide" id="showcaseSlide-weekly" role="tabpanel" aria-labelledby="showcaseTab-weekly" hidden data-title="Workspace · 주간업무" href="assets/shots/prism-web-weekly.webp" onclick="return openModal('assets/shots/prism-web-weekly.webp','Workspace · 주간업무', event)">
-                <img src="assets/shots/prism-web-weekly.webp" width="1079" height="617" alt="PRISM Workspace 주간업무: 주차별 팀원 업무와 진척률(예시 데이터)" loading="lazy" decoding="async">
-              </a>
-            </div>
-          </figure>
-        </div>
-        <div class="prism-detail">
-          <div class="prism-block">
-            <h4 id="prismBuiltTitle">완성한 기능</h4>
-            <ul>
-              <li><b>Workspace</b> 문서 허브 · 주간업무 · 프로젝트</li>
-              <li><b>데이터 수집</b> Cafe24 · Shopify · 이카운트 · 결제사 자동 수집 (API · Playwright)</li>
-              <li><b>데이터 반영</b> 엑셀 Import → Staging 검증·승인 → 기준정보</li>
-              <li><b>매출 원장</b> 승인된 매출을 채널·팀·거래처·품목별 조회</li>
-              <li><b>회계·보고</b> 월 정산표 · 재경 대사 · 월간 실적 · 품목 포트폴리오 · 경영 보고 · 매출 분석</li>
-            </ul>
-            <p class="prism-next">다음 단계: 구매 · 재고 · 생산 · HR 모듈</p>
-          </div>
-          <div class="prism-block">
-            <h4 id="prismDesignTitle">설계 포인트</h4>
-            <ul>
-              <li>WEB · ERP · Auth 분리, 공통 세션으로 한 번 로그인</li>
-              <li>서비스마다 UI와 API를 이미지 하나로 배포, 태그 하나로 롤백</li>
-              <li>OpenAPI 명세에서 TypeScript 클라이언트 자동 생성</li>
-              <li>PostgreSQL 하나로 데이터 · 작업 큐 · 세션 처리 (Redis 없음)</li>
-              <li>Caddy 호스트 분기, 수집은 systemd 타이머, pg_dump 백업</li>
-            </ul>
-          </div>
-          <div class="prism-block">
-            <h4 id="prismStackTitle">기술 스택</h4>
-            <dl class="prism-stack">
-              <dt>Frontend</dt><dd><span>React</span><span>TypeScript</span><span>Vite</span><span>TanStack</span><span>Tailwind</span><span>ECharts</span></dd>
-              <dt>Backend</dt><dd><span>Python</span><span>FastAPI</span><span>Pydantic</span><span>SQLAlchemy</span><span>Alembic</span></dd>
-              <dt>Data</dt><dd><span>PostgreSQL</span><span>Procrastinate</span><span>Playwright</span><span>openpyxl</span></dd>
-              <dt>Infra</dt><dd><span>Docker Compose</span><span>Caddy</span><span>systemd</span><span>uv</span><span>pnpm</span></dd>
-            </dl>
-          </div>
-        </div>
-      </article>
-      <div class="journey-records-heading">
-        <h3 class="journey-note" id="journeyRecordsTitle">업무 자동화와 개발 과정의 기록</h3>
-        <span class="journey-records-count">문서 5개</span>
+        <p class="section-sub">업무 자동화와 개발 과정의 기록 · 문서 5개</p>
       </div>
       <div class="timeline" id="timeline" aria-labelledby="journeyRecordsTitle">
-        <a class="tl-item glass" href="journey/juns-review.html" onclick="return openModal('journey/juns-review.html','Juns의 리뷰 & 서버 인프라 기술 플랜', event)">
-          <img class="tl-thumb" src="assets/thumbs/juns-review.webp" width="640" height="400" alt="" loading="lazy">
+        <a class="tl-item glass" href="/journey/juns-review.html" onclick="return openModal('/journey/juns-review.html','Juns의 리뷰 & 서버 인프라 기술 플랜', event)">
+          <img class="tl-thumb" src="/assets/thumbs/juns-review.webp" width="640" height="400" alt="" loading="lazy">
           <span class="tl-body">
             <span class="tl-meta">
               <span class="tl-date">2026-07-28</span>
@@ -372,8 +181,8 @@
           </span>
         </a>
 
-        <a class="tl-item glass" href="journey/hw-ssh-security.html" onclick="return openModal('journey/hw-ssh-security.html','SSH 보안 & 서버 안정성', event)">
-          <img class="tl-thumb" src="assets/thumbs/hw-ssh-security.webp" width="640" height="400" alt="" loading="lazy">
+        <a class="tl-item glass" href="/journey/hw-ssh-security.html" onclick="return openModal('/journey/hw-ssh-security.html','SSH 보안 & 서버 안정성', event)">
+          <img class="tl-thumb" src="/assets/thumbs/hw-ssh-security.webp" width="640" height="400" alt="" loading="lazy">
           <span class="tl-body">
             <span class="tl-meta">
               <span class="tl-date">2026-04-27</span>
@@ -383,8 +192,8 @@
           </span>
         </a>
 
-        <a class="tl-item glass" href="journey/hw-handover-report.html" onclick="return openModal('journey/hw-handover-report.html','업무 인수인계 보고서', event)">
-          <img class="tl-thumb" src="assets/thumbs/hw-handover-report.webp" width="640" height="400" alt="" loading="lazy">
+        <a class="tl-item glass" href="/journey/hw-handover-report.html" onclick="return openModal('/journey/hw-handover-report.html','업무 인수인계 보고서', event)">
+          <img class="tl-thumb" src="/assets/thumbs/hw-handover-report.webp" width="640" height="400" alt="" loading="lazy">
           <span class="tl-body">
             <span class="tl-meta">
               <span class="tl-date">2026-04-24</span>
@@ -394,8 +203,8 @@
           </span>
         </a>
 
-        <a class="tl-item glass" href="journey/hw-heis-tool-guide.html" onclick="return openModal('journey/hw-heis-tool-guide.html','HEIS Tool 통합 사용 가이드', event)">
-          <img class="tl-thumb" src="assets/thumbs/hw-heis-tool-guide.webp" width="640" height="400" alt="" loading="lazy">
+        <a class="tl-item glass" href="/journey/hw-heis-tool-guide.html" onclick="return openModal('/journey/hw-heis-tool-guide.html','HEIS Tool 통합 사용 가이드', event)">
+          <img class="tl-thumb" src="/assets/thumbs/hw-heis-tool-guide.webp" width="640" height="400" alt="" loading="lazy">
           <span class="tl-body">
             <span class="tl-meta">
               <span class="tl-date">2026-04-10</span>
@@ -406,8 +215,8 @@
           </span>
         </a>
 
-        <a class="tl-item glass" href="journey/hw-opc-isl-guide.html" onclick="return openModal('journey/hw-opc-isl-guide.html','OPC-ISL Engine 사용 가이드', event)">
-          <img class="tl-thumb" src="assets/thumbs/hw-opc-isl-guide.webp" width="640" height="400" alt="" loading="lazy">
+        <a class="tl-item glass" href="/journey/hw-opc-isl-guide.html" onclick="return openModal('/journey/hw-opc-isl-guide.html','OPC-ISL Engine 사용 가이드', event)">
+          <img class="tl-thumb" src="/assets/thumbs/hw-opc-isl-guide.webp" width="640" height="400" alt="" loading="lazy">
           <span class="tl-body">
             <span class="tl-meta">
               <span class="tl-date">2026-03</span>
@@ -420,14 +229,17 @@
       </div>
     </section>
 
+<!-- shared:footer -->
     <footer>
       <span>&copy; 2026 Juns</span>
       <span class="flinks">
         <a href="https://github.com/savvy773" target="_blank" rel="noopener noreferrer">GitHub</a>
       </span>
     </footer>
+<!-- /shared:footer -->
   </div>
 
+<!-- shared:dialog -->
   <dialog class="modal-frame" id="modalDialog" aria-labelledby="modalTitle" aria-modal="true">
     <div class="modal-bar">
       <span class="modal-title" id="modalTitle"></span>
@@ -440,7 +252,7 @@
     </div>
     <iframe id="modalIframe" src="about:blank" title="문서 미리보기" loading="lazy"></iframe>
   </dialog>
-  <script src="js/app.js?v=013b568d22ef"></script>
+<!-- /shared:dialog -->
+  <script src="/js/app.js?v=2e5d9a863429"></script>
 </body>
 </html>
-

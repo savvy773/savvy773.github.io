@@ -9,8 +9,19 @@
   const projectResult = document.querySelector('.project-result');
   if (projectMap && projectResult) {
     const cards = [...document.querySelectorAll('.repo-card[data-category]')];
-    projectMap.hidden = false;
-    projectResult.hidden = false;
+    // counts, bar widths and the overview ring come from the cards on the page, so they never go stale
+    const count = (cat) => cards.filter((card) => card.dataset.category === cat).length;
+    const total = cards.length || 1;
+    const share = { ai: count('ai') / total, automation: count('automation') / total, utility: count('utility') / total };
+    projectMap.querySelectorAll('button[data-filter]').forEach((button) => {
+      const cat = button.dataset.filter;
+      const num = button.querySelector('strong');
+      if (num) num.textContent = String(cat === 'all' ? cards.length : count(cat));
+      const bar = button.querySelector('.map-track > span');
+      if (bar) bar.style.setProperty('--share', `${Math.round(share[cat] * 100)}%`);
+    });
+    projectMap.style.setProperty('--ring-a', `${(share.ai * 100).toFixed(1)}%`);
+    projectMap.style.setProperty('--ring-b', `${((share.ai + share.automation) * 100).toFixed(1)}%`);
     projectMap.addEventListener('click', (event) => {
       const button = event.target.closest('button[data-filter]');
       if (!button) return;
@@ -152,9 +163,12 @@
 
   // ── in-page links: jump straight to the section with a short cross-fade, no smooth scrolling ──
   document.addEventListener('click', (e) => {
-    const link = e.target.closest('a[href^="#"]');
+    const link = e.target.closest('a[href*="#"]');
     if (!link || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    const id = link.getAttribute('href').slice(1);
+    // only links into this same page (e.g. /#journey while on the home page); other pages navigate normally
+    const to = new URL(link.href, location.href);
+    if (to.origin !== location.origin || to.pathname !== location.pathname || !to.hash) return;
+    const id = decodeURIComponent(to.hash.slice(1));
     const target = id && document.getElementById(id);
     if (!target) return;
     e.preventDefault();
