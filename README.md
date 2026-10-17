@@ -77,7 +77,7 @@ CSS·JavaScript 수정 후 게시 전에 `node scripts/version-assets.mjs`를 �
 
 ## Deploy
 
-juns.win은 Cloudflare에 직접 업로드합니다. 커밋한 뒤 `scripts/deploy-cf.sh`를 실행하면 커밋된 HEAD만 올라갑니다(작업 중 파일은 제외). 배포가 끝나면 `scripts/backup-r2.sh`가 git 전체 이력을 R2 버킷 `juns-backup`에 번들로 백업합니다(복원: `git clone latest.bundle`). GitHub는 링크용이고, savvy773.github.io는 juns.win으로 이동만 시킵니다.
+juns.win은 Cloudflare에 직접 업로드합니다. 커밋한 뒤 `scripts/deploy-cf.sh`를 실행하면 커밋된 HEAD만 올라갑니다(작업 중 파일은 제외). 배포가 끝나면 `scripts/backup-r2.sh`가 git 전체 이력을 R2 버킷 `juns-backup`에 번들로 백업합니다(`latest.bundle` + `history/`의 시각별 사본, 사본은 180일 뒤 자동 삭제. 복원: `git clone latest.bundle`). GitHub는 링크용이고, savvy773.github.io는 juns.win으로 이동만 시킵니다.
 
 ## Docs
 

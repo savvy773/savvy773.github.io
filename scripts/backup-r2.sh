@@ -10,7 +10,7 @@ trap 'rm -rf "$tmp"' EXIT
 stamp=$(date -u +%Y%m%dT%H%M%SZ)
 git -C "$root" bundle create "$tmp/repo.bundle" --all
 git -C "$root" bundle verify "$tmp/repo.bundle" >/dev/null
-for key in "$name/$stamp.bundle" "$name/latest.bundle"; do
+for key in "$name/history/$stamp.bundle" "$name/latest.bundle"; do
   wrangler r2 object put "$bucket/$key" --file "$tmp/repo.bundle" --content-type application/octet-stream --remote
 done
-echo "backed up $(git -C "$root" rev-parse --short HEAD) to r2://$bucket/$name/$stamp.bundle"
+echo "backed up $(git -C "$root" rev-parse --short HEAD) to r2://$bucket/$name/history/$stamp.bundle"
