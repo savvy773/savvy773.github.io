@@ -88,8 +88,10 @@
       section.querySelectorAll('.repo-card').forEach((el, i) => {
         el.style.setProperty('--reveal-i', String(i));
       });
-      section.querySelectorAll('.tl-item').forEach((el, i) => {
-        el.style.setProperty('--reveal-i', String(i));
+      ['.tl-item', '.showcase-tabs button', '.prism-pipeline li'].forEach((sel) => {
+        section.querySelectorAll(sel).forEach((el, i) => {
+          el.style.setProperty('--reveal-i', String(i));
+        });
       });
     }
     sections.forEach(prepReveal);
@@ -98,6 +100,17 @@
       sections.forEach((s) => s.classList.add('in-view'));
       return;
     }
+    // Only sections still below the fold once load, anchor jump and scroll restore are done get the
+    // hidden pre-state, so F5 or a #link never fades in content that is already on screen.
+    function flagBelowFold() {
+      requestAnimationFrame(() => {
+        sections.forEach((s) => {
+          if (!s.classList.contains('in-view') && s.getBoundingClientRect().top > innerHeight) s.classList.add('will-reveal');
+        });
+      });
+    }
+    if (document.readyState === 'complete') flagBelowFold();
+    else addEventListener('load', flagBelowFold, { once: true });
     const io = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -134,6 +147,116 @@
         if (raf) { cancelAnimationFrame(raf); raf = null; }
         el.style.transform = '';
       });
+    });
+  })();
+
+  // ── PRISM showcase: tabs cross-fade the stage; one autoplay pass while visible, any input stops it ──
+  (function () {
+    const root = document.querySelector('.prism-showcase');
+    if (!root) return;
+    const tabs = [...root.querySelectorAll('[role="tab"]')];
+    const slides = tabs.map((t) => document.getElementById(t.getAttribute('aria-controls')));
+    const url = root.querySelector('.showcase-url b');
+    const stage = root.querySelector('.showcase-stage');
+    const STEP = 4800;
+    let current = 0;
+    let timer = null;
+    let played = false;
+
+    slides.forEach((s) => { s.hidden = false; });
+    root.style.setProperty('--showcase-ms', STEP + 'ms');
+
+    function show(i, focus) {
+      current = (i + tabs.length) % tabs.length;
+      tabs.forEach((t, k) => {
+        const on = k === current;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        slides[k].classList.toggle('is-active', on);
+        slides[k].setAttribute('aria-hidden', String(!on));
+        slides[k].tabIndex = on ? 0 : -1;
+      });
+      url.textContent = slides[current].dataset.title;
+      if (focus) tabs[current].focus();
+      root.dispatchEvent(new CustomEvent('showcase:change', { detail: { index: current } }));
+    }
+    function stop() {
+      clearTimeout(timer);
+      timer = null;
+      root.classList.remove('is-playing');
+    }
+    function tick() {
+      // restart the progress bar animation on the newly selected tab
+      root.classList.remove('is-playing');
+      void root.offsetWidth;
+      root.classList.add('is-playing');
+      timer = setTimeout(() => {
+        if (current === tabs.length - 1) { stop(); show(0); return; }
+        show(current + 1);
+        tick();
+      }, STEP);
+    }
+
+    root.addEventListener('click', (e) => {
+      const tab = e.target.closest('[role="tab"]');
+      if (!tab) return;
+      stop();
+      show(tabs.indexOf(tab));
+    });
+    root.addEventListener('keydown', (e) => {
+      if (!e.target.closest('[role="tab"]')) return;
+      const move = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+      if (e.key === 'Home' || e.key === 'End' || move) {
+        e.preventDefault();
+        stop();
+        show(e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : current + move, true);
+      }
+    });
+    root.addEventListener('pointerenter', stop);
+    root.addEventListener('focusin', stop);
+    document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
+    show(0);
+
+    if (!reduced && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        if (!entries[0].isIntersecting || played) return;
+        played = true;
+        io.disconnect();
+        tick();
+      }, { threshold: 0.55 });
+      io.observe(stage);
+    }
+
+    // 3D ring transitions (three.js), desktop only, fetched when the stage gets close to the viewport
+    const fx = root.dataset.fx;
+    if (fx && !reduced && 'IntersectionObserver' in window && matchMedia('(min-width: 721px)').matches) {
+      const near = new IntersectionObserver((entries) => {
+        if (!entries[0].isIntersecting) return;
+        near.disconnect();
+        import('./' + fx.replace(/^js\//, ''))
+          .then((m) => m.init(root))
+          .catch(() => { /* WebGL or CDN unavailable: the <img> slides already work */ });
+      }, { rootMargin: '400px 0px' });
+      near.observe(stage);
+    }
+
+    // pointer tilt on the stage, same feel as the repo cards
+    if (reduced || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    let raf = null;
+    stage.addEventListener('mousemove', (e) => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = null;
+        const r = stage.getBoundingClientRect();
+        const rx = ((0.5 - (e.clientY - r.top) / r.height) * 4).toFixed(2);
+        const ry = (((e.clientX - r.left) / r.width - 0.5) * 4).toFixed(2);
+        root.classList.add('is-tilting');
+        stage.style.transform = `perspective(1400px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      });
+    });
+    stage.addEventListener('mouseleave', () => {
+      if (raf) { cancelAnimationFrame(raf); raf = null; }
+      stage.style.transform = '';
     });
   })();
 

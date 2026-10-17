@@ -1098,13 +1098,59 @@ h1 { animation-delay: 0.06s; }
 .prism-facts li { padding: 0.5rem 0.65rem; border-left: 2px solid var(--accent-2); background: var(--accent-muted); border-radius: 0 8px 8px 0; }
 .prism-facts strong { display: block; font-size: 1.05rem; color: var(--text); }
 .prism-facts span { display: block; font-size: 0.72rem; color: var(--text-dim); word-break: keep-all; }
-.prism-shots { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0.75rem; }
-.prism-shot--lg { grid-column: span 3; }
-.prism-shot--sm { grid-column: span 2; }
-.prism-shot { display: block; color: inherit; text-decoration: none; border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; background: #1c1d20; }
-.prism-shot img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: left top; }
-.shot-caption { display: flex; justify-content: space-between; gap: 0.5rem; padding: 0.5rem 0.7rem; background: var(--paper); border-top: 1px solid var(--border); font-size: 0.78rem; }
-.shot-caption span { color: var(--accent-2); font-size: 0.7rem; font-weight: 500; white-space: nowrap; align-self: center; }
+/* PRISM data flow: connectors draw left→right once when the section enters view. */
+.prism-pipeline { grid-column: 1 / -1; list-style: none; margin: 0.25rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.9rem; counter-reset: pipe; }
+.prism-pipeline li { position: relative; padding: 0.55rem 0.7rem; border: 1px solid var(--border); border-radius: 10px; background: var(--paper); counter-increment: pipe; }
+.prism-pipeline li::before { content: "0" counter(pipe); display: block; font: 500 0.66rem var(--mono); color: var(--accent); margin-bottom: 0.15rem; }
+.prism-pipeline li + li::after { content: ""; position: absolute; top: 50%; right: calc(100% + 1px); width: calc(0.9rem - 2px); height: 2px; background: var(--accent-2); transform-origin: left center; }
+.prism-pipeline strong { display: block; font-size: 0.82rem; }
+.prism-pipeline span { display: block; font-size: 0.7rem; color: var(--text-dim); line-height: 1.45; word-break: keep-all; }
+
+/* PRISM showcase: tab list + browser-frame stage, slides stacked and cross-faded. */
+.prism-showcase { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 3.1fr); gap: 0.9rem; align-items: start; }
+.showcase-tabs { display: grid; gap: 0.4rem; }
+.showcase-tabs button { position: relative; overflow: hidden; display: block; width: 100%; text-align: left; font: inherit; color: var(--text-2); background: var(--paper); border: 1px solid var(--border); border-radius: 10px; padding: 0.6rem 0.75rem; cursor: pointer; transition: border-color 0.2s var(--ease), background 0.2s var(--ease), color 0.2s var(--ease); }
+.showcase-tabs button:hover { border-color: var(--border-hi); color: var(--text); }
+.showcase-tabs button[aria-selected="true"] { border-color: var(--accent-2); background: var(--accent-muted); color: var(--text); }
+.showcase-tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.showcase-tabs strong { display: block; font-size: 0.84rem; }
+.showcase-tabs span { display: block; font-size: 0.7rem; color: var(--text-dim); word-break: keep-all; }
+.tab-progress { position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: var(--accent-2); transform: scaleX(0); transform-origin: left center; }
+.prism-showcase.is-playing [aria-selected="true"] .tab-progress { animation: showcase-progress var(--showcase-ms, 4800ms) linear forwards; }
+@keyframes showcase-progress { to { transform: scaleX(1); } }
+.showcase-stage { margin: 0; border-radius: 14px; overflow: hidden; background: #17181b; border: 1px solid rgba(38, 31, 22, 0.28); box-shadow: 0 18px 40px rgba(38, 31, 22, 0.18), 0 2px 6px rgba(38, 31, 22, 0.08); transition: transform 0.18s var(--ease-out); }
+.showcase-chrome { display: flex; align-items: center; gap: 0.75rem; height: 34px; padding: 0 0.8rem; background: #222327; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+.showcase-dots { display: flex; gap: 6px; }
+.showcase-dots i { width: 9px; height: 9px; border-radius: 50%; background: #3a3b40; }
+.showcase-dots i:first-child { background: #d5674f; }
+.showcase-dots i:nth-child(2) { background: #d9a441; }
+.showcase-dots i:nth-child(3) { background: #5aa287; }
+.showcase-url { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 500 0.7rem var(--mono); color: #8d8f96; }
+.showcase-url b { color: #e6e3dc; font-weight: 500; }
+.showcase-badge { font-size: 0.66rem; color: #9fd3c2; border: 1px solid rgba(159, 211, 194, 0.3); border-radius: 999px; padding: 0.1rem 0.5rem; white-space: nowrap; }
+.showcase-view { position: relative; aspect-ratio: 16 / 10; overflow: hidden; }
+.showcase-slide { position: absolute; inset: 0; display: block; opacity: 0; transform: scale(1.025); transition: opacity 0.55s var(--ease), transform 0.9s var(--ease-out); pointer-events: none; }
+.showcase-slide.is-active { opacity: 1; transform: none; pointer-events: auto; }
+.showcase-slide img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: left top; }
+.showcase-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; opacity: 0; transition: opacity 0.3s var(--ease); }
+.prism-showcase.has-3d .showcase-canvas { opacity: 1; }
+/* the flat cross-fade is redundant under the 3D canvas */
+.prism-showcase.has-3d .showcase-slide { transition: none; }
+
+/* one-shot entrance, only for sections that start below the fold (JS adds .will-reveal), so F5 never flashes:
+   stage tips up from a slight 3D angle, pipeline connectors draw in sequence */
+.reveal-section.will-reveal .showcase-stage { opacity: 0; transform: perspective(1400px) rotateX(10deg) translateY(28px) scale(0.97); transform-origin: center top; }
+.reveal-section.will-reveal .showcase-tabs button, .reveal-section.will-reveal .prism-pipeline li { opacity: 0; transform: translateY(10px); }
+.reveal-section.will-reveal .prism-pipeline li + li::after { transform: scaleX(0); }
+.reveal-section.in-view .showcase-stage { opacity: 1; transform: none; transition: opacity 0.7s var(--ease-out) 0.15s, transform 1s var(--ease-out) 0.15s; }
+.reveal-section.in-view .showcase-tabs button, .reveal-section.in-view .prism-pipeline li { opacity: 1; transform: none; transition: opacity 0.45s var(--ease-out) calc(var(--reveal-i, 0) * 0.07s), transform 0.45s var(--ease-out) calc(var(--reveal-i, 0) * 0.07s), border-color 0.2s var(--ease), background 0.2s var(--ease), color 0.2s var(--ease); }
+.reveal-section.in-view .prism-pipeline li + li::after { transform: scaleX(1); transition: transform 0.35s var(--ease-out) calc(0.12s + var(--reveal-i, 0) * 0.07s); }
+.reveal-section.in-view .prism-showcase.is-tilting .showcase-stage { transition: transform 0.18s var(--ease-out); }
+@media (prefers-reduced-motion: reduce) {
+  .reveal-section.will-reveal .showcase-stage, .reveal-section.will-reveal .showcase-tabs button, .reveal-section.will-reveal .prism-pipeline li { opacity: 1; transform: none; transition: none; }
+  .reveal-section.will-reveal .prism-pipeline li + li::after { transform: none; }
+  .showcase-slide { transition: none; transform: none; }
+}
 .prism-detail { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.15fr); gap: 0.75rem; }
 .prism-block { padding: 0.75rem 0.85rem; border: 1px solid var(--border); border-radius: var(--r); background: var(--bg); }
 .prism-detail h4 { margin: 0 0 0.5rem; font-size: 0.85rem; }
@@ -1146,8 +1192,13 @@ h1 { animation-delay: 0.06s; }
   .context-grid { grid-template-columns: 1fr; }
   .project-map { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .prism-feature { grid-template-columns: 1fr; gap: 0.75rem; padding: 0.9rem; }
-  .prism-shots, .prism-detail { grid-template-columns: 1fr; }
-  .prism-shot--lg, .prism-shot--sm { grid-column: auto; }
+  .prism-detail { grid-template-columns: 1fr; }
+  .prism-pipeline { grid-template-columns: 1fr; gap: 0.5rem; }
+  .prism-pipeline li + li::after { top: auto; bottom: 100%; right: auto; left: 1.2rem; width: 2px; height: 0.5rem; transform-origin: center top; }
+  .prism-showcase { grid-template-columns: 1fr; }
+  .showcase-tabs { display: flex; gap: 0.4rem; overflow-x: auto; scrollbar-width: none; margin: 0 -0.9rem; padding: 0 0.9rem 2px; }
+  .showcase-tabs button { flex: 0 0 auto; width: auto; padding: 0.45rem 0.7rem; }
+  .showcase-tabs span, .showcase-badge { display: none; }
 }
 @media (max-width: 560px) {
   .repo-grid { grid-template-columns: 1fr; }
