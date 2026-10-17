@@ -169,7 +169,7 @@
     else jump();
   });
 
-  // ── theme toggle: light by default, dark only by choice (the head script applies it before paint) ──
+  // ── theme: follows the phone/PC setting until the visitor picks one with the toggle (the head script applies it before paint) ──
   (function () {
     const btn = document.querySelector('.theme-toggle');
     if (!btn) return;
@@ -179,13 +179,22 @@
       const dark = root.dataset.theme === 'dark';
       btn.setAttribute('aria-pressed', String(dark));
       btn.setAttribute('aria-label', dark ? '라이트 모드로 전환' : '다크 모드로 전환');
-      if (meta) meta.content = dark ? '#1c1f26' : '#f6f7f9';
+      if (meta) meta.content = dark ? '#232629' : '#f5f6f4';
     }
     btn.addEventListener('click', () => {
       const dark = root.dataset.theme !== 'dark';
       if (dark) root.dataset.theme = 'dark';
       else delete root.dataset.theme;
       try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch (_) { /* storage blocked */ }
+      sync();
+    });
+    // switching the system theme while the page is open follows along, unless the visitor chose one
+    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      let chosen = null;
+      try { chosen = localStorage.getItem('theme'); } catch (_) { /* storage blocked */ }
+      if (chosen) return;
+      if (e.matches) root.dataset.theme = 'dark';
+      else delete root.dataset.theme;
       sync();
     });
     sync();
