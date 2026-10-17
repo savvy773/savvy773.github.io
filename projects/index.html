@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=optional">
 <script type="speculationrules">{"prefetch":[{"urls":["/","/projects/","/projects/prism/"],"eagerness":"eager"}],"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/resume/*"}},{"not":{"href_matches":"/journey/*"}},{"not":{"href_matches":"/assets/*"}}]},"eagerness":"moderate"}]}</script>
-<link rel="stylesheet" href="/css/site.css?v=8888bd9af89f">
+<link rel="stylesheet" href="/css/site.css?v=d28677d81c75">
 <!-- /shared:head -->
 </head>
 <body data-page="projects">
@@ -48,12 +48,13 @@
         </a>
       </div>
       <nav class="topnav" aria-label="주요 메뉴">
-        <a class="topnav-page" data-nav="prism" href="/projects/prism/">ERP</a>
-        <a class="topnav-page" data-nav="projects" href="/projects/"><span class="nav-long">개인&nbsp;</span>프로젝트</a>
-        <a class="topnav-page" data-nav="video" href="/video/">영상</a>
-        <a class="topnav-anchor" href="https://github.com/savvy773" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="topnav-page nav-erp" data-nav="prism" href="/projects/prism/"><span class="nav-ico" aria-hidden="true"></span><span>ERP<span class="nav-long">&nbsp;Solution</span></span></a>
+        <a class="topnav-page nav-proj" data-nav="projects" href="/projects/"><span class="nav-ico" aria-hidden="true"></span>Projects</a>
+        <a class="topnav-page nav-video" data-nav="video" href="/video/"><span class="nav-ico" aria-hidden="true"></span>Video</a>
+        <span class="nav-sep" aria-hidden="true"></span>
+        <a class="topnav-anchor nav-gh" href="https://github.com/savvy773" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-github"/></svg></a>
         <button type="button" class="theme-toggle" aria-label="다크 모드로 전환" aria-pressed="false"><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
-        <a class="nav-cta" href="/resume/resume.html" onclick="return openModal('/resume/resume.html','이력서', event)">이력서</a>
+        <a class="nav-cta" href="/resume/resume.html" onclick="return openModal('/resume/resume.html','이력서', event)">Resume</a>
       </nav>
     </div>
   </header>

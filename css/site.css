@@ -1733,6 +1733,31 @@ h1.prism-title { margin: 0; font-size: clamp(1.7rem, 3.4vw, 2.3rem); letter-spac
 .context-grid .learning-tags span { padding: 0.16rem 0.5rem; font-size: 0.68rem; }
 .context-grid .learning-tags span[data-icon]::before { margin-right: 0.3em; }
 
+/* ── Top nav v2: each section has its own colour and icon, utilities split off by a hairline ── */
+.topnav { gap: 2px; padding: 4px; }
+.topnav a.topnav-page { gap: 0.4rem; padding: 6px 11px; font-weight: 600; letter-spacing: -0.005em; }
+.nav-erp { --nav-c: #059669; --nav-m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='7' height='7' rx='1.5'/%3E%3Crect x='14' y='3' width='7' height='7' rx='1.5'/%3E%3Crect x='3' y='14' width='7' height='7' rx='1.5'/%3E%3Crect x='14' y='14' width='7' height='7' rx='1.5'/%3E%3C/svg%3E"); }
+.nav-proj { --nav-c: #3b6fd4; --nav-m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6M16 6l6 6-6 6'/%3E%3C/svg%3E"); }
+.nav-video { --nav-c: #e0612f; --nav-m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='5' width='15' height='14' rx='2'/%3E%3Cpath d='m17 10 5-3v10l-5-3z'/%3E%3C/svg%3E"); }
+:root[data-theme="dark"] .nav-erp { --nav-c: #34d399; }
+:root[data-theme="dark"] .nav-proj { --nav-c: #7fa6f0; }
+:root[data-theme="dark"] .nav-video { --nav-c: #f59a6b; }
+.nav-ico { width: 14px; height: 14px; flex-shrink: 0; background: var(--nav-c); -webkit-mask: var(--nav-m) center / contain no-repeat; mask: var(--nav-m) center / contain no-repeat; }
+.topnav a.topnav-page:hover { color: var(--text); background: color-mix(in srgb, var(--nav-c) 10%, transparent); }
+body[data-page="prism"] .topnav .nav-erp,
+body[data-page="projects"] .topnav .nav-proj,
+body[data-page="video"] .topnav .nav-video { color: var(--nav-c); background: color-mix(in srgb, var(--nav-c) 13%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nav-c) 28%, transparent); }
+.nav-sep { width: 1px; height: 18px; margin: 0 4px; background: var(--border-hi); }
+.topnav a.nav-gh { display: grid; place-items: center; width: 32px; height: 32px; padding: 0; color: var(--text-2); }
+.topnav a.nav-gh svg { width: 17px; height: 17px; }
+.topnav a.nav-cta { margin-left: 2px; padding: 6px 14px; }
+@media (max-width: 560px) {
+  .nav-sep, .topnav a.nav-gh { display: none; }
+  .topnav a.topnav-page { padding: 6px 8px; gap: 0.3rem; }
+  .topnav a.nav-cta { padding: 6px 10px; }
+}
+@media (max-width: 400px) { .nav-ico { display: none; } }
+
 /* tech chips: brand logo in its brand colour; falls back to the text colour where the brand colour would vanish (near-white in light, near-black in dark) */
 [data-icon]::before { content: ""; display: inline-block; width: 1em; height: 1em; margin-right: 0.38em; vertical-align: -0.14em; background: var(--icon-color, currentColor); -webkit-mask: var(--icon-mask) center / contain no-repeat; mask: var(--icon-mask) center / contain no-repeat; }
 [data-icon="apacheecharts"] { --icon-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm-.792 5.307c2.192-.025 4.366 1.134 5.43 3.304.909 1.852.878 3.61-.098 5.645-.477.995-.487 1.06-.241 1.578.214.452.727.779 1.221.779.454 0 1.15-.586 1.252-1.054.1-.454-.193-1.118-.607-1.377a10.11 10.11 0 0 1-.393-.255c-.129-.1.42-.38.741-.38.687 0 1.247.526 1.375 1.29.055.333.134.422.44.502.859.222 1.297 1.451.755 2.116-.22.27-.23.271-.305.042-.267-.801-.666-1.12-1.403-1.12-.319 0-.572.128-1.098.556-1.006.82-1.866 1.303-2.907 1.632-1.276.384-2.752.478-4.086.156-2.162-.431-4.232-2.11-5.252-4.257C4.758 11.782 5.135 9 7.033 7.077a5.924 5.924 0 0 1 4.175-1.77Z'/%3E%3C/svg%3E"); --icon-color: #AA344D; }
