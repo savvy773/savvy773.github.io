@@ -4,17 +4,17 @@
 
 **AI 풀스택 엔지니어 Juns의 개인 포트폴리오**
 
-[![Live](https://img.shields.io/badge/Live-juns.win-8b6cf7?style=flat-square)](https://juns.win/)
-[![Stack](https://img.shields.io/badge/Stack-Vanilla%20HTML·CSS·JS-29d6d6?style=flat-square)](#)
-[![No Build Step](https://img.shields.io/badge/Build-None-4c4a58?style=flat-square)](#)
+[![Live](https://img.shields.io/badge/Live-juns.win-059669?style=flat-square)](https://juns.win/)
+[![Stack](https://img.shields.io/badge/Stack-HTML·CSS·JS-3f4441?style=flat-square)](#)
+[![Hosting](https://img.shields.io/badge/Hosting-Cloudflare-3f4441?style=flat-square)](#)
 
-<img src=".github/preview.jpg" alt="포트폴리오 미리보기" width="100%">
+<img src=".github/preview.jpg" alt="juns.win 홈(라이트)과 PRISM ERP 사례 페이지(다크)" width="100%">
 
 </div>
 
 <br>
 
-실제 사내 개발 문서(가이드, 인수인계 보고서 등)를 익명화해 개발 과정의 발자취로 기록하고, 진행 중인 오픈소스 프로젝트를 함께 소개하는 포트폴리오입니다. 홈에서 요약을 보고, 프로젝트는 개인 프로젝트와 PRISM ERP 페이지로 나눠 봅니다.
+1인으로 만든 사내 ERP, 직접 쓰려고 만든 오픈소스 도구, 코드로 만든 영상을 한곳에 모은 채용용 포트폴리오입니다. 홈에서 요약을 보고, 상단 메뉴의 PRISM ERP · 개인 프로젝트 · 영상 페이지에서 자세히 봅니다.
 
 ## Live
 
@@ -26,58 +26,59 @@
 
 ## Highlights
 
-- 프레임워크·빌드 도구 없이 **순수 HTML / CSS / JS** (빌드리스)
-- 네이티브 **`<dialog>` + iframe** 모달 — 문서·데모를 페이지 이탈 없이 미리보기
-- 카드 전체 클릭으로 GitHub 이동, 별도의 화면·문서 미리보기 링크
-- 경력 요약·PRISM ERP 개발 소개, 스킬 스트립, Repositories/Journey 리빌 애니메이션
-- PRISM 쇼케이스: 실제 화면 5개를 탭·자동 1회 재생(크로스페이드)으로 보여 줌
-- 모던 뉴트럴 테마(에메랄드 포인트), 폰·PC 설정을 따르고 상단 토글로 직접 고르면 그 선택을 브라우저에 저장(첫 화면부터 적용)
-- GPU 절약: idle 시 JS 루프·무한 애니메이션 없음, `prefers-reduced-motion` 전면 대응
-- 모바일: safe-area, 터치 hover 완화, 모달 풀스크린
-- 분야별 프로젝트 맵: AI 도구·업무 자동화·개발 유틸리티 분포와 필터, 실제 프로젝트 화면 미리보기
+- 빌드 도구 없는 **HTML / CSS / JS** 4페이지, 공통 머리말·메뉴는 `version-assets.mjs`가 홈에서 복사
+- **PRISM ERP 쇼케이스**: 실제 ERP 화면 7개(수치·거래처 가림, 라이트/다크 각각), 수집 데이터가 한 줄씩 쌓이는 목록
+- **영상**: Remotion으로 코드로 만든 3분 33초 소개 영상(챕터 이동), 기기별 클립, AI 영상 생성 예시
+- 뉴트럴 + 에메랄드 테마, 폰·PC 설정을 따르는 라이트/다크와 직접 고르는 토글, 브라우저 강제 다크 차단
+- 페이지 이동은 미리 받아 두기(prefetch·prerender)와 짧은 화면 전환, 같은 페이지 안에서는 스크롤 없이 바로 이동
+- 레이아웃 흔들림(CLS) 0: 새로고침·메뉴 이동·느린 이미지·모바일까지 헤드리스로 점검
+- 정적 파일은 Cloudflare, 영상은 R2(media.juns.win), CSS·JS 1년·이미지 7일 캐시
 
 ## Featured Work
 
-PRISM Workspace + ERP를 혼자 처음부터 설계·React/TypeScript 프론트엔드·FastAPI 백엔드·PostgreSQL 데이터베이스·Docker/Caddy 배포까지 개발해 웹 버전을 완성했습니다. 쇼핑몰·결제·이카운트 자동 수집, 엑셀 Import·Staging 승인, 정산·대사·경영 보고가 운영 중이고 구매·재고·생산·HR은 다음 단계입니다. 원본 소스와 소개 페이지는 비공개입니다.
+PRISM Workspace + ERP를 혼자 처음부터 설계·React/TypeScript 프론트엔드·FastAPI 백엔드·PostgreSQL 데이터베이스·Docker/Caddy 배포까지 개발해 웹 버전을 완성했습니다. 쇼핑몰·결제·이카운트 자동 수집, 엑셀 Import·Staging 승인, 정산·대사·경영 보고가 운영 중이고 구매·재고·생산·HR은 다음 단계입니다. 원본 소스는 비공개이고, 사례는 [juns.win/projects/prism](https://juns.win/projects/prism/)에서 볼 수 있습니다.
 
 ## Sections
 
 | | |
 |---|---|
-| **홈 `/`** | 소개·경력 요약, 프로젝트 입구 카드 2개(PRISM ERP, 개인 프로젝트), Journey 업무 기록 5개 |
-| **개인 프로젝트 `/projects/`** | 공개 프로젝트 6개(ai-analysis, ubuntu-scr-saver, web-ai-usage, app-yt-subs, dpi-bye, stt-whisper), 분야별 필터 |
+| **홈 `/`** | 소개·경력 요약(기술 칩), PRISM ERP 카드, 개인 프로젝트 3개, 영상 카드 |
+| **개인 프로젝트 `/projects/`** | 공개 프로젝트 6개(ai-analysis, ubuntu-scr-saver, web-ai-usage, app-yt-subs, dpi-bye, stt-whisper), 분야별 필터, 업무 도구와 기록 5개 |
 | **PRISM ERP `/projects/prism/`** | 1인 구축 사례: 데이터 흐름, 실제 화면 쇼케이스(수치 가림), 완성 기능·설계 포인트·기술 스택 |
 | **영상 `/video/`** | 코드로 만든 PRISM 소개 영상(3:33, 챕터), 기기별 클립 3개, AI 영상 생성 예시. 영상 파일은 R2 `juns-media`(media.juns.win)에서 제공 |
-| **Resume** | 모달로 바로 보는 이력서 (`resume/resume.html`) |
+| **이력서** | 모달로 바로 보는 이력서 (`resume/resume.html`), 사이트 테마를 따라감 |
 
 ## Structure
 
 ```text
-├── content.md          # 콘텐츠 수정 경로 안내
-├── index.html          # 홈
-├── projects/index.html # 개인 프로젝트
-├── projects/prism/index.html # PRISM ERP 사례
-├── video/index.html    # 영상 제작
-├── css/site.css        # 토큰·카드·반응형
-├── js/
-│   ├── app.js          # 모달·스크롤·reveal·카드 틸트·업무 기록·쇼케이스 탭
-│   └── effects.js      # 비활성 stub (구 Canvas FX 자리, 미로드)
-├── assets/thumbs/      # 리포·저니 카드 썸네일 (webp)
-├── journey/            # Journey HTML 문서
-├── resume/             # 이력서
-├── scripts/screenshot.mjs  # README 프리뷰 스샷 캡처
-└── docs/tech-stack.md  # 기술 상세
+├── index.html                 # 홈 (공통 머리말·메뉴·푸터의 원본)
+├── projects/index.html        # 개인 프로젝트 + 업무 도구와 기록
+├── projects/prism/index.html  # PRISM ERP 사례
+├── video/index.html           # 영상 제작
+├── css/site.css               # 토큰·라이트/다크·카드·반응형
+├── js/app.js                  # 모달·테마·페이지 이동·쇼케이스·필터·챕터
+├── assets/thumbs/             # 프로젝트·기록 썸네일 (webp)
+├── assets/shots/              # ERP 화면 (수치 가림, 라이트/다크)
+├── assets/video/              # 영상 포스터·자막 (영상 파일은 R2)
+├── journey/                   # 업무 기록 HTML 문서
+├── resume/resume.html         # 이력서
+├── _headers                   # Cloudflare 캐시 규칙
+├── wrangler.jsonc             # Cloudflare Worker 설정 (juns)
+├── scripts/version-assets.mjs # 공통 블록 복사 + CSS/JS 버전
+├── scripts/deploy-cf.sh       # 커밋된 HEAD를 Cloudflare에 배포
+├── content.md                 # 콘텐츠 수정 안내
+└── docs/tech-stack.md         # 기술 상세
 ```
 
 ## Local
 
 ```bash
-npx --yes serve .
+python3 -m http.server 4173
 ```
 
 브라우저에서 루트를 열면 됩니다.
 
-CSS·JavaScript 수정 후 게시 전에 `node scripts/version-assets.mjs`를 실행하세요. 파일 내용에 따른 버전을 URL에 붙여 이전 캐시와 새 페이지가 섞이지 않게 합니다.
+CSS·JS나 공통 블록을 고친 뒤 게시 전에 `node scripts/version-assets.mjs`를 실행하세요. 홈의 공통 블록을 다른 페이지에 복사하고, 파일 내용에 따른 버전을 URL에 붙여 이전 캐시와 섞이지 않게 합니다.
 
 ## Deploy
 
