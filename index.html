@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=optional">
-<link rel="stylesheet" href="css/site.css?v=74a3051cb842">
+<link rel="stylesheet" href="css/site.css?v=4540ab323f77">
 </head>
 <body>
   <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -255,6 +255,7 @@
           <div class="showcase-tabs" role="tablist" aria-label="PRISM 실제 화면">
             <button type="button" role="tab" id="showcaseTab-dashboard" aria-controls="showcaseSlide-dashboard" aria-selected="true" tabindex="0"><strong>대시보드</strong><span>결제·주문·사업부 매출 요약</span><i class="tab-progress" aria-hidden="true"></i></button>
             <button type="button" role="tab" id="showcaseTab-collect" aria-controls="showcaseSlide-collect" aria-selected="false" tabindex="-1"><strong>데이터 수집</strong><span>Cafe24 주문 원본 자동 수집</span><i class="tab-progress" aria-hidden="true"></i></button>
+            <button type="button" role="tab" id="showcaseTab-schedule" aria-controls="showcaseSlide-schedule" aria-selected="false" tabindex="-1"><strong>수집 스케줄</strong><span>하루 일정 · 소스별 자동 실행</span><i class="tab-progress" aria-hidden="true"></i></button>
             <button type="button" role="tab" id="showcaseTab-monthly" aria-controls="showcaseSlide-monthly" aria-selected="false" tabindex="-1"><strong>월간 실적</strong><span>사업부 추이 · 비중 · 재경 검수</span><i class="tab-progress" aria-hidden="true"></i></button>
             <button type="button" role="tab" id="showcaseTab-portfolio" aria-controls="showcaseSlide-portfolio" aria-selected="false" tabindex="-1"><strong>품목 포트폴리오</strong><span>판매량 × 매출 4분면 · 전략 제안</span><i class="tab-progress" aria-hidden="true"></i></button>
             <button type="button" role="tab" id="showcaseTab-traffic" aria-controls="showcaseSlide-traffic" aria-selected="false" tabindex="-1"><strong>접속 통계</strong><span>유입 경로 · 검색어 SEO 분석</span><i class="tab-progress" aria-hidden="true"></i></button>
@@ -297,6 +298,9 @@
                   </tbody>
                 </table>
               </div>
+              <a class="showcase-slide" id="showcaseSlide-schedule" role="tabpanel" aria-labelledby="showcaseTab-schedule" hidden data-title="ERP · 관리 › 수집" href="assets/shots/prism-erp-collect.webp" onclick="return openModal('assets/shots/prism-erp-collect.webp','ERP · 관리 › 수집', event)">
+                <img src="assets/shots/prism-erp-collect.webp" width="1440" height="1150" alt="PRISM ERP 수집 관리 화면: 오늘 수집 일정 타임라인, 이카운트·Cafe24·Shopify 소스별 실행 주기와 마지막·다음 실행(건수·금액 가림)" loading="lazy" decoding="async">
+              </a>
               <a class="showcase-slide" id="showcaseSlide-monthly" role="tabpanel" aria-labelledby="showcaseTab-monthly" hidden data-title="ERP · 월간 실적" href="assets/shots/prism-erp-monthly-v2.webp" onclick="return openModal('assets/shots/prism-erp-monthly-v2.webp','ERP · 월간 실적', event)">
                 <img src="assets/shots/prism-erp-monthly-v2.webp" width="1440" height="900" alt="PRISM ERP 월간 실적: 13개월 사업부별 누적 막대 차트, 사업부 비중 도넛, 사업부 매출 표와 추이 스파크라인, 재경 검수(수치 가림)" loading="lazy" decoding="async">
               </a>

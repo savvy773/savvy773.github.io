@@ -1307,3 +1307,63 @@ h1 { animation-delay: 0.06s; }
   .repo-body { min-width: 0; }
   .repo-actions { grid-column: 2; gap: 0.5rem; }
 }
+
+
+/* ── Modern pass 2: category colours, clearer card edges, accent buttons, small visuals ── */
+:root {
+  --bg: #f2f3f7;
+  --border: rgba(16, 19, 28, 0.075);
+  --card-shadow: 0 1px 2px rgba(16, 19, 28, 0.04), 0 6px 20px -10px rgba(16, 19, 28, 0.14);
+  --btn-grad: linear-gradient(135deg, #5b5bf0 0%, #7c4dff 100%);
+  --btn-glow: 0 8px 22px -8px rgba(99, 91, 255, 0.55);
+  --cat-ai: #6366f1;
+  --cat-automation: #0d9488;
+  --cat-utility: #e08a0b;
+}
+:root[data-theme="dark"] {
+  --bg: #1c1f26;
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+  --btn-grad: linear-gradient(135deg, #7774ff 0%, #9b7bff 100%);
+  --btn-glow: 0 8px 22px -8px rgba(140, 130, 255, 0.5);
+  --cat-ai: #8b8dff;
+  --cat-automation: #3fd3bd;
+  --cat-utility: #f5b041;
+}
+.glass, .stat-card, .prism-block, .showcase-tabs button, .prism-pipeline li, .project-map button { box-shadow: var(--card-shadow); }
+
+/* accent buttons instead of near-black */
+.btn-primary, .topnav a.nav-cta { color: #fff; background: var(--btn-grad); box-shadow: var(--btn-glow); }
+.topnav a.nav-cta:hover { filter: brightness(1.06); }
+@media (hover: hover) {
+  .btn-primary:hover { box-shadow: 0 12px 28px -8px rgba(99, 91, 255, 0.6); }
+}
+
+/* hero stats: gradient figures on a tinted card */
+.stat-num { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+/* project categories: one colour each, used by the map, cards and the overview ring */
+.repo-card[data-category="ai"], .project-map [data-filter="ai"] { --cat: var(--cat-ai); }
+.repo-card[data-category="automation"], .project-map [data-filter="automation"] { --cat: var(--cat-automation); }
+.repo-card[data-category="utility"], .project-map [data-filter="utility"] { --cat: var(--cat-utility); }
+.repo-card::before { content: ""; position: absolute; z-index: 1; inset: 0 0 auto; height: 3px; background: var(--cat, var(--accent)); }
+@media (hover: hover) {
+  .repo-card:hover { border-color: color-mix(in srgb, var(--cat, var(--accent)) 55%, transparent); }
+  .repo-card:hover .repo-head svg { color: var(--cat, var(--accent)); }
+}
+.project-map .map-track > span { background: var(--cat, var(--accent-2)); }
+.project-map button[data-filter]:not(.map-all)[aria-pressed="true"] { border-color: var(--cat); background: color-mix(in srgb, var(--cat) 9%, var(--paper)); color: var(--text); }
+.project-map .map-label strong { color: var(--cat, var(--accent)); }
+.map-all { position: relative; }
+.map-all strong { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; font-size: 1.15rem;
+  background:
+    radial-gradient(closest-side, var(--paper) 72%, transparent 73%),
+    conic-gradient(var(--cat-ai) 0 42.9%, var(--cat-automation) 0 71.4%, var(--cat-utility) 0 100%); }
+.project-map button.map-all[aria-pressed="true"] strong { background:
+    radial-gradient(closest-side, color-mix(in srgb, var(--accent) 7%, var(--paper)) 72%, transparent 73%),
+    conic-gradient(var(--cat-ai) 0 42.9%, var(--cat-automation) 0 71.4%, var(--cat-utility) 0 100%); }
+
+/* feature panel: gradient rule instead of a flat bar */
+.prism-feature { border-top: 0; position: relative; overflow: hidden; }
+.prism-feature::before { content: ""; position: absolute; inset: 0 0 auto; height: 3px; background: var(--grad); }
+.prism-facts li { border-left-color: transparent; background: var(--paper-2); border-radius: 10px; }
+.prism-facts strong { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; font-size: 1.2rem; }
