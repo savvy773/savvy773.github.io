@@ -4,7 +4,7 @@
 
 **AI 풀스택 엔지니어 Juns의 개인 포트폴리오**
 
-[![Live](https://img.shields.io/badge/Live-savvy773.github.io-8b6cf7?style=flat-square)](https://savvy773.github.io/)
+[![Live](https://img.shields.io/badge/Live-juns.win-8b6cf7?style=flat-square)](https://juns.win/)
 [![Stack](https://img.shields.io/badge/Stack-Vanilla%20HTML·CSS·JS-29d6d6?style=flat-square)](#)
 [![No Build Step](https://img.shields.io/badge/Build-None-4c4a58?style=flat-square)](#)
 
@@ -20,7 +20,8 @@
 
 | | |
 |---|---|
-| **Site** | https://savvy773.github.io/ |
+| **Site** | https://juns.win/ |
+| **GitHub Pages** | https://savvy773.github.io/ (juns.win으로 이동) |
 | **Repo** | https://github.com/savvy773/savvy773.github.io |
 
 ## Highlights
@@ -44,7 +45,7 @@ PRISM Workspace + ERP를 혼자 처음부터 설계·React/TypeScript 프론트�
 |---|---|
 | **Hero** | 소개·경력 요약·PRISM ERP 개발, 스킬 스트립 |
 | **Repositories** | 프로젝트 7개 (비공개 PRISM Workspace + ERP, ai-analysis, ubuntu-scr-saver, web-ai-usage, app-yt-subs, dpi-bye, stt-whisper), GitHub 소스·미리보기 링크 |
-| **Journey** | PRISM 1인 구축 사례: 실제 화면(예시 데이터)·완성 기능·설계 포인트·기술 스택, HEIS Tool·OPC-ISL 등 업무 기록 |
+| **Journey** | PRISM 1인 구축 사례: 실제 화면(수치·거래처 가림)·완성 기능·설계 포인트·기술 스택, HEIS Tool·OPC-ISL 등 업무 기록 |
 | **Resume** | 모달로 바로 보는 이력서 (`resume/resume.html`) |
 
 ## Structure

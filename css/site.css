@@ -1098,7 +1098,9 @@ h1 { animation-delay: 0.06s; }
 .prism-facts li { padding: 0.5rem 0.65rem; border-left: 2px solid var(--accent-2); background: var(--accent-muted); border-radius: 0 8px 8px 0; }
 .prism-facts strong { display: block; font-size: 1.05rem; color: var(--text); }
 .prism-facts span { display: block; font-size: 0.72rem; color: var(--text-dim); word-break: keep-all; }
-.prism-shots { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+.prism-shots { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0.75rem; }
+.prism-shot--lg { grid-column: span 3; }
+.prism-shot--sm { grid-column: span 2; }
 .prism-shot { display: block; color: inherit; text-decoration: none; border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; background: #1c1d20; }
 .prism-shot img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: left top; }
 .shot-caption { display: flex; justify-content: space-between; gap: 0.5rem; padding: 0.5rem 0.7rem; background: var(--paper); border-top: 1px solid var(--border); font-size: 0.78rem; }
@@ -1145,6 +1147,7 @@ h1 { animation-delay: 0.06s; }
   .project-map { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .prism-feature { grid-template-columns: 1fr; gap: 0.75rem; padding: 0.9rem; }
   .prism-shots, .prism-detail { grid-template-columns: 1fr; }
+  .prism-shot--lg, .prism-shot--sm { grid-column: auto; }
 }
 @media (max-width: 560px) {
   .repo-grid { grid-template-columns: 1fr; }
