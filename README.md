@@ -28,10 +28,10 @@
 
 - 프레임워크·빌드 도구 없이 **순수 HTML / CSS / JS** (빌드리스)
 - 네이티브 **`<dialog>` + iframe** 모달 — 문서·데모를 페이지 이탈 없이 미리보기
-- 이력서·Journey 업무 문서와 맞춘 베이지·브라운 라이트 테마와 간결한 산세리프 타이포그래피
 - 카드 전체 클릭으로 GitHub 이동, 별도의 화면·문서 미리보기 링크
 - 경력 요약·PRISM ERP 개발 소개, 스킬 스트립, Repositories/Journey 리빌 애니메이션
-- PRISM 쇼케이스: 실제 화면 5개를 탭·자동 1회 재생으로 보여 주고, 데스크톱에서는 three.js 링 전환(움직일 때만 렌더)
+- PRISM 쇼케이스: 실제 화면 5개를 탭·자동 1회 재생(크로스페이드)으로 보여 줌
+- 모던 뉴트럴 테마, 시스템 설정 따라 라이트/다크 자동 전환
 - GPU 절약: idle 시 JS 루프·무한 애니메이션 없음, `prefers-reduced-motion` 전면 대응
 - 모바일: safe-area, 터치 hover 완화, 모달 풀스크린
 - 분야별 프로젝트 맵: AI 도구·업무 자동화·개발 유틸리티 분포와 필터, 실제 프로젝트 화면 미리보기
@@ -57,7 +57,6 @@ PRISM Workspace + ERP를 혼자 처음부터 설계·React/TypeScript 프론트�
 ├── css/site.css        # 토큰·카드·반응형
 ├── js/
 │   ├── app.js          # 모달·스크롤·reveal·카드 틸트·업무 기록·쇼케이스 탭
-│   ├── showcase3d.js   # PRISM 쇼케이스 three.js 링 전환 (근접 시 지연 로드)
 │   └── effects.js      # 비활성 stub (구 Canvas FX 자리, 미로드)
 ├── assets/thumbs/      # 리포·저니 카드 썸네일 (webp)
 ├── journey/            # Journey HTML 문서

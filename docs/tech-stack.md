@@ -67,7 +67,7 @@ savvy773.github.io/
 
 | 레이어 | 역할 | 구현 |
 |--------|------|------|
-| `.mesh-tint` (z-index -3) | 좌상단 브라운·우측 그린 컬러 워시 | 라디얼 그라데이션 2겹, 자체 `opacity: 1` |
+| `.mesh-tint` (z-index -3) | 좌상단 인디고·우측 틸 글로우 + 상단 그리드(마스크로 페이드) | 라디얼 그라데이션 2겹 + 선형 그리드, 정적 |
 | `.paper-grain` (z-index -2) | 종이 질감 노이즈 | `feTurbulence` 기반 인라인 SVG data URI, `mix-blend-mode: multiply`, `opacity: 0.34` (모바일·`reduced-motion` 0.22) |
 | 상단 | `.accent-bar` — 3px 고정 accent 컬러 바 |
 
@@ -101,7 +101,6 @@ savvy773.github.io/
 | **Reveal** | `IntersectionObserver` + `content-visibility: auto`, 섹션 1회 등장 |
 | **카드 틸트** | `repo-card` / `tl-item`에 `mousemove` 기반 3D 틸트 (hover + fine pointer 전용, `reduced-motion` 제외) |
 | **PRISM 쇼케이스** | 탭 5개 + 브라우저 프레임 스테이지, 화면에 들어오면 1회 자동 재생 후 정지(입력 시 즉시 정지) |
-| **3D 전환** (`js/showcase3d.js`) | three.js 0.186.1 (jsDelivr `+esm`, 약 190KB), 데스크톱·`reduced-motion` 아님일 때만 지연 로드. 전환 중에만 rAF 렌더, 대기 중 GPU 0. 실패 시 `<img>` 크로스페이드 유지 |
 | **Journey 업무 기록** | PC 3열·태블릿 2열·모바일 1열의 간결한 문서 카드 |
 | **탑바** | 스크롤 시 `.is-scrolled` |
 

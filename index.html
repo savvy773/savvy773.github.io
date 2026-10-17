@@ -6,7 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Juns — Portfolio</title>
 <meta name="description" content="Juns의 포트폴리오. 로컬 AI 도구, Windows·Ubuntu 유틸리티, 업무 자동화와 공개 GitHub 프로젝트.">
-<meta name="theme-color" content="#f5f7fb">
+<meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b0c10" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://juns.win/">
 <meta property="og:title" content="Juns — Portfolio">
@@ -20,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=optional">
-<link rel="stylesheet" href="css/site.css?v=9a9f6f282b15">
+<link rel="stylesheet" href="css/site.css?v=fd7f3a64929c">
 </head>
 <body>
   <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -90,14 +91,10 @@
     </section>
 
     <div class="skill-strip" aria-label="기술 스택">
-      <span>PYTHON</span><span>TYPESCRIPT</span><span>CUDA</span><span>PYSIDE6</span><span>WINDOWS / UBUNTU</span><span>AUTOMATION</span>
+      <span>Python</span><span>TypeScript</span><span>CUDA</span><span>PySide6</span><span>Windows / Ubuntu</span><span>Automation</span>
     </div>
 
     <div class="context-grid">
-    <p class="exp-note glass">
-      한화에너지 GEP 개발팀에서 발전소 데이터 연동 업무를 담당하며 HEIS 플랫폼의 TAG 관리·QC 검증·Backfill·OPC 연동 업무 전반을 자동화 툴로 전환했습니다.
-      Report 수동 취합 프로세스를 자동화해 해외 발전소 사이트 운영 효율을 개선했고, HEIS–SCADA 연동 QC 검증 체계를 확립했습니다.
-    </p>
 
     <div class="learning-note glass">
       <span class="li-icon">
@@ -112,10 +109,14 @@
       <div class="li-body">
         <p><b>PRISM Workspace + ERP는 기획부터 설계·개발·배포까지 혼자 처음부터 만든 사내 플랫폼입니다.</b> React·TypeScript 프론트엔드, Python·FastAPI 백엔드, PostgreSQL 데이터베이스를 직접 연결해 협업부터 운영 업무까지 이어지도록 구축했고, 1인 개발자로서 ERP를 처음부터 끝까지 완성할 수 있는 역량을 이 프로젝트에 담았습니다.</p>
         <div class="learning-tags">
-          <span>REACT</span><span>TYPESCRIPT</span><span>FASTAPI</span><span>POSTGRESQL</span><span>DOCKER</span>
+          <span>React</span><span>TypeScript</span><span>FastAPI</span><span>PostgreSQL</span><span>Docker</span>
         </div>
       </div>
     </div>
+    <p class="exp-note glass">
+      한화에너지 GEP 개발팀에서 발전소 데이터 연동 업무를 담당하며 HEIS 플랫폼의 TAG 관리·QC 검증·Backfill·OPC 연동 업무 전반을 자동화 툴로 전환했습니다.
+      Report 수동 취합 프로세스를 자동화해 해외 발전소 사이트 운영 효율을 개선했고, HEIS–SCADA 연동 QC 검증 체계를 확립했습니다.
+    </p>
 
     </div>
     <section class="reveal-section" id="repos">
@@ -249,9 +250,10 @@
           <li><strong>매출 원장</strong><span>채널 · 팀 · 거래처 · 품목</span></li>
           <li><strong>정산 · 보고</strong><span>월 정산표 · 재경 대사 · 경영 보고</span></li>
         </ol>
-        <div class="prism-showcase" data-fx="js/showcase3d.js?v=260c58b7bd3f">
+        <div class="prism-showcase">
           <div class="showcase-tabs" role="tablist" aria-label="PRISM 실제 화면">
             <button type="button" role="tab" id="showcaseTab-dashboard" aria-controls="showcaseSlide-dashboard" aria-selected="true" tabindex="0"><strong>대시보드</strong><span>결제·주문·사업부 매출 요약</span><i class="tab-progress" aria-hidden="true"></i></button>
+            <button type="button" role="tab" id="showcaseTab-collect" aria-controls="showcaseSlide-collect" aria-selected="false" tabindex="-1"><strong>데이터 수집</strong><span>Cafe24 주문 원본 자동 수집</span><i class="tab-progress" aria-hidden="true"></i></button>
             <button type="button" role="tab" id="showcaseTab-monthly" aria-controls="showcaseSlide-monthly" aria-selected="false" tabindex="-1"><strong>월간 실적</strong><span>사업부 추이 · 비중 · 재경 검수</span><i class="tab-progress" aria-hidden="true"></i></button>
             <button type="button" role="tab" id="showcaseTab-portfolio" aria-controls="showcaseSlide-portfolio" aria-selected="false" tabindex="-1"><strong>품목 포트폴리오</strong><span>판매량 × 매출 4분면 · 전략 제안</span><i class="tab-progress" aria-hidden="true"></i></button>
             <button type="button" role="tab" id="showcaseTab-traffic" aria-controls="showcaseSlide-traffic" aria-selected="false" tabindex="-1"><strong>접속 통계</strong><span>유입 경로 · 검색어 SEO 분석</span><i class="tab-progress" aria-hidden="true"></i></button>
@@ -267,6 +269,33 @@
               <a class="showcase-slide is-active" id="showcaseSlide-dashboard" role="tabpanel" aria-labelledby="showcaseTab-dashboard" data-title="ERP · 대시보드" href="assets/shots/prism-erp-dashboard.webp" onclick="return openModal('assets/shots/prism-erp-dashboard.webp','ERP · 대시보드', event)">
                 <img src="assets/shots/prism-erp-dashboard.webp" width="1440" height="870" alt="PRISM ERP 대시보드: 사업부 매출, 결제 KPI, 일별 결제 차트, 결제수단 비중, 상품 TOP 8, 최근 수집 주문(수치 가림)" loading="lazy" decoding="async">
               </a>
+              <div class="showcase-slide showcase-feed" id="showcaseSlide-collect" role="tabpanel" aria-labelledby="showcaseTab-collect" hidden data-title="ERP · Cafe24 주문 수집" style="--rows:14">
+                <div class="feed-head">
+                  <span class="feed-src">Cafe24 → PRISM</span>
+                  <span class="feed-state"><span class="feed-run">수집 중</span><span class="feed-done">수집 완료 · 14행 · Staging 검증 대기</span></span>
+                  <i class="feed-bar" aria-hidden="true"></i>
+                </div>
+                <table class="feed-table">
+                  <caption class="sr-only">Cafe24에서 자동 수집한 주문 원본 예시 (주문번호 끝자리·금액 가림)</caption>
+                  <thead><tr><th>주문일시</th><th>주문번호</th><th>경로</th><th>품목</th><th>수량</th><th>금액</th><th>결제</th><th>상태</th></tr></thead>
+                  <tbody>
+                  <tr style="--i:0"><td class="feed-time">10.16 06:50</td><td class="feed-no">20261016-0000•••</td><td><span class="feed-ch">네이버 페이</span></td><td class="feed-item">3페이스 DC 어댑터<small>12.6V 3A</small></td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:52px"></i></td><td class="feed-pay">카드</td><td><span class="feed-st feed-st--ship">배송중</span></td></tr>
+                  <tr style="--i:1"><td class="feed-time">10.16 07:34</td><td class="feed-no">20261016-0000•••</td><td><span class="feed-ch">PC쇼핑몰</span></td><td class="feed-item">브로드윙 라운드 베이스<small>블랙(BK)</small></td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:58px"></i></td><td class="feed-pay">카드·적립금</td><td><span class="feed-st feed-st--ship">배송중</span></td></tr>
+                  <tr style="--i:2"><td class="feed-time">10.16 08:05</td><td class="feed-no">20261016-0000•••</td><td><span class="feed-ch">PC쇼핑몰</span></td><td class="feed-item">헤디2 액세서리<small>헤디2 밴드(탄)</small></td><td class="feed-qty">2</td><td class="feed-amt"><i style="width:56px"></i></td><td class="feed-pay">카드</td><td><span class="feed-st feed-st--ship">배송중</span></td></tr>
+                  <tr style="--i:3"><td class="feed-time">10.16 09:04</td><td class="feed-no">20261016-0000•••</td><td><span class="feed-ch">네이버 페이</span></td><td class="feed-item">캡온 200H+ 클립<small>블랙(BK)</small></td><td class="feed-qty">2</td><td class="feed-amt"><i style="width:50px"></i></td><td class="feed-pay">네이버페이</td><td><span class="feed-st feed-st--ship">배송중</span></td></tr>
+                  <tr style="--i:4"><td class="feed-time">10.16 09:30</td><td class="feed-no">20261016-0000•••</td><td><span class="feed-ch">네이버 페이</span></td><td class="feed-item">3페이스 네오20<small>베이직스탠드 증정</small></td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:64px"></i></td><td class="feed-pay">카드</td><td><span class="feed-st feed-st--cancel">취소완료</span></td></tr>
+                  <tr style="--i:5"><td class="feed-time">10.16 09:41</td><td class="feed-no">20261016-0000•••</td><td><span class="feed-ch">톡체크아웃</span></td><td class="feed-item">LED 스탠드 PL-6100</td><td class="feed-qty">2</td><td class="feed-amt"><i style="width:58px"></i></td><td class="feed-pay">선불</td><td><span class="feed-st feed-st--ship">배송중</span></td></tr>
+                  <tr style="--i:6"><td class="feed-time">10.16 09:45</td><td class="feed-no">20261016-0000•••</td><td><span class="feed-ch">모바일웹</span></td><td class="feed-item">미니힛</td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:56px"></i></td><td class="feed-pay">카드</td><td><span class="feed-st feed-st--ship">배송중</span></td></tr>
+                  <tr style="--i:7"><td class="feed-time">10.17 00:38</td><td class="feed-no">20261017-0000•••</td><td><span class="feed-ch">모바일웹</span></td><td class="feed-item">F21 연장선(Long)</td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:50px"></i></td><td class="feed-pay">카드</td><td><span class="feed-st feed-st--prep">상품준비중</span></td></tr>
+                  <tr style="--i:8"><td class="feed-time">10.17 00:42</td><td class="feed-no">20261017-0000•••</td><td><span class="feed-ch">모바일웹</span></td><td class="feed-item">V600+<small>웜그레이(WG)</small></td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:58px"></i></td><td class="feed-pay">카드</td><td><span class="feed-st feed-st--prep">상품준비중</span></td></tr>
+                  <tr style="--i:9"><td class="feed-time">10.17 01:05</td><td class="feed-no">20261017-0000•••</td><td><span class="feed-ch">PC쇼핑몰</span></td><td class="feed-item">헤디+<small>탄(TN) · 자전거 거치대 증정</small></td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:58px"></i></td><td class="feed-pay">카드·적립금</td><td><span class="feed-st feed-st--prep">상품준비중</span></td></tr>
+                  <tr style="--i:10"><td class="feed-time">10.17 07:24</td><td class="feed-no">20261017-0000•••</td><td><span class="feed-ch">네이버 페이</span></td><td class="feed-item">KFI 일산화탄소 경보기</td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:58px"></i></td><td class="feed-pay">카드</td><td><span class="feed-st feed-st--prep">상품준비중</span></td></tr>
+                  <tr style="--i:11"><td class="feed-time">10.17 08:58</td><td class="feed-no">20261017-0000•••</td><td><span class="feed-ch">모바일웹</span></td><td class="feed-item">다이너라이트</td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:58px"></i></td><td class="feed-pay">카드</td><td><span class="feed-st feed-st--prep">상품준비중</span></td></tr>
+                  <tr style="--i:12"><td class="feed-time">10.17 09:26</td><td class="feed-no">20261017-0000•••</td><td><span class="feed-ch">톡체크아웃</span></td><td class="feed-item">텐톤 3종 세트(캠프)<small>테이블스탠드 증정</small></td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:64px"></i></td><td class="feed-pay">선불</td><td><span class="feed-st feed-st--prep">상품준비중</span></td></tr>
+                  <tr style="--i:13"><td class="feed-time">10.17 10:14</td><td class="feed-no">20261017-0000•••</td><td><span class="feed-ch">모바일웹</span></td><td class="feed-item">브로드윙 와이드<small>LSP-10180 (1800mm)</small></td><td class="feed-qty">1</td><td class="feed-amt"><i style="width:64px"></i></td><td class="feed-pay">무통장</td><td><span class="feed-st feed-st--prep">상품준비중</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
               <a class="showcase-slide" id="showcaseSlide-monthly" role="tabpanel" aria-labelledby="showcaseTab-monthly" hidden data-title="ERP · 월간 실적" href="assets/shots/prism-erp-monthly-v2.webp" onclick="return openModal('assets/shots/prism-erp-monthly-v2.webp','ERP · 월간 실적', event)">
                 <img src="assets/shots/prism-erp-monthly-v2.webp" width="1440" height="900" alt="PRISM ERP 월간 실적: 13개월 사업부별 누적 막대 차트, 사업부 비중 도넛, 사업부 매출 표와 추이 스파크라인, 재경 검수(수치 가림)" loading="lazy" decoding="async">
               </a>
@@ -399,7 +428,7 @@
     </div>
     <iframe id="modalIframe" src="about:blank" title="문서 미리보기" loading="lazy"></iframe>
   </dialog>
-  <script src="js/app.js?v=288790d9489a"></script>
+  <script src="js/app.js?v=4b6e7417d5ad"></script>
 </body>
 </html>
 

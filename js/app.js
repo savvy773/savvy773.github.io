@@ -177,6 +177,13 @@
         slides[k].tabIndex = on ? 0 : -1;
       });
       url.textContent = slides[current].dataset.title;
+      // replay the collection feed each time its tab opens
+      const feed = slides[current].classList.contains('showcase-feed') ? slides[current] : null;
+      if (feed && !reduced) {
+        feed.classList.remove('is-streaming');
+        void feed.offsetWidth;
+        feed.classList.add('is-streaming');
+      }
       if (focus) tabs[current].focus();
       root.dispatchEvent(new CustomEvent('showcase:change', { detail: { index: current } }));
     }
@@ -226,38 +233,6 @@
       }, { threshold: 0.55 });
       io.observe(stage);
     }
-
-    // 3D ring transitions (three.js), desktop only, fetched when the stage gets close to the viewport
-    const fx = root.dataset.fx;
-    if (fx && !reduced && 'IntersectionObserver' in window && matchMedia('(min-width: 721px)').matches) {
-      const near = new IntersectionObserver((entries) => {
-        if (!entries[0].isIntersecting) return;
-        near.disconnect();
-        import('./' + fx.replace(/^js\//, ''))
-          .then((m) => m.init(root))
-          .catch(() => { /* WebGL or CDN unavailable: the <img> slides already work */ });
-      }, { rootMargin: '400px 0px' });
-      near.observe(stage);
-    }
-
-    // pointer tilt on the stage, same feel as the repo cards
-    if (reduced || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-    let raf = null;
-    stage.addEventListener('mousemove', (e) => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = null;
-        const r = stage.getBoundingClientRect();
-        const rx = ((0.5 - (e.clientY - r.top) / r.height) * 4).toFixed(2);
-        const ry = (((e.clientX - r.left) / r.width - 0.5) * 4).toFixed(2);
-        root.classList.add('is-tilting');
-        stage.style.transform = `perspective(1400px) rotateX(${rx}deg) rotateY(${ry}deg)`;
-      });
-    });
-    stage.addEventListener('mouseleave', () => {
-      if (raf) { cancelAnimationFrame(raf); raf = null; }
-      stage.style.transform = '';
-    });
   })();
 
   window.openModal = openModal;
