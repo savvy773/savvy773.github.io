@@ -36,7 +36,7 @@
 
 ## Featured Work
 
-PRISM Workspace + ERP를 혼자 처음부터 설계·React/TypeScript 프론트엔드·FastAPI 백엔드·PostgreSQL 데이터베이스·Docker/Caddy 배포까지 개발해 웹 버전을 완성했습니다. 쇼핑몰·결제·이카운트 자동 수집, 엑셀 Import·Staging 승인, 정산·대사·경영 보고가 운영 중이고 구매·재고·생산·HR은 다음 단계입니다. 원본 소스는 비공개이고, 사례는 [juns.win/projects/prism](https://juns.win/projects/prism/)에서 볼 수 있습니다.
+PRISM Workspace + ERP를 1인 개발로 처음부터 설계·React/TypeScript 프론트엔드·FastAPI 백엔드·PostgreSQL 데이터베이스·Docker/Caddy 배포까지 개발해 웹 버전을 완성했습니다. 쇼핑몰·결제·이카운트 자동 수집, 엑셀 Import·Staging 승인, 정산·대사·경영 보고가 운영 중이고 구매·재고·생산·HR은 다음 단계입니다. 원본 소스는 비공개이고, 사례는 [juns.win/projects/prism](https://juns.win/projects/prism/)에서 볼 수 있습니다.
 
 ## Sections
 

@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=optional">
 <script type="speculationrules">{"prefetch":[{"urls":["/","/projects/","/projects/prism/"],"eagerness":"eager"}],"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/resume/*"}},{"not":{"href_matches":"/journey/*"}},{"not":{"href_matches":"/assets/*"}}]},"eagerness":"moderate"}]}</script>
-<link rel="stylesheet" href="/css/site.css?v=be6ee0f33b9b">
+<link rel="stylesheet" href="/css/site.css?v=7ac0098bbc4e">
 <!-- /shared:head -->
 </head>
 <body data-page="home">
@@ -101,7 +101,7 @@
     </section>
 
     <div class="skill-strip" aria-label="기술 스택">
-      <span>Python</span><span>TypeScript</span><span>CUDA</span><span>PySide6</span><span>Windows / Ubuntu</span><span>Automation</span>
+      <span data-icon="python">Python</span><span data-icon="typescript">TypeScript</span><span data-icon="nvidia">CUDA</span><span data-icon="qt">PySide6</span><span>Windows / Ubuntu</span><span>Automation</span>
     </div>
 
     <div class="context-grid">
@@ -117,16 +117,23 @@
         </svg>
       </span>
       <div class="li-body">
-        <p><b>PRISM Workspace + ERP는 기획부터 설계·개발·배포까지 혼자 처음부터 만든 사내 플랫폼입니다.</b> React·TypeScript 프론트엔드, Python·FastAPI 백엔드, PostgreSQL 데이터베이스를 직접 연결해 협업부터 운영 업무까지 이어지도록 구축했고, 1인 개발자로서 ERP를 처음부터 끝까지 완성할 수 있는 역량을 이 프로젝트에 담았습니다.</p>
+        <p><b>PRISM Workspace + ERP는 기획부터 설계·개발·배포까지 1인 개발로 처음부터 만든 사내 플랫폼입니다.</b> React·TypeScript 프론트엔드, Python·FastAPI 백엔드, PostgreSQL 데이터베이스를 직접 연결해 협업부터 운영 업무까지 이어지도록 구축했고, 1인 개발자로서 ERP를 처음부터 끝까지 완성할 수 있는 역량을 이 프로젝트에 담았습니다.</p>
         <div class="learning-tags">
-          <span>React</span><span>TypeScript</span><span>FastAPI</span><span>PostgreSQL</span><span>Docker</span>
+          <span data-icon="react">React</span><span data-icon="typescript">TypeScript</span><span data-icon="fastapi">FastAPI</span><span data-icon="postgresql">PostgreSQL</span><span data-icon="docker">Docker</span>
         </div>
       </div>
     </div>
-    <div class="exp-note glass">
-      <p><b>한화에너지 GEP 개발팀에서 발전소 데이터 연동을 맡아</b> HEIS 플랫폼의 TAG 관리·QC 검증·Backfill·OPC 연동 업무 전반을 자동화 툴로 전환했습니다. Report 수동 취합 프로세스를 자동화해 해외 발전소 사이트 운영 효율을 개선했고, HEIS–SCADA 연동 QC 검증 체계를 확립했습니다.</p>
-      <div class="learning-tags">
-        <span>Python</span><span>Rust</span><span>Tauri</span><span>Vue</span><span>InfluxDB</span><span>OPC UA</span>
+    <div class="learning-note glass career-note">
+      <span class="li-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M13 2 4 14h7l-1 8 9-12h-7z"/>
+        </svg>
+      </span>
+      <div class="li-body">
+        <p><b>한화에너지 GEP 개발팀에서 발전소 데이터 연동을 맡아</b> HEIS 플랫폼의 TAG 관리·QC 검증·Backfill·OPC 연동 업무 전반을 자동화 툴로 전환했습니다. Report 수동 취합 프로세스를 자동화해 해외 발전소 사이트 운영 효율을 개선했고, HEIS–SCADA 연동 QC 검증 체계를 확립했습니다.</p>
+        <div class="learning-tags">
+          <span data-icon="python">Python</span><span data-icon="rust">Rust</span><span data-icon="tauri">Tauri</span><span data-icon="vuedotjs">Vue</span><span data-icon="influxdb">InfluxDB</span><span>OPC UA</span>
+        </div>
       </div>
     </div>
 
@@ -164,7 +171,7 @@
           <div class="repo-body">
             <div class="repo-head"><svg class="icon-gh" aria-hidden="true"><use href="#icon-github"/></svg><h3><a href="https://github.com/savvy773/ai-analysis" target="_blank" rel="noopener noreferrer">ai-analysis</a></h3><span class="repo-live">Source</span></div>
             <p class="repo-desc">AI 모델의 성능·코딩 점수·응답 시간·비용을 비교하는 로컬 브라우저 리포트. 필터와 즐겨찾기로 모델 선택을 돕습니다.</p>
-            <div class="repo-tags"><span>Python</span><span>AI</span><span>Data</span></div>
+            <div class="repo-tags"><span data-icon="python">Python</span><span>AI</span><span>Data</span></div>
           </div>
           <div class="repo-actions"><a href="https://github.com/savvy773/ai-analysis" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="/assets/thumbs/ai-analysis.png" onclick="return openModal('/assets/thumbs/ai-analysis.png','ai-analysis 화면', event)">화면 보기 ↗</a></div>
         </article>
@@ -177,7 +184,7 @@
               <span class="repo-live">Live</span>
             </div>
             <p class="repo-desc">단축키로 어디서든 실시간 받아쓰기하는 온디바이스 STT 유틸. faster-whisper 기반 GPU 추론, 클라우드 전송 없음.</p>
-            <div class="repo-tags"><span>Py</span><span>Qt</span><span>CUDA</span></div>
+            <div class="repo-tags"><span data-icon="python">Py</span><span data-icon="qt">Qt</span><span data-icon="nvidia">CUDA</span></div>
           </div>
         <div class="repo-actions"><a href="https://github.com/savvy773/stt-whisper" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/stt-whisper/" target="_blank" rel="noopener noreferrer">미리보기 ↗</a></div>
         </article>
@@ -190,7 +197,7 @@
               <span class="repo-live">Live</span>
             </div>
             <p class="repo-desc">Claude·Codex·Gemini CLI 사용량을 한 화면에서 보는 로컬 대시보드. 클라우드 전송·텔레메트리 없음.</p>
-            <div class="repo-tags"><span>TS</span><span>Svel</span></div>
+            <div class="repo-tags"><span data-icon="typescript">TS</span><span data-icon="svelte">Svel</span></div>
           </div>
         <div class="repo-actions"><a href="https://github.com/savvy773/web-ai-usage" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://savvy773.github.io/web-ai-usage/" target="_blank" rel="noopener noreferrer">미리보기 ↗</a></div>
         </article>
