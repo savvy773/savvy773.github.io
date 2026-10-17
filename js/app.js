@@ -125,7 +125,7 @@
   // ── card tilt: hover/pointer-only, no idle GPU cost — resets on leave ──
   (function () {
     if (reduced || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-    const TILT = 6; // deg
+    const TILT = 2; // deg — a hint of depth, not a jump
     const els = document.querySelectorAll('.repo-card');
     els.forEach((el) => {
       let raf = null;
@@ -140,7 +140,7 @@
           const py = (e.clientY - r.top) / r.height;
           const rx = ((0.5 - py) * TILT * 2).toFixed(2);
           const ry = ((px - 0.5) * TILT * 2).toFixed(2);
-          el.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-3px)`;
+          el.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-2px)`;
         });
       });
       el.addEventListener('mouseleave', () => {
@@ -276,6 +276,11 @@
     }
   })();
 
+  // showcase slides carry a light and a dark screenshot; open whichever one the theme shows
+  window.openShot = (link, event) => {
+    const img = [...link.querySelectorAll('img')].find((i) => getComputedStyle(i).display !== 'none') || link.querySelector('img');
+    return openModal(img.currentSrc || img.src, link.dataset.title, event);
+  };
   window.openModal = openModal;
   window.closeModal = closeModal;
 })();
