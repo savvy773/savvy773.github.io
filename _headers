@@ -1,0 +1,8 @@
+# Cloudflare static-asset headers. CSS/JS are always referenced with ?v=<content hash>,
+# so they can be cached for good; images change name when replaced, so a week is safe.
+/css/*
+  Cache-Control: public, max-age=31536000, immutable
+/js/*
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400

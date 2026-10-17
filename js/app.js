@@ -150,6 +150,25 @@
     });
   })();
 
+  // ── in-page links: jump straight to the section with a short cross-fade, no smooth scrolling ──
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const id = link.getAttribute('href').slice(1);
+    const target = id && document.getElementById(id);
+    if (!target) return;
+    e.preventDefault();
+    const jump = () => {
+      // show the destination as it is, without its scroll-in reveal on top of the fade
+      const section = target.closest('.reveal-section');
+      if (section) { section.classList.remove('will-reveal'); section.classList.add('in-view'); }
+      target.scrollIntoView({ behavior: 'instant', block: 'start' });
+      if (location.hash !== '#' + id) history.pushState(null, '', '#' + id);
+    };
+    if (document.startViewTransition && !reduced) document.startViewTransition(jump);
+    else jump();
+  });
+
   // ── theme toggle: light by default, dark only by choice (the head script applies it before paint) ──
   (function () {
     const btn = document.querySelector('.theme-toggle');
