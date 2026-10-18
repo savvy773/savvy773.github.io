@@ -96,7 +96,7 @@
     if (!sections.length) return;
 
     function prepReveal(section) {
-      section.querySelectorAll('.repo-card').forEach((el, i) => {
+      section.querySelectorAll('.repo-card, .entry-card').forEach((el, i) => {
         el.style.setProperty('--reveal-i', String(i));
       });
       ['.tl-item', '.showcase-tabs button', '.prism-pipeline li'].forEach((sel) => {
@@ -133,30 +133,19 @@
     sections.forEach((s) => io.observe(s));
   })();
 
-  // ── card tilt: hover/pointer-only, no idle GPU cost — resets on leave ──
+  // ── card spotlight: the hover light follows the pointer; only CSS variables change, nothing moves ──
   (function () {
     if (reduced || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-    const TILT = 2; // deg — a hint of depth, not a jump
-    const els = document.querySelectorAll('.repo-card');
-    els.forEach((el) => {
+    document.querySelectorAll('.repo-card, .entry-card').forEach((el) => {
       let raf = null;
-      // transform's own transition lives in CSS (short, ~0.18s) so this glides
-      // instead of snapping frame-to-frame — do not disable it here.
-      el.addEventListener('mousemove', (e) => {
+      el.addEventListener('pointermove', (e) => {
         if (raf) return;
         raf = requestAnimationFrame(() => {
           raf = null;
           const r = el.getBoundingClientRect();
-          const px = (e.clientX - r.left) / r.width;
-          const py = (e.clientY - r.top) / r.height;
-          const rx = ((0.5 - py) * TILT * 2).toFixed(2);
-          const ry = ((px - 0.5) * TILT * 2).toFixed(2);
-          el.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-2px)`;
+          el.style.setProperty('--mx', `${e.clientX - r.left}px`);
+          el.style.setProperty('--my', `${e.clientY - r.top}px`);
         });
-      });
-      el.addEventListener('mouseleave', () => {
-        if (raf) { cancelAnimationFrame(raf); raf = null; }
-        el.style.transform = '';
       });
     });
   })();

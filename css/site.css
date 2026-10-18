@@ -1029,29 +1029,6 @@ dialog.modal-frame::backdrop {
   background: var(--surface-solid);
 }
 
-/* entrance */
-@keyframes riseIn {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.hero-badge,
-h1,
-.tagline,
-.hero-cta,
-.hero-stats,
-.skill-strip,
-.exp-note,
-.learning-note {
-  animation: riseIn 0.7s var(--ease-out) both;
-}
-h1 { animation-delay: 0.06s; }
-.tagline { animation-delay: 0.12s; }
-.hero-cta { animation-delay: 0.18s; }
-.hero-stats { animation-delay: 0.24s; }
-.skill-strip { animation-delay: 0.3s; }
-.exp-note { animation-delay: 0.42s; }
-.learning-note { animation-delay: 0.36s; }
-
 .reveal-section {
   padding: 0 12px;
   margin-left: -12px;
@@ -1084,13 +1061,13 @@ h1 { animation-delay: 0.06s; }
 .reveal-section.in-view .repo-card,
 .reveal-section.in-view .tl-item {
   opacity: 1;
-  transform: translateY(0) rotate(0deg);
+  transform: none;
 }
 .reveal-section.in-view h2,
 .reveal-section.in-view .section-sub { transition-delay: 0s; }
 .reveal-section.in-view .repo-card,
 .reveal-section.in-view .tl-item {
-  transition-delay: calc(0.05s + var(--reveal-i, 0) * 0.04s);
+  transition-delay: calc(0.05s + var(--reveal-i, 0) * 0.04s), calc(0.05s + var(--reveal-i, 0) * 0.04s), 0s, 0s, 0s;
 }
 /* .reveal-section.in-view .tl-item (0,3,0) out-specifies plain .tl-item:hover
    (0,2,0), so the hover lift needs to be pinned at equal-or-higher specificity
@@ -1109,10 +1086,6 @@ h1 { animation-delay: 0.06s; }
     opacity: 1;
     transform: none;
     transition: none;
-  }
-  .hero-badge, h1, .tagline, .hero-cta, .hero-stats,
-  .skill-strip, .exp-note, .learning-note {
-    animation: none;
   }
 }
 
@@ -1247,7 +1220,7 @@ h1 { animation-delay: 0.06s; }
 .reveal-section.will-reveal .prism-pipeline li + li::after { transform: scaleX(0); }
 .reveal-section.in-view .showcase-stage { opacity: 1; transform: none; transition: opacity 0.7s var(--ease-out) 0.15s, transform 1s var(--ease-out) 0.15s; }
 .reveal-section.in-view .showcase-tabs button, .reveal-section.in-view .prism-pipeline li { opacity: 1; transform: none; transition: opacity 0.45s var(--ease-out) calc(var(--reveal-i, 0) * 0.07s), transform 0.45s var(--ease-out) calc(var(--reveal-i, 0) * 0.07s), border-color 0.2s var(--ease), background 0.2s var(--ease), color 0.2s var(--ease); }
-.reveal-section.in-view .prism-pipeline li + li::after { transform: scaleX(1); transition: transform 0.35s var(--ease-out) calc(0.12s + var(--reveal-i, 0) * 0.07s); }
+.reveal-section.will-reveal.in-view .prism-pipeline li + li::after { transform: scaleX(1); transition: transform 0.35s var(--ease-out) calc(0.12s + var(--reveal-i, 0) * 0.07s); }
 @media (prefers-reduced-motion: reduce) {
   .reveal-section.will-reveal .showcase-stage, .reveal-section.will-reveal .showcase-tabs button, .reveal-section.will-reveal .prism-pipeline li { opacity: 1; transform: none; transition: none; }
   .reveal-section.will-reveal .prism-pipeline li + li::after { transform: none; }
@@ -1519,13 +1492,14 @@ h1 { animation-delay: 0.06s; }
 :root[data-theme="dark"] .feed-st--ship { color: #5eead4; background: rgba(45, 212, 191, 0.12); }
 :root[data-theme="dark"] .feed-st--cancel { color: #fca5a5; background: rgba(239, 68, 68, 0.12); }
 
-/* calmer hover: a 1–2px lift and a shadow, nothing that jumps */
+/* still hover: nothing moves (a lift slips the card out from under the cursor and it bounces);
+   feedback is border, shadow and a soft light that follows the pointer (--mx/--my from app.js) */
 @media (hover: hover) and (pointer: fine) {
-  .prism-block:hover, .stat-card:hover, .project-map button:hover, .reveal-section.in-view .prism-pipeline li:hover { transform: translateY(-1px); }
-  .repo-card:hover { transform: translateY(-2px); }
+  .prism-block:hover, .stat-card:hover, .project-map button:hover, .entry-card:hover,
+  .repo-card:hover, .reveal-section.in-view .tl-item:hover, .reveal-section.in-view .prism-pipeline li:hover,
   .reveal-section.in-view .showcase-tabs button:hover, .showcase-tabs button:hover { transform: none; }
-  .showcase-stage:hover .showcase-slide.is-active img { transform: none; }
-  .reveal-section.in-view .tl-item:hover { transform: translateY(-1px); }
+  .showcase-stage:hover .showcase-slide.is-active img, .tl-item:hover .tl-thumb, .tl-item:hover h3 .go { transform: none; }
+  .reveal-section.in-view .showcase-tabs button:hover, .showcase-tabs button:hover { background: var(--paper-2); }
 }
 
 /* ── Repo cards v3: framed thumbnail, category chip, quiet meta, button-like actions ── */
@@ -1576,7 +1550,7 @@ h1 { animation-delay: 0.06s; }
 
 
 .entry-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
-.entry-card { display: flex; flex-direction: column; padding: 0.5rem; border-radius: 18px; color: inherit; text-decoration: none; background: var(--paper); transition: transform 0.22s var(--ease-out), box-shadow 0.22s var(--ease), border-color 0.2s var(--ease); }
+.entry-card { position: relative; display: flex; flex-direction: column; padding: 0.5rem; border-radius: 18px; color: inherit; text-decoration: none; background: var(--paper); transition: transform 0.22s var(--ease-out), box-shadow 0.22s var(--ease), border-color 0.2s var(--ease); }
 .entry-media { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 12px; border: 1px solid var(--border); background: var(--paper-2); }
 .entry-media img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: left top; }
 .entry-mosaic { display: grid; grid-template-columns: 1.2fr 1fr; grid-template-rows: 1fr 1fr; gap: 4px; padding: 4px; }
@@ -1595,7 +1569,7 @@ h1 { animation-delay: 0.06s; }
 .entry-facts .cat-utility b { color: var(--cat-utility); }
 .entry-go { justify-self: start; margin-top: 0.35rem; padding: 0.42rem 0.85rem; border-radius: 9px; font-size: 0.78rem; font-weight: 600; color: var(--accent); background: var(--accent-soft); transition: background 0.18s var(--ease); }
 @media (hover: hover) and (pointer: fine) {
-  .entry-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--border-hi); }
+  .entry-card:hover { box-shadow: var(--shadow-lg); border-color: var(--border-hi); }
   .entry-card:hover .entry-go { background: color-mix(in srgb, var(--accent) 16%, transparent); }
 }
 .entry-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
@@ -1609,7 +1583,6 @@ h1 { animation-delay: 0.06s; }
 :root[data-theme="dark"] .project-tabs a[aria-current="page"], :root[data-theme="dark"] .project-tabs a[aria-current="page"] span { color: #0f1a15; }
 
 .page-section { margin-top: 0; }
-h1.page-title, h1.prism-title { animation: none; }
 h1.page-title { font-size: clamp(1.7rem, 3.6vw, 2.2rem); font-weight: 700; letter-spacing: -0.035em; margin: 0; line-height: 1.2; }
 h1.prism-title { margin: 0.4rem 0; font-size: clamp(1.25rem, 2.6vw, 1.6rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.3; }
 .map-all strong { background:
@@ -1804,3 +1777,30 @@ body[data-page="video"] .topnav .nav-video { color: var(--nav-c); background: co
 .film--small .player-play svg { width: 24px; height: 24px; }
 @media (max-width: 1000px) { .film--small { grid-template-columns: 160px minmax(0, 1fr); } .film--small .film-player { max-width: 160px; } }
 @media (max-width: 560px) { .film--small { grid-template-columns: 1fr; } .film--small .film-player { max-width: 200px; } }
+
+/* pointer spotlight on cards: one gradient layer that fades in on hover, no layout or transform */
+.repo-card::before, .entry-card::before {
+  content: ""; display: block; position: absolute; z-index: 3; inset: 0; height: auto; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), color-mix(in srgb, var(--accent) 9%, transparent), transparent 65%);
+  opacity: 0; transition: opacity 0.3s var(--ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .repo-card:hover::before, .entry-card:hover::before { opacity: 1; }
+}
+
+/* below-the-fold cards settle in once, staggered; JS adds .will-reveal only to sections that start off screen,
+   so nothing already visible on F5 or a menu click ever fades */
+.reveal-section.will-reveal:not(.in-view) .repo-card,
+.reveal-section.will-reveal:not(.in-view) .tl-item,
+.reveal-section.will-reveal:not(.in-view) .entry-card { opacity: 0; transform: translateY(14px); }
+.reveal-section.will-reveal.in-view .repo-card,
+.reveal-section.will-reveal.in-view .tl-item,
+.reveal-section.will-reveal.in-view .entry-card {
+  transition: opacity 0.55s var(--ease-out) calc(var(--reveal-i, 0) * 0.06s), transform 0.7s var(--ease-out) calc(var(--reveal-i, 0) * 0.06s),
+    box-shadow 0.28s var(--ease), border-color 0.2s var(--ease), background 0.25s var(--ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-section.will-reveal:not(.in-view) .repo-card,
+  .reveal-section.will-reveal:not(.in-view) .tl-item,
+  .reveal-section.will-reveal:not(.in-view) .entry-card { opacity: 1; transform: none; }
+}
