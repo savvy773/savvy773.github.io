@@ -66,6 +66,7 @@ PRISM Workspace + ERP를 1인 개발로 처음부터 설계·React/TypeScript �
 ├── wrangler.jsonc             # Cloudflare Worker 설정 (juns)
 ├── scripts/version-assets.mjs # 공통 블록 복사 + CSS/JS 버전
 ├── scripts/deploy-cf.sh       # 커밋된 HEAD를 Cloudflare에 배포
+├── scripts/hooks/post-commit  # main 커밋 시 자동 배포
 ├── content.md                 # 콘텐츠 수정 안내
 └── docs/tech-stack.md         # 기술 상세
 ```
@@ -82,7 +83,7 @@ CSS·JS나 공통 블록을 고친 뒤 게시 전에 `node scripts/version-asset
 
 ## Deploy
 
-juns.win은 Cloudflare에 직접 업로드합니다. 커밋한 뒤 `scripts/deploy-cf.sh`를 실행하면 커밋된 HEAD만 올라갑니다(작업 중 파일은 제외). 백업은 `~/code` 전체 백업(R2 `code-backup`)에 포함됩니다. GitHub는 링크용이고, savvy773.github.io는 juns.win으로 이동만 시킵니다.
+juns.win은 Cloudflare에 직접 업로드합니다. `main`에 커밋하면 `post-commit` 훅이 `scripts/deploy-cf.sh`를 실행해 커밋된 HEAD만 바로 올립니다(작업 중 파일은 제외). 처음 클론한 뒤 한 번 `git config core.hooksPath scripts/hooks`를 실행해 훅을 켜고, 배포 없이 커밋하려면 `SKIP_DEPLOY=1 git commit ...`을 씁니다. 수동 배포는 `scripts/deploy-cf.sh`. 백업은 `~/code` 전체 백업(R2 `code-backup`)에 포함됩니다. GitHub는 링크용이고, savvy773.github.io는 juns.win으로 이동만 시킵니다.
 
 ## Docs
 
